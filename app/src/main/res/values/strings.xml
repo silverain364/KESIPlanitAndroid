@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">KESI</string>
+    <string name="sign_up_text"><u>회원가입</u></string>
+    <string name="guest_login_text"><u>게스트로 시작하기</u></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="drawer_opened">Navigation drawer opened</string>
+    <string name="drawer_closed">Navigation drawer closed</string>
+</resources>
