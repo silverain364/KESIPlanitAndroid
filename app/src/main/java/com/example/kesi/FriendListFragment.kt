@@ -1,59 +1,66 @@
 package com.example.kesi
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.kesi.databinding.FragmentFriendListBinding
+import com.example.kesi.databinding.FragmentListBinding
+import com.example.kesi.databinding.ItemFriendListBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FriendListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FriendListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    lateinit var binding:FragmentFriendListBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friend_list, container, false)
+        binding = FragmentFriendListBinding.inflate(inflater)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FriendListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FriendListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val profileList = ArrayList<Profile>()
+        //TODO 친구목록 삽입
+        profileList.add(Profile(name="김재원"))
+        profileList.add(Profile(name="김태수"))
+        profileList.add(Profile(name="김시현"))
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        binding.recyclerView.adapter = FriendListAdapter(profileList)
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(requireActivity(),LinearLayoutManager.VERTICAL))
     }
 }
+
+//뷰 홀더 클래스
+class FriendListViewHolder(val binding:ItemFriendListBinding): RecyclerView.ViewHolder(binding.root)
+
+//어댑터 클래스
+class FriendListAdapter(val profile: ArrayList<Profile>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    //뷰 홀더를 준비하려고 자동으로 호출되는 함수
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendListViewHolder {
+        val binding = ItemFriendListBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return FriendListViewHolder(binding)
+    }
+
+    //항목의 개수를 판단하려고 자동으로 호출되는 함수
+    override fun getItemCount(): Int = profile.size
+
+    //뷰 홀더의 뷰에 데이터를 출력하려고 자동으로 호출되는 함수
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val binding = (holder as FriendListViewHolder).binding
+        binding.imageView.setImageResource(profile[position].image)
+        binding.tvName.text = profile[position].name
+        binding.itemRoot.setOnClickListener{
+            //TODO 각각의 항목을 클릭했을 때 이벤트 처리
+        }
+    }
+
+}
+
+//프로필 데이터 클래스
+data class Profile(val image: Int = R.drawable.ic_user, val name:String)
