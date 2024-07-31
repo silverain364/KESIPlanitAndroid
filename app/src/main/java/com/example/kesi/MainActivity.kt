@@ -1,5 +1,6 @@
 package com.example.kesi
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
     //뷰 페이저 어댑터
-    class MyFragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
+    class FragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         val fragments: List<Fragment>
         init {
             fragments = listOf(HomeFragment(), ListFragment(), NotificationFragment(), SettingsFragment())
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         override fun getItemCount(): Int = fragments.size
         override fun createFragment(position: Int): Fragment = fragments[position]
     }
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -40,8 +42,9 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toggle.syncState()
         //뷰 페이저에 어댑터 적용
-        val adapter = MyFragmentPagerAdapter(this)
+        val adapter = FragmentPagerAdapter(this)
         binding.viewPager.adapter = adapter
+        //탭과 뷰 페이저 연동
         TabLayoutMediator(binding.tab, binding.viewPager) {
             tab, position ->
             when (position) {
