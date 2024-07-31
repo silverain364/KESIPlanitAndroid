@@ -1,5 +1,9 @@
 package com.example.kesi
 
+import android.graphics.BlendModeColorFilter
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -14,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.kesi.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
@@ -48,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                 0 -> {
                     tab.text = "홈"
                     tab.icon = getDrawable(R.drawable.ic_home_white)
+                    tab.icon!!.setColorFilter(resources.getColor(R.color.nav_bottom_home), PorterDuff.Mode.SRC_IN)
                 }
                 1 -> {
                     tab.text = "목록"
@@ -63,6 +69,40 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }.attach()
+
+        binding.tab.addOnTabSelectedListener(
+           object: TabLayout.OnTabSelectedListener{
+               override fun onTabSelected(tab: TabLayout.Tab?) {
+                   val color = when(tab!!.position){
+                       0 -> {
+                           resources.getColor(R.color.nav_bottom_home)
+                       }
+                       1 -> {
+                           resources.getColor(R.color.nav_bottom_list)
+                       }
+                       2 -> {
+                           resources.getColor(R.color.nav_bottom_alarm)
+                       }
+                       3 -> {
+                           resources.getColor(R.color.nav_bottom_setting)
+                       }
+                       else -> {
+                           resources.getColor(R.color.white)
+                       }
+                   }
+                   tab!!.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+               }
+
+               override fun onTabUnselected(tab: TabLayout.Tab?) {
+                   tab!!.icon!!.setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_IN);
+               }
+
+               override fun onTabReselected(tab: TabLayout.Tab?) {
+
+               }
+
+           }
+        )
     }
 
     //액티비티에 정적인 메뉴를 구성할 때 사용하는 함수
