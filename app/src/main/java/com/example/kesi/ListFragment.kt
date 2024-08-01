@@ -49,5 +49,19 @@ class ListFragment : Fragment() {
                 }
             }
         }.attach()
+
+        //플로팅 액션 버튼 열고 닫기
+        binding.fabAdd.setOnClickListener{
+            when(binding.fabAddFriends.visibility) {
+                View.VISIBLE -> {
+                    binding.fabAddFriends.visibility = View.INVISIBLE
+                    binding.fabAddGroup.visibility = View.INVISIBLE
+                }
+                View.INVISIBLE -> {
+                    binding.fabAddFriends.visibility = View.VISIBLE
+                    binding.fabAddGroup.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 }
