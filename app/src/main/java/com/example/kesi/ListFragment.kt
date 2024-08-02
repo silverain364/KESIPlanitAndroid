@@ -18,17 +18,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 class ListFragment : Fragment() {
     lateinit var binding: FragmentListBinding
 
-    /*//뷰 페이저 어댑터
-    class FragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
-        val fragments: List<Fragment>
-        init {
-            fragments = listOf(GroupListFragment(), FriendListFragment())
-        }
-
-        override fun getItemCount(): Int = fragments.size
-        override fun createFragment(position: Int): Fragment = fragments[position]
-    }*/
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentListBinding.inflate(layoutInflater)
         return binding.root
@@ -38,21 +27,6 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*//뷰 페이저에 어댑터 적용
-        val adapter = ListFragment.FragmentPagerAdapter(requireActivity())
-        binding.viewPager.adapter = adapter
-        //탭과 뷰 페이저 연동
-        TabLayoutMediator(binding.tab, binding.viewPager) {
-                tab, position ->
-            when (position) {
-                0 -> {
-                    tab.text = "그룹"
-                }
-                1 -> {
-                    tab.text = "친구"
-                }
-            }
-        }.attach()*/
         // 초기 프래그먼트 설정
         if (savedInstanceState == null) {
             parentFragmentManager.beginTransaction()
@@ -60,13 +34,14 @@ class ListFragment : Fragment() {
                 .commit()
         }
 
+        //탭레이아웃에 리스너 연결
         binding.tab.addOnTabSelectedListener(object:TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when(tab?.position) {
-                    0 -> {
+                    0 -> {//그룹 탭 선택 시 그룹 프래그먼트로 전환
                         replaceFragment(GroupListFragment())
                     }
-                    1 -> {
+                    1 -> {//친구 탭 선택 시 친구 프래그먼트로 전환
                         replaceFragment(FriendListFragment())
                     }
                 }
@@ -76,8 +51,16 @@ class ListFragment : Fragment() {
 
             }
 
+            //탭을 다시 클릭했을 경우
             override fun onTabReselected(tab: TabLayout.Tab?) {
-
+                when(tab?.position) {
+                    0 -> {//그룹 탭 선택 시 그룹 프래그먼트로 전환
+                        replaceFragment(GroupListFragment())
+                    }
+                    1 -> {//친구 탭 선택 시 친구 프래그먼트로 전환
+                        replaceFragment(FriendListFragment())
+                    }
+                }
             }
 
         })
@@ -95,11 +78,20 @@ class ListFragment : Fragment() {
                 }
             }
         }
+
+        //친구 추가 버튼 클릭 시 프래그먼트 교체
+        binding.fabAddFriends.setOnClickListener{
+            replaceFragment(AddFriendsFragment())
+            binding.fabAddGroup.visibility = View.INVISIBLE//fab버튼 안보이게
+            binding.fabAddFriends.visibility = View.INVISIBLE//fab버튼 안보이게
+        }
     }
 
+    //프래그먼트 교체하는 함수
     private fun replaceFragment(fragment: Fragment) {
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, fragment)
+            .addToBackStack(null)
             .commit()
     }
 }
