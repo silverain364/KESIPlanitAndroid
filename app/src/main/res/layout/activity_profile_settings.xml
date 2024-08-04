@@ -92,20 +92,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@drawable/radio_group_background"
         app:layout_constraintStart_toStartOf="@+id/tvGender"
         app:layout_constraintTop_toBottomOf="@+id/tvGender">
 
         <RadioButton
             android:id="@+id/rbMen"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="남자" />
+            android:text="남자"
+            android:checked="true"
+            android:textAlignment="center"
+            android:background="@drawable/radio_button"
+            android:textColor="@drawable/radio_button_text"
+            android:button="@null"/>
 
         <RadioButton
             android:id="@+id/rbWomen"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="여자" />
+            android:text="여자"
+            android:textAlignment="center"
+            android:background="@drawable/radio_button"
+            android:textColor="@drawable/radio_button_text"
+            android:button="@null"/>
     </RadioGroup>
 
     <TextView
