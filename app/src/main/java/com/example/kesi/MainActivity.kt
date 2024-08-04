@@ -9,10 +9,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         //ActionBarDrawerToggle 버튼 적용
         toggle = ActionBarDrawerToggle(this, binding.drawer, R.string.drawer_opened, R.string.drawer_closed)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         toggle.syncState()
         //뷰 페이저에 어댑터 적용
         val adapter = FragmentPagerAdapter(this)
@@ -75,26 +78,34 @@ class MainActivity : AppCompatActivity() {
 
         binding.tab.addOnTabSelectedListener(
            object: TabLayout.OnTabSelectedListener{
-               //선택된 탭은 각각의 색으로 변경
                override fun onTabSelected(tab: TabLayout.Tab?) {
+                   //선택된 탭은 각각의 색으로 변경
                    val color = when(tab!!.position){
                        0 -> {
-                           resources.getColor(R.color.nav_bottom_home)
+                           ContextCompat.getColor(applicationContext,R.color.nav_bottom_home)
                        }
                        1 -> {
-                           resources.getColor(R.color.nav_bottom_list)
+                           ContextCompat.getColor(applicationContext,R.color.nav_bottom_list)
                        }
                        2 -> {
-                           resources.getColor(R.color.nav_bottom_alarm)
+                           ContextCompat.getColor(applicationContext,R.color.nav_bottom_alarm)
                        }
                        3 -> {
-                           resources.getColor(R.color.nav_bottom_setting)
+                           ContextCompat.getColor(applicationContext,R.color.nav_bottom_setting)
                        }
                        else -> {
-                           resources.getColor(R.color.white)
+                           ContextCompat.getColor(applicationContext,R.color.white)
                        }
                    }
-                   tab!!.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                   tab.icon?.setTint(color)
+
+                   //각각의 탭을 클릭했을 경우 타이틀 변경
+                   when(tab?.position) {
+                       0 -> binding.tvTitle.text = "KESI"
+                       1 -> binding.tvTitle.text = "목록"
+                       2 -> binding.tvTitle.text = "알림"
+                       3 -> binding.tvTitle.text = "설정"
+                   }
                }
 
                //선택된 탭 외의 다른 탭 아이콘은 흰 색으로 변경
@@ -129,8 +140,21 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
+
+        //SearchView가 열렸을 때 tvTitle을 숨기기
+        searchView.setOnSearchClickListener {
+            binding.tvTitle.visibility = View.GONE
+        }
+
+        //SearchView가 닫혔을 때 tvTitle을 다시 보이게 하기
+        searchView.setOnCloseListener {
+            binding.tvTitle.visibility = View.VISIBLE
+            false
+        }
         return true
     }
+
+
 
     //메뉴를 사용자가 선택했을 때의 이벤트 처리를 하는 함수
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
