@@ -54,15 +54,14 @@
                 android:text="설정"/>
         </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
-    <TextView
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:background="#525252"
-        android:text="I am Drawer!!"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:gravity="center_horizontal"
-        android:fitsSystemWindows="true"
-        android:layout_gravity="start"/>
+    <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <include layout="@layout/navagation_drawer"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

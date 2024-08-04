@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.tab.addOnTabSelectedListener(
            object: TabLayout.OnTabSelectedListener{
+               //선택된 탭은 각각의 색으로 변경
                override fun onTabSelected(tab: TabLayout.Tab?) {
                    val color = when(tab!!.position){
                        0 -> {
@@ -96,6 +97,7 @@ class MainActivity : AppCompatActivity() {
                    tab!!.icon!!.setColorFilter(color, PorterDuff.Mode.SRC_IN);
                }
 
+               //선택된 탭 외의 다른 탭 아이콘은 흰 색으로 변경
                override fun onTabUnselected(tab: TabLayout.Tab?) {
                    tab!!.icon!!.setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_IN);
                }
