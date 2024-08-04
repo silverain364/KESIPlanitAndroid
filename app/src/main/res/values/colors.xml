@@ -4,4 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="mainColor">#000000</color>
     <color name="purple">#673AB7</color>
+    <color name="nav_bottom_home">#FFFF7E00</color>
+    <color name="nav_bottom_alarm">#FF3F60C1</color>
+    <color name="nav_bottom_setting">#FFFFDC0D</color>
+    <color name="nav_bottom_list">#FFB60CBE</color>
+
 </resources>

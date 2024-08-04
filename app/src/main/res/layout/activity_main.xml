@@ -30,12 +30,13 @@
             android:background="@color/mainColor"
             app:tabTextColor="@color/white"
             app:tabIconTint="@color/white"
-            app:tabSelectedTextColor="#00ff00">
+            >
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/ic_home_white"
-                android:text="홈" />
+                android:text="홈"
+            />
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
