@@ -34,8 +34,7 @@ class LoginActivity : AppCompatActivity() {
 
         //로그인 버튼 클릭 시 메인 화면으로 이동
         binding.btnLogin.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            login(binding.etId.text.toString(), binding.etPassword.text.toString())
         }
 
         //회원가입 버튼 클릭 시 회원가입 화면으로 이동
@@ -100,6 +99,29 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun login(email: String, pw: String){
+        if(email.isEmpty()){
+            showToast("이메일을 입력해주세요")
+            return
+        }
+        if(pw.isEmpty()){
+            showToast("비밀번호를 입력해주세요")
+            return
+        }
+
+        auth.signInWithEmailAndPassword(email, pw).addOnCompleteListener {
+            if (it.isSuccessful) { //페이지 이동
+                showToast("로그인 성공") //추후 nickName님 환영합니다.로 변경하면 좋을듯? ㅅ
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }else{
+                showToast("이메일 또는 비밀번호가 틀렸습니다.")
+            }
+        }
+
+
+    }
+
 
 
     //캘린더 권한을 사용자에게 허락받았다는 가정하에 AuthCode를 받고 백엔드 서버로 넘긴다.
@@ -117,10 +139,15 @@ class LoginActivity : AppCompatActivity() {
                 //AuthCode는 서버로 넘겨준다.
                 //추후 로직 설계 예정(테스트는 성공했지만 아직 App 들어가기 좀 애매해서 제외)
 
-                Toast.makeText(this@LoginActivity, "auth code : $authCode", Toast.LENGTH_SHORT).show()
-
+                showToast("auth code : $authCode")
             }else{
-                Toast.makeText(this@LoginActivity, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                showToast(it.exception.toString())
             }
         }
-    }}
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+}
