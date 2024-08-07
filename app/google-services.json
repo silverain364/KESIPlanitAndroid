@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "864097874741",
+    "project_id": "kesi-b027c",
+    "storage_bucket": "kesi-b027c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864097874741:android:50af4173c227012fc1527c",
+        "android_client_info": {
+          "package_name": "com.example.kesi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864097874741-b19avkh68pas6fhs9t5r2vdqren0duea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kesi",
+            "certificate_hash": "2bb3f8aa968baf7dd6316aaff81ffc8bd0460ad9"
+          }
+        },
+        {
+          "client_id": "864097874741-d1oa1cbluklocmo01nprrva16f9q7h0j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhQDjScQ0yBfOEQx7c2AkkWmjB29yfsf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864097874741-d1oa1cbluklocmo01nprrva16f9q7h0j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
