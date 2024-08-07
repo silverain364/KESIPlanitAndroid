@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
     //뷰 페이저 어댑터
-    class MyFragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
+    class FragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         val fragments: List<Fragment>
         init {
             fragments = listOf(HomeFragment(), ListFragment(), NotificationFragment(), SettingsFragment())
@@ -45,8 +45,9 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toggle.syncState()
         //뷰 페이저에 어댑터 적용
-        val adapter = MyFragmentPagerAdapter(this)
+        val adapter = FragmentPagerAdapter(this)
         binding.viewPager.adapter = adapter
+        //탭과 뷰 페이저 연동
         TabLayoutMediator(binding.tab, binding.viewPager) {
             tab, position ->
             when (position) {
