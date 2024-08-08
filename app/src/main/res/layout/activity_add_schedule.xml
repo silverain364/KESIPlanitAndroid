@@ -22,7 +22,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:hint="제목을 입력하세요."
+            android:hint="일정을 입력하세요."
             android:textColorHint="@color/white"/>
     <TextView
             android:text="7.12(금)"
@@ -51,7 +51,7 @@
             android:text="오전 7:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
+            android:id="@+id/tvStartTime"
             app:layout_constraintStart_toStartOf="@+id/tvStartDate"
             app:layout_constraintEnd_toEndOf="@+id/tvStartDate"
             app:layout_constraintTop_toBottomOf="@+id/tvStartDate"
@@ -63,7 +63,7 @@
             android:text="오후 8:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView4"
+            android:id="@+id/tvEndTime"
             android:textSize="20sp"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/tvEndDate"
