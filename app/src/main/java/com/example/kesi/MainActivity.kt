@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         override fun getItemCount(): Int = fragments.size
         override fun createFragment(position: Int): Fragment = fragments[position]
     }
-    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -108,7 +107,6 @@ class MainActivity : AppCompatActivity() {
                    }
                }
 
-               //선택된 탭 외의 다른 탭 아이콘은 흰 색으로 변경
                override fun onTabUnselected(tab: TabLayout.Tab?) {
                    tab!!.icon!!.setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_IN);
                }
