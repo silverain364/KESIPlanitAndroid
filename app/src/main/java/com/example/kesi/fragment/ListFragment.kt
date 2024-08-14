@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.kesi.R
 import com.example.kesi.activity.AddFriendsActivity
+import com.example.kesi.activity.AddGroupActivity
 import com.example.kesi.databinding.FragmentListBinding
 import com.google.android.material.tabs.TabLayout
 
@@ -80,9 +81,11 @@ class ListFragment : Fragment() {
         binding.fabAddFriends.setOnClickListener{
             val intent:Intent = Intent(context, AddFriendsActivity::class.java)
             startActivity(intent)
-            /*replaceFragment(AddFriendsFragment())
-            binding.fabAddGroup.visibility = View.INVISIBLE//fab버튼 안보이게
-            binding.fabAddFriends.visibility = View.INVISIBLE//fab버튼 안보이게*/
+        }
+        //그룹 추가 버튼 클릭 시 그룹 추가 화면으로 이동
+        binding.fabAddGroup.setOnClickListener{
+            val intent:Intent = Intent(context, AddGroupActivity::class.java)
+            startActivity(intent)
         }
     }
 
