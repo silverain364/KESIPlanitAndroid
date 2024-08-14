@@ -17,9 +17,10 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="KESI"
+                android:text="친구 추가"
                 android:textSize="30sp"
                 android:textStyle="bold"
+                android:textColor="@color/white"
                 android:layout_gravity="center_horizontal"/>
     </androidx.appcompat.widget.Toolbar>
     <ImageView

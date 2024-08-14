@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".AddGroupActivity"
+        android:background="@color/mainColor">
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/mainColor"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="그룹 생성"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"/>
+    </androidx.appcompat.widget.Toolbar>
+    <TextView
+            android:id="@+id/tvGroupName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="그룹 이름"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" app:layout_constraintStart_toStartOf="@+id/toolbar"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
+    <EditText
+            android:id="@+id/etGroupName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:hint="이름"
+            android:backgroundTint="@color/white" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/tvGroupName"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+    <TextView
+            android:id="@+id/tvAddFriends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="그룹 인원 추가"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" 
+            app:layout_constraintTop_toBottomOf="@+id/etGroupName"
+            android:layout_marginTop="30dp" 
+            app:layout_constraintStart_toStartOf="@+id/etGroupName"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFriendsList"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddFriends"
+            app:layout_constraintStart_toStartOf="@+id/tvAddFriends"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="20dp"/>
+    <Button
+            android:id="@+id/btnCreateGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="그룹 생성"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/mainColor"
+            android:backgroundTint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/rvFriendsList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="20dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
