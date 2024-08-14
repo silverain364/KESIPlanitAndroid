@@ -1,6 +1,7 @@
 package com.example.kesi
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -79,11 +80,13 @@ class ListFragment : Fragment() {
             }
         }
 
-        //친구 추가 버튼 클릭 시 프래그먼트 교체
+        //친구 추가 버튼 클릭 시 친구 추가 화면으로 이동
         binding.fabAddFriends.setOnClickListener{
-            replaceFragment(AddFriendsFragment())
+            val intent:Intent = Intent(context,AddFriendsActivity::class.java)
+            startActivity(intent)
+            /*replaceFragment(AddFriendsFragment())
             binding.fabAddGroup.visibility = View.INVISIBLE//fab버튼 안보이게
-            binding.fabAddFriends.visibility = View.INVISIBLE//fab버튼 안보이게
+            binding.fabAddFriends.visibility = View.INVISIBLE//fab버튼 안보이게*/
         }
     }
 

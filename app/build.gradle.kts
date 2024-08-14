@@ -51,7 +51,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.3.1")) //firebase 자동 버전 관리
     implementation("com.google.android.gms:play-services-base:18.3.0")
 
-    implementation("com.google.firebase:firebase-auth-ktx") //auth
+    implementation("com.google.firebase:firebase-auth-ktx")//auth
     implementation("com.google.android.gms:play-services-auth:20.7.0") //구글 로그인
 
     // Retrofit2
