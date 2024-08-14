@@ -1,9 +1,9 @@
-package com.example.kesi
+package com.example.kesi.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import com.example.kesi.R
 import com.example.kesi.databinding.ActivityAddScheduleBinding
 
 class AddScheduleActivity : AppCompatActivity() {

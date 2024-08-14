@@ -1,15 +1,15 @@
-package com.example.kesi
+package com.example.kesi.activity
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.kesi.databinding.ActivityLocationSharingBinding
+import com.example.kesi.databinding.ActivityAddGroupScheduleBinding
+import com.example.kesi.databinding.ActivityAddScheduleBinding
 
-class LocationSharingActivity : AppCompatActivity() {
-    lateinit var binding: ActivityLocationSharingBinding
+class AddGroupScheduleActivity : AppCompatActivity() {
+    lateinit var binding: ActivityAddGroupScheduleBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLocationSharingBinding.inflate(layoutInflater)
+        binding = ActivityAddGroupScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)

@@ -1,4 +1,4 @@
-package com.example.kesi
+package com.example.kesi.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

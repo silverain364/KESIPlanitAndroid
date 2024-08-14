@@ -1,4 +1,4 @@
-package com.example.kesi
+package com.example.kesi.holder
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.databinding.ItemFriendListBinding

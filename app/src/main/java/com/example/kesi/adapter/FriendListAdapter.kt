@@ -1,8 +1,10 @@
-package com.example.kesi
+package com.example.kesi.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kesi.holder.FriendListViewHolder
+import com.example.kesi.data.Profile
 import com.example.kesi.databinding.ItemFriendListBinding
 
 class FriendListAdapter(val profile: ArrayList<Profile>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {

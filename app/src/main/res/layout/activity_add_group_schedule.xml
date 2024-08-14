@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mainColor"
-        tools:context=".AddGroupScheduleActivity" android:id="@+id/tvPlace">
+        tools:context=".activity.AddGroupScheduleActivity" android:id="@+id/tvPlace">
     <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"

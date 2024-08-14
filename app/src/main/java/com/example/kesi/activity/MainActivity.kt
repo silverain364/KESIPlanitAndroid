@@ -1,26 +1,24 @@
-package com.example.kesi
+package com.example.kesi.activity
 
-import android.annotation.SuppressLint
-import android.graphics.BlendModeColorFilter
-import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.kesi.fragment.NotificationFragment
+import com.example.kesi.R
+import com.example.kesi.fragment.SettingsFragment
 import com.example.kesi.databinding.ActivityMainBinding
+import com.example.kesi.fragment.HomeFragment
+import com.example.kesi.fragment.ListFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -81,19 +79,19 @@ class MainActivity : AppCompatActivity() {
                    //선택된 탭은 각각의 색으로 변경
                    val color = when(tab!!.position){
                        0 -> {
-                           ContextCompat.getColor(applicationContext,R.color.nav_bottom_home)
+                           ContextCompat.getColor(applicationContext, R.color.nav_bottom_home)
                        }
                        1 -> {
-                           ContextCompat.getColor(applicationContext,R.color.nav_bottom_list)
+                           ContextCompat.getColor(applicationContext, R.color.nav_bottom_list)
                        }
                        2 -> {
-                           ContextCompat.getColor(applicationContext,R.color.nav_bottom_alarm)
+                           ContextCompat.getColor(applicationContext, R.color.nav_bottom_alarm)
                        }
                        3 -> {
-                           ContextCompat.getColor(applicationContext,R.color.nav_bottom_setting)
+                           ContextCompat.getColor(applicationContext, R.color.nav_bottom_setting)
                        }
                        else -> {
-                           ContextCompat.getColor(applicationContext,R.color.white)
+                           ContextCompat.getColor(applicationContext, R.color.white)
                        }
                    }
                    tab.icon?.setTint(color)
