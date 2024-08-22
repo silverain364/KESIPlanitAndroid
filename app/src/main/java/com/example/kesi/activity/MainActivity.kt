@@ -1,6 +1,5 @@
 package com.example.kesi.activity
 
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -15,7 +14,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.kesi.fragment.NotificationFragment
 import com.example.kesi.R
-import com.example.kesi.fragment.SettingsFragment
+import com.example.kesi.fragment.AccountFragment
 import com.example.kesi.databinding.ActivityMainBinding
 import com.example.kesi.fragment.HomeFragment
 import com.example.kesi.fragment.ListFragment
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     class FragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         val fragments: List<Fragment>
         init {
-            fragments = listOf(HomeFragment(), ListFragment(), NotificationFragment(), SettingsFragment())
+            fragments = listOf(HomeFragment(), ListFragment(), NotificationFragment(), AccountFragment())
         }
 
         override fun getItemCount(): Int = fragments.size
@@ -56,7 +55,6 @@ class MainActivity : AppCompatActivity() {
                 0 -> {
                     tab.text = "홈"
                     tab.icon = getDrawable(R.drawable.ic_home_white)
-                    tab.icon!!.setColorFilter(resources.getColor(R.color.nav_bottom_home), PorterDuff.Mode.SRC_IN)
                 }
                 1 -> {
                     tab.text = "목록"
@@ -67,8 +65,8 @@ class MainActivity : AppCompatActivity() {
                     tab.icon = getDrawable(R.drawable.ic_notification_white)
                 }
                 3 -> {
-                    tab.text = "설정"
-                    tab.icon = getDrawable(R.drawable.ic_settings_white)
+                    tab.text = "계정"
+                    tab.icon = getDrawable(R.drawable.ic_account_white)
                 }
             }
         }.attach()
@@ -88,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                            ContextCompat.getColor(applicationContext, R.color.nav_bottom_alarm)
                        }
                        3 -> {
-                           ContextCompat.getColor(applicationContext, R.color.nav_bottom_setting)
+                           ContextCompat.getColor(applicationContext, R.color.nav_bottom_account)
                        }
                        else -> {
                            ContextCompat.getColor(applicationContext, R.color.white)
@@ -101,20 +99,22 @@ class MainActivity : AppCompatActivity() {
                        0 -> binding.tvTitle.text = "KESI"
                        1 -> binding.tvTitle.text = "목록"
                        2 -> binding.tvTitle.text = "알림"
-                       3 -> binding.tvTitle.text = "설정"
+                       3 -> binding.tvTitle.text = "내 계정"
                    }
                }
 
                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                   tab!!.icon!!.setColorFilter(resources.getColor(R.color.white), PorterDuff.Mode.SRC_IN);
+
                }
 
                override fun onTabReselected(tab: TabLayout.Tab?) {
-
+                    onTabSelected(tab)
                }
-
-           }
-        )
+           })
+        // 첫 번째 탭을 선택된 상태로 만들어 초기 색상을 적용
+        val firstTab = binding.tab.getTabAt(0)
+        firstTab?.select()  // 첫 번째 탭을 선택된 상태로 만듦
+        firstTab?.icon?.setTint(ContextCompat.getColor(applicationContext, R.color.nav_bottom_home))
     }
 
     //액티비티에 정적인 메뉴를 구성할 때 사용하는 함수
