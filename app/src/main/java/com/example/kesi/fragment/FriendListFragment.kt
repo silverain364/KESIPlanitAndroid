@@ -23,13 +23,13 @@ class FriendListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val userList = ArrayList<User>()
+        /*val userList = ArrayList<User>()
         //TODO 친구목록 삽입
         userList.add(User(name="김재원"))
         userList.add(User(name="김태수"))
-        userList.add(User(name="김시현"))
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        binding.recyclerView.adapter = FriendListAdapter(userList)
+        userList.add(User(name="김시현"))*/
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())/*
+        binding.recyclerView.adapter = FriendListAdapter(userList)*/
         binding.recyclerView.addItemDecoration(DividerItemDecoration(requireActivity(),LinearLayoutManager.VERTICAL))
     }
 }

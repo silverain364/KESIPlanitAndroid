@@ -21,7 +21,7 @@ class FriendListAdapter(val user: ArrayList<User>): RecyclerView.Adapter<Recycle
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as FriendListViewHolder).binding
         binding.imageView.setImageResource(user[position].image)
-        binding.tvName.text = user[position].name
+        binding.tvName.text = user[position].nickname
         binding.itemRoot.setOnClickListener{
             //TODO 각각의 항목을 클릭했을 때 이벤트 처리
         }

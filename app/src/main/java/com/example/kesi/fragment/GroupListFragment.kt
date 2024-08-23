@@ -28,7 +28,7 @@ class GroupListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO.그룹 추가 하면 될 듯?
+        /*//TODO.그룹 추가 하면 될 듯?
         val userList1 = ArrayList<User>()
         userList1.add(User(name = "김시현"))
         userList1.add(User(name = "김태수"))
@@ -48,6 +48,6 @@ class GroupListFragment : Fragment() {
         groupList.add(Group("ㄷㄷㄷ",userList3))
         binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recyclerView.adapter = GroupListAdapter(groupList)
-        binding.recyclerView.addItemDecoration(DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL))
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL))*/
     }
 }

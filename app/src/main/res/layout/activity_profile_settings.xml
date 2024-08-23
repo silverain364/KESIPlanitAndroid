@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ivProfilePicture" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/etNickname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -85,7 +85,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@+id/etNickname" />
 
     <RadioGroup
         android:id="@+id/rgGender"

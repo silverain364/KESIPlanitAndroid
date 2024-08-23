@@ -52,6 +52,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-base:18.3.0")
 
     implementation("com.google.firebase:firebase-auth-ktx")//auth
+    implementation("com.google.firebase:firebase-database-ktx:21.0.0")//realtime database
     implementation("com.google.android.gms:play-services-auth:20.7.0") //구글 로그인
 
     // Retrofit2
