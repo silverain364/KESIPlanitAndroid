@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kesi.R
 import com.example.kesi.data.User
 import com.example.kesi.adapter.FriendListAdapter
 import com.example.kesi.databinding.FragmentFriendListBinding
