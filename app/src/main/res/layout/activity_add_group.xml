@@ -58,7 +58,7 @@
             android:layout_marginTop="30dp" 
             app:layout_constraintStart_toStartOf="@+id/etGroupName"/>
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFriendsList"
+            android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="300dp"
             app:layout_constraintTop_toBottomOf="@+id/tvAddFriends"
@@ -66,7 +66,7 @@
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="20dp"
-            tools:listitem="@layout/item_add_friend_list"/>
+            tools:listitem="@layout/item_add_group_member"/>
     <Button
             android:id="@+id/btnCreateGroup"
             android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
             android:textStyle="bold"
             android:textColor="@color/mainColor"
             android:backgroundTint="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/rvFriendsList"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="20dp"/>

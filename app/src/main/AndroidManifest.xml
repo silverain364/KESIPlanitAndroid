@@ -15,11 +15,6 @@
         <activity
                 android:name=".activity.AddGroupActivity"
                 android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name=".activity.AddFriendsActivity"
@@ -51,6 +46,11 @@
         <activity
                 android:name=".activity.LoginActivity"
                 android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".activity.SplashActivity"
