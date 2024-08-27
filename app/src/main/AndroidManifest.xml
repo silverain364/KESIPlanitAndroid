@@ -13,12 +13,17 @@
             android:theme="@style/Theme.KESI"
             tools:targetApi="31">
         <activity
+                android:name=".activity.ChatActivity"
+                android:exported="true">
+        </activity>
+        <activity
                 android:name=".activity.AddGroupActivity"
                 android:exported="true">
         </activity>
         <activity
                 android:name=".activity.AddFriendsActivity"
-                android:exported="false"/>
+                android:exported="true">
+        </activity>
         <activity
                 android:name=".activity.LocationSharingActivity"
                 android:exported="true">

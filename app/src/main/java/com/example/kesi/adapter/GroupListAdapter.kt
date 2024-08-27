@@ -1,8 +1,10 @@
 package com.example.kesi.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kesi.activity.ChatActivity
 import com.example.kesi.data.Group
 import com.example.kesi.databinding.ItemFriendListBinding
 import com.example.kesi.databinding.ItemGroupListBinding
@@ -26,5 +28,11 @@ class GroupListAdapter(val group:ArrayList<Group>):RecyclerView.Adapter<Recycler
         binding.tvNumber.text = (group[position].member.size).toString()
         //TODO 마지막 대화내용 보여주기
         binding.tvContent.text = "마지막 대화 내용"
+        //채팅방을 클릭하면 ChatActivity 화면으로 이동
+        binding.itemRoot.setOnClickListener {
+            val intent = Intent(binding.root.context,ChatActivity::class.java)
+            intent.putExtra("groupName",group[position].groupName)
+            binding.root.context.startActivity(intent)
+        }
     }
 }
