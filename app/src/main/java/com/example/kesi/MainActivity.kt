@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     class FragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
         val fragments: List<Fragment>
         init {
-            fragments = listOf(HomeFragment(), ListFragment(), NotificationFragment(), SettingsFragment())
+            fragments = listOf(HomeFragment<Any>(), ListFragment(), NotificationFragment(), SettingsFragment())
         }
 
         override fun getItemCount(): Int = fragments.size
