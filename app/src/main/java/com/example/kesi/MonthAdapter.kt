@@ -15,7 +15,7 @@ class MonthAdapter: RecyclerView.Adapter<MonthAdapter.Month>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Month {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_month,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_item_month,parent,false)
         return Month(view)
     }
 
@@ -35,11 +35,11 @@ class MonthAdapter: RecyclerView.Adapter<MonthAdapter.Month>(){
         calendar.add(Calendar.MONTH , position) //스크롤시 포지션 만큼 달이동
 
         //title 텍스트 초기화
-        var title_text: TextView =  holder.view.findViewById<TextView>(R.id.title)
-        var add_button: Button = holder.view.findViewById <Button>(R.id.add)
-
-        //현재 날짜 출력
-        title_text.setText("${calendar.get(Calendar.YEAR)}년 ${calendar.get(Calendar.MONTH) + 1}월")
+//        var title_text: TextView =  holder.view.findViewById<TextView>(R.id.title)
+//        var add_button: Button = holder.view.findViewById <Button>(R.id.add)
+//
+//        //현재 날짜 출력
+//        title_text.setText("${calendar.get(Calendar.YEAR)}년 ${calendar.get(Calendar.MONTH) + 1}월")
         val tempMonth = calendar.get(Calendar.MONTH)
 
         //일 구하기
