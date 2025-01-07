@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         override fun getItemCount(): Int = fragments.size
         override fun createFragment(position: Int): Fragment = fragments[position]
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)

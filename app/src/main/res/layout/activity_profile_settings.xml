@@ -42,7 +42,7 @@
     <ImageButton
         android:id="@+id/btnCamera"
         android:layout_width="40dp"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_marginStart="80dp"
         android:background="@drawable/ic_camera"
         app:layout_constraintBottom_toBottomOf="@+id/ivProfilePicture"
@@ -89,7 +89,7 @@
 
     <RadioGroup
         android:id="@+id/rgGender"
-        android:layout_width="wrap_content"
+        android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/radio_group_background"
@@ -98,7 +98,7 @@
 
         <RadioButton
             android:id="@+id/rbMen"
-            android:layout_width="80dp"
+            android:layout_width="155dp"
             android:layout_height="wrap_content"
             android:text="남자"
             android:checked="true"
@@ -109,7 +109,7 @@
 
         <RadioButton
             android:id="@+id/rbWomen"
-            android:layout_width="80dp"
+            android:layout_width="155dp"
             android:layout_height="wrap_content"
             android:text="여자"
             android:textAlignment="center"

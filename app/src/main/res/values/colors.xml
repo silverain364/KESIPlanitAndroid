@@ -5,6 +5,8 @@
     <color name="mainColor">#000000</color>
     <color name="purple">#673AB7</color>
     <color name="gray">#7A7A7A</color>
+    <color name="sat">#3458BD</color>
+    <color name="sun">#C04040</color>
     <color name="nav_bottom_home">#FFFF7E00</color>
     <color name="nav_bottom_alarm">#FF3F60C1</color>
     <color name="nav_bottom_account">#FFFFFF00</color>
