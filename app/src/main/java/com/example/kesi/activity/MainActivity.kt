@@ -14,12 +14,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.kesi.fragment.HomeFragment
 import com.example.kesi.fragment.NotificationFragment
 import com.example.kesi.R
 import com.example.kesi.api.UserApi
 import com.example.kesi.fragment.AccountFragment
 import com.example.kesi.databinding.ActivityMainBinding
-import com.example.kesi.fragment.HomeFragment
 import com.example.kesi.fragment.ListFragment
 import com.example.kesi.model.UserInfoDto
 import com.example.kesi.setting.RetrofitSetting

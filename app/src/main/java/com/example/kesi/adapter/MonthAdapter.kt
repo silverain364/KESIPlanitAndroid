@@ -1,12 +1,11 @@
-package com.example.kesi
+package com.example.kesi.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kesi.R
 import java.util.*
 
 class MonthAdapter: RecyclerView.Adapter<MonthAdapter.Month>(){
@@ -15,7 +14,7 @@ class MonthAdapter: RecyclerView.Adapter<MonthAdapter.Month>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Month {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_item_month_temp,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_item_month,parent,false)
         return Month(view)
     }
 

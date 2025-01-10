@@ -1,4 +1,4 @@
-package com.example.kesi
+package com.example.kesi.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kesi.R
 import java.util.*
 
 class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>) : RecyclerView.Adapter<DayAdapter.DayView>() {
@@ -32,9 +33,9 @@ class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>) : RecyclerVi
 
         //토요일이면 파란색 || 일요일이면 빨간색으로 색상표시
         if((position + 1) % 7 == 0) {
-            day_text.setTextColor(ContextCompat.getColor(holder.layout.context,R.color.sat))
+            day_text.setTextColor(ContextCompat.getColor(holder.layout.context, R.color.sat))
         } else if (position == 0 || position % 7 == 0) {
-            day_text.setTextColor(ContextCompat.getColor(holder.layout.context,R.color.sun))
+            day_text.setTextColor(ContextCompat.getColor(holder.layout.context, R.color.sun))
         }
     }
 
