@@ -14,7 +14,7 @@ public class ScheduleDialogFragment extends DialogFragment {
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.);
+        //View root = inflater.inflate(R.layout.);
         return super.onCreateView(inflater, container, savedInstanceState);
 
     }

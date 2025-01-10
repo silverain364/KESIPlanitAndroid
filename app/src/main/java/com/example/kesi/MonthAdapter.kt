@@ -15,7 +15,7 @@ class MonthAdapter: RecyclerView.Adapter<MonthAdapter.Month>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Month {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_item_month,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_item_month_temp,parent,false)
         return Month(view)
     }
 

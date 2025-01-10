@@ -1,10 +1,12 @@
 package com.example.kesi.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -14,16 +16,25 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.kesi.fragment.NotificationFragment
 import com.example.kesi.R
+import com.example.kesi.api.UserApi
 import com.example.kesi.fragment.AccountFragment
 import com.example.kesi.databinding.ActivityMainBinding
 import com.example.kesi.fragment.HomeFragment
 import com.example.kesi.fragment.ListFragment
+import com.example.kesi.model.UserInfoDto
+import com.example.kesi.setting.RetrofitSetting
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var binding: ActivityMainBinding
+
+    private val retrofit = RetrofitSetting.getRetrofit();
+    private val userApi = retrofit.create(UserApi::class.java)
 
     //뷰 페이저 어댑터
     class FragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
@@ -46,6 +57,28 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toggle.syncState()
+
+        userApi.getByUid().enqueue(object : Callback<UserInfoDto> {
+            override fun onResponse(p0: Call<UserInfoDto>, response: Response<UserInfoDto>) {
+                Toast.makeText(this@MainActivity,response.code().toString(),Toast.LENGTH_SHORT).show()
+                if (response.code() == 500) {
+                    val intent: Intent = Intent(this@MainActivity, ProfileSettingsActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+
+            override fun onFailure(p0: Call<UserInfoDto>, p1: Throwable) {
+                Toast.makeText(this@MainActivity,"통신실패",Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
+
+
+        // 뷰 페이저 스와이프 막기
+        binding.viewPager.run {
+            isUserInputEnabled = false
+        }
         //뷰 페이저에 어댑터 적용
         val adapter = FragmentPagerAdapter(this)
         binding.viewPager.adapter = adapter

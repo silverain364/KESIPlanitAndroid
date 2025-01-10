@@ -46,6 +46,9 @@ class SignUpActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, pw).addOnCompleteListener {  //통신 완료가 된 후 무슨일을 할지
             if (it.isSuccessful) {
                 /*startActivity(Intent(this, ProfileSettingsActivity::class.java))*/
+                auth.currentUser!!.getIdToken(true).addOnSuccessListener {
+                    SplashActivity.prefs.setString("token", it.token!!)
+                }
                 val intent = Intent(this, ProfileSettingsActivity::class.java)
                 intent.putExtra("email", email)
                 startActivity(intent)

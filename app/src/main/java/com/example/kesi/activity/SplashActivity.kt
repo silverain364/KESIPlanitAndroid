@@ -6,12 +6,18 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kesi.R
+import com.example.kesi.setting.PreferenceUtil
 
 class SplashActivity : AppCompatActivity() {
+    companion object {
+        lateinit var prefs: PreferenceUtil
+    }
+
     private val SPLASH_TIME_OUT: Long = 3000 // 3초
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        prefs = PreferenceUtil(this)
 
         // 일정 시간 지연 이후 실행하기 위한 코드
         Handler(Looper.getMainLooper()).postDelayed({

@@ -25,6 +25,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.etId.setText("ksh@naver.com")
+        binding.etPassword.setText("ksh1234")
         //로그인 버튼 클릭 시 메인 화면으로 이동
         binding.btnLogin.setOnClickListener {
             login(binding.etId.text.toString(), binding.etPassword.text.toString())
@@ -104,7 +106,11 @@ class LoginActivity : AppCompatActivity() {
 
         auth.signInWithEmailAndPassword(email, pw).addOnCompleteListener {
             if (it.isSuccessful) { //페이지 이동
-                showToast("로그인 성공") //추후 nickName님 환영합니다.로 변경하면 좋을듯? ㅅ
+                showToast("로그인 성공") //추후 nickName님 환영합니다.로 변경하면 좋을듯?
+                auth.currentUser!!.getIdToken(true).addOnSuccessListener {
+                    SplashActivity.prefs.setString("token", it.token!!)
+                }
+
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }else{

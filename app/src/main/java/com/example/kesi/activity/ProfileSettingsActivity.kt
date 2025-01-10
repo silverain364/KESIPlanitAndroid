@@ -1,23 +1,38 @@
 package com.example.kesi.activity
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Nickname
+import android.telecom.Call
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.kesi.api.UserApi
 import com.example.kesi.data.User
 import com.example.kesi.databinding.ActivityProfileSettingsBinding
+import com.example.kesi.model.JoinRequestDto
+import com.example.kesi.setting.RetrofitSetting
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import retrofit2.Callback
+import retrofit2.Response
+import java.time.LocalDate
 
 class ProfileSettingsActivity : AppCompatActivity() {
     lateinit var binding: ActivityProfileSettingsBinding
     private lateinit var auth:FirebaseAuth
     private lateinit var database:DatabaseReference
+
+    private val retrofit = RetrofitSetting.getRetrofit();
+    private val userApi = retrofit.create(UserApi::class.java)
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,20 +60,35 @@ class ProfileSettingsActivity : AppCompatActivity() {
         binding.btnSignUp.setOnClickListener {
             /*val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)*/
-            if (email != null) {
-                val nickname = binding.etNickname.text.toString().trim()
-                val gender = when(binding.rgGender.checkedRadioButtonId) {
-                    binding.rbMen.id -> "남자"
-                    binding.rbWomen.id -> "여자"
-                    else -> "선택되지 않음"
-                }
-                val birth = binding.etDOB.text.toString().trim()
 
-                addUserToDatabase(auth.currentUser?.uid!!, email, nickname, gender, birth)
-
-                val intent: Intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
+            val nickname = binding.etNickname.text.toString().trim()
+            val gender = when(binding.rgGender.checkedRadioButtonId) {
+                binding.rbMen.id -> "남자"
+                binding.rbWomen.id -> "여자"
+                else -> "선택되지 않음"
             }
+            val birth = binding.etDOB.text.toString().trim()
+
+            val y = birth.substring(0, 4).toInt();
+            val m = birth.substring(4, 6).toInt();
+            val d = birth.substring(6, 8).toInt();
+
+            val joinRequestDto =  JoinRequestDto(nickname, LocalDate.of(y, m, d).toString(), gender);
+
+            userApi.join(joinRequestDto).enqueue(object: Callback<String> {
+                override fun onResponse(p0: retrofit2.Call<String>, response: Response<String>) {
+                    if(response.code() == 200){
+                        val intent: Intent = Intent(this@ProfileSettingsActivity, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
+                override fun onFailure(p0: retrofit2.Call<String>, p1: Throwable) {
+                    Toast.makeText(this@ProfileSettingsActivity,p1.message,Toast.LENGTH_SHORT).show()
+                    Log.d("http", "exception : ${p1.message}")
+                }
+
+            })
         }
     }
 

@@ -13,7 +13,7 @@ class DayAdapter(val tempMonth:Int, val dayList: MutableList<Date>) : RecyclerVi
     class DayView(val layout: View): RecyclerView.ViewHolder(layout)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayView {
-        var view = LayoutInflater.from(parent.context).inflate(R.layout.item_day,parent,false)
+        var view = LayoutInflater.from(parent.context).inflate(R.layout.item_day_temp,parent,false)
 
         return DayView(view)
     }
