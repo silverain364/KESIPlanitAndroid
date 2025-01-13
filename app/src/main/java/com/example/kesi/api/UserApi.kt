@@ -14,5 +14,4 @@ interface UserApi {
 
     @POST("user")
     fun join(@Body joinRequestDto: JoinRequestDto): Call<String>
-
 }

@@ -21,7 +21,7 @@ class HomeFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_item_month_tmp, container, false)
+        val root = inflater.inflate(R.layout.fragment_item_month, container, false)
         val monthTv: TextView = root.findViewById(R.id.month)
         val yearTv: TextView = root.findViewById(R.id.year)
         val calendarRv: RecyclerView = root.findViewById(R.id.month_recycler)
