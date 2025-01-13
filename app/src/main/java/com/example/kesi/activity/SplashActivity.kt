@@ -57,17 +57,20 @@ class SplashActivity : AppCompatActivity() {
             //if(ContextCompat.checkSelfPermission(this, Manifest.permission.P) ==)
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                  == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
+
                 movePage()
             }
-            else if(shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)){
-                //처음에 권한을 거부하는 경우 다시 이 권한이 왜 필요한지 물어본다.
-                //Todo. Dialog 설계 필요
-            }
+//            else if(shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)){
+//                //처음에 권한을 거부하는 경우 다시 이 권한이 왜 필요한지 물어본다.
+//                //Todo. Dialog 설계 필요
+//            }
             else{
+                Toast.makeText(this, "OFF", Toast.LENGTH_SHORT).show();
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
+        }else{
+            movePage()
         }
     }
-
-
 }
