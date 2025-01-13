@@ -2,23 +2,34 @@ package com.example.kesi.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kesi.R
+import com.example.kesi.api.FCMApi
 import com.example.kesi.databinding.ActivityLoginBinding
+import com.example.kesi.setting.RetrofitSetting
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.messaging.FirebaseMessaging
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val auth = FirebaseAuth.getInstance()
     private lateinit var googleLoginLauncher : ActivityResultLauncher<Intent>
+
+    private val retrofit = RetrofitSetting.getRetrofit()
+    private val fcmApi = retrofit.create(FCMApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +92,8 @@ class LoginActivity : AppCompatActivity() {
                             Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
                         }
                     }
+
+
                 }else
                     Toast.makeText(this, "Login fail!", Toast.LENGTH_SHORT).show()
             }else{
@@ -111,6 +124,7 @@ class LoginActivity : AppCompatActivity() {
                     SplashActivity.prefs.setString("token", it.token!!)
                 }
 
+                sendFCMToken(); //FCM token를 전송한다.
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }else{
@@ -147,6 +161,24 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showToast(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private fun sendFCMToken(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { //FCM 토큰을 가져온다.
+            if(!it.isSuccessful) {
+                Log.w("firebase", "Fetching FCM registration token failed", it.exception)
+                return@addOnCompleteListener
+            }
+
+            //토큰을 정상적으로 가져왔다면
+            val token = it.result
+            fcmApi.addFCMToken(token).enqueue(object: Callback<String> { //토큰을 SpringBoot 서버로 전송한다.
+                override fun onResponse(p0: Call<String>, p1: Response<String>) {
+                }
+                override fun onFailure(p0: Call<String>, p1: Throwable) {
+                }
+            })
+        }
     }
 
 }
