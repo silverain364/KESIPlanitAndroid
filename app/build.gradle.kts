@@ -50,6 +50,10 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:32.3.1")) //firebase 자동 버전 관리
     implementation("com.google.android.gms:play-services-base:18.3.0")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-messaging:21.1.0") //FCM
+
+
 
     implementation("com.google.firebase:firebase-auth-ktx")//auth
     implementation("com.google.firebase:firebase-database-ktx:21.0.0")//realtime database

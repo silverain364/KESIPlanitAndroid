@@ -1,10 +1,17 @@
 package com.example.kesi.activity
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.PowerManager
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.kesi.R
 import com.example.kesi.setting.PreferenceUtil
 
@@ -19,6 +26,10 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         prefs = PreferenceUtil(this)
 
+        askNotificationPermission();
+    }
+
+    fun movePage(){
         // 일정 시간 지연 이후 실행하기 위한 코드
         Handler(Looper.getMainLooper()).postDelayed({
 
@@ -32,4 +43,31 @@ class SplashActivity : AppCompatActivity() {
 
         }, 2000) // 시간 2초 이후 실행
     }
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        if(!it) { //거부당한 경우 activity를 새로 실행시켜 다시 물어봄.
+            Toast.makeText(this, "알림 권한은 허용되어야 합니다.", Toast.LENGTH_SHORT).show();
+            startActivity(Intent(this, SplashActivity::class.java));
+            finish();
+        }
+    }
+
+    private fun askNotificationPermission(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            //if(ContextCompat.checkSelfPermission(this, Manifest.permission.P) ==)
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                 == PackageManager.PERMISSION_GRANTED) {
+                movePage()
+            }
+            else if(shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)){
+                //처음에 권한을 거부하는 경우 다시 이 권한이 왜 필요한지 물어본다.
+                //Todo. Dialog 설계 필요
+            }
+            else{
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+
 }
