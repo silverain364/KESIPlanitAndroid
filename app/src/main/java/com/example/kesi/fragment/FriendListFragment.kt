@@ -6,21 +6,31 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kesi.data.User
 import com.example.kesi.adapter.FriendListAdapter
+import com.example.kesi.api.FriendsApi
 import com.example.kesi.databinding.FragmentFriendListBinding
+import com.example.kesi.model.FriendsDto
+import com.example.kesi.setting.RetrofitSetting
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FriendListFragment : Fragment() {
     lateinit var binding:FragmentFriendListBinding
     private lateinit var auth:FirebaseAuth
-    private lateinit var database:DatabaseReference
+    //private lateinit var database:DatabaseReference
+    private val retrofit = RetrofitSetting.getRetrofit();
+    private val friendsApi = retrofit.create(FriendsApi::class.java)
+    val userList = ArrayList<FriendsDto>()
+    val adapter = FriendListAdapter(userList)
+    override fun onResume() {
+        super.onResume()
+        getFriendsList()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,17 +44,13 @@ class FriendListFragment : Fragment() {
 
         //인증 초기화
         auth = FirebaseAuth.getInstance()
-        //db 초기화
-        database = Firebase.database.reference
-
-        val userList = ArrayList<User>()
-        val adapter = FriendListAdapter(userList)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(DividerItemDecoration(requireActivity(),LinearLayoutManager.VERTICAL))
 
-        // 현재 사용자의 친구 UID들을 가져옴.
+        getFriendsList()
+        /*// 현재 사용자의 친구 UID들을 가져옴.
         if (auth.currentUser?.uid != null) {
             database.child("user").child(auth.currentUser?.uid!!).child("friends").get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
@@ -78,6 +84,30 @@ class FriendListFragment : Fragment() {
             }.addOnFailureListener {
                 Toast.makeText(context, "친구 목록을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
-        }
+        }*/
+    }
+
+    fun getFriendsList() {
+        // 서버에서 친구 목록 가져오기
+        friendsApi.getFriends().enqueue(object : Callback<List<FriendsDto>> {
+            override fun onResponse(p0: Call<List<FriendsDto>>, response: Response<List<FriendsDto>>) {
+                if (response.isSuccessful) {
+                    // 응답 받은 데이터를 userList에 추가
+                    response.body()?.let { friends ->
+                        userList.clear() // 기존 데이터 초기화
+                        userList.addAll(friends) // 새 데이터 추가
+                        // 이름을 기준으로 오름차순 정렬
+                        userList.sortBy { it.nickname }
+                        adapter.notifyDataSetChanged() // RecyclerView 갱신
+                    }
+                } else {
+                    Log.d("HTTP", "응답 실패: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(p0: Call<List<FriendsDto>>, p1: Throwable) {
+                Log.d("HTTP", "통신 실패")
+            }
+        })
     }
 }

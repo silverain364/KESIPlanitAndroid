@@ -47,9 +47,10 @@ class SplashActivity : AppCompatActivity() {
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
         if(!it) { //거부당한 경우 activity를 새로 실행시켜 다시 물어봄.
             Toast.makeText(this, "알림 권한은 허용되어야 합니다.", Toast.LENGTH_SHORT).show();
-            startActivity(Intent(this, SplashActivity::class.java));
-            finish();
         }
+
+        startActivity(Intent(this, SplashActivity::class.java));
+        finish();
     }
 
     private fun askNotificationPermission(){
