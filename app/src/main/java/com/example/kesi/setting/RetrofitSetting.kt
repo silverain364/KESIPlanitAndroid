@@ -32,25 +32,29 @@ class RetrofitSetting {
                 .baseUrl(TEST_URL)
                 .client(interceptorClient)
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(GsonBuilder()
-                    .setLenient()
-                    .create()))
+                .addConverterFactory(
+                    GsonConverterFactory.create(
+                        GsonBuilder()
+                            .setLenient()
+                            .create()
+                    )
+                )
                 .build()
 
             return retrofit!!;
         }
 
-        fun getRetrofit(): Retrofit{
-            return if(retrofit == null) reset()!! else retrofit!!
+        fun getRetrofit(): Retrofit {
+            return if (retrofit == null) reset()!! else retrofit!!
         }
     }
 
-    class RequestInterceptor: Interceptor{
+    class RequestInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             var requestBuilder = chain.request().newBuilder()
             var auth = SplashActivity.prefs.getString("token")!!
 
-            if(auth.isNotEmpty()) requestBuilder.addHeader("Authorization", "Bearer $auth");
+            if (auth.isNotEmpty()) requestBuilder.addHeader("Authorization", "Bearer $auth");
 
             return chain.proceed(requestBuilder.build())
         }

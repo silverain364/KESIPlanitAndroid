@@ -82,14 +82,11 @@ class HomeFragment : Fragment() {
 
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
             override fun onStateChanged(p0: View, p1: Int) {
-                TODO("Not yet implemented")
+
             }
             override fun onSlide(p0: View, p1: Float) {
-                TODO("Not yet implemented")
+
             }
-
-        }
-
-        )
+        })
     }
 }
