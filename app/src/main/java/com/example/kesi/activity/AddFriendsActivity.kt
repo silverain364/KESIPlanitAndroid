@@ -70,16 +70,15 @@ class AddFriendsActivity : AppCompatActivity() {
             val alertDialog = builder.create()
             //추가하기 버튼을 누르면 존재하는 이메일인지 확인 후 친구 목록에 추가
             dialogBinding.btnAdd.setOnClickListener {
-                friendsApi.addFriends("ksh@naver.com").enqueue(object : Callback<String> {
+                friendsApi.addFriends(dialogBinding.etEmail.text.toString()).enqueue(object : Callback<String> {
                     override fun onResponse(call: Call<String>, response: Response<String>) {
-                        Log.d("HTTP", "Response code: ${response.code()}")
                         if (response.code()==200) {
                             // 친구 추가 성공
                             Toast.makeText(this@AddFriendsActivity, "친구 추가 성공", Toast.LENGTH_SHORT).show()
                             alertDialog.dismiss() // 다이얼로그 닫기
                         } else {
                             // 친구 추가 실패
-                            Toast.makeText(this@AddFriendsActivity, "친구 추가 실패", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@AddFriendsActivity, "존재하지 않는 이메일입니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show()
                         }
                     }
 

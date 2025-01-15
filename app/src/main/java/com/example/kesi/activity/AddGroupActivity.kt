@@ -7,9 +7,14 @@ import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kesi.adapter.AddGroupMemberAdapter
+import com.example.kesi.api.FriendsApi
+import com.example.kesi.api.GroupApi
 import com.example.kesi.data.Group
 import com.example.kesi.data.User
 import com.example.kesi.databinding.ActivityAddGroupBinding
+import com.example.kesi.model.FriendsDto
+import com.example.kesi.model.GroupMakeInfoRequestDto
+import com.example.kesi.setting.RetrofitSetting
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +22,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,6 +33,11 @@ class AddGroupActivity : AppCompatActivity() {
     lateinit var binding: ActivityAddGroupBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
+    private val retrofit = RetrofitSetting.getRetrofit()
+    private val friendsApi = retrofit.create(FriendsApi::class.java)
+    private val groupApi = retrofit.create(GroupApi::class.java)
+    val friendsList = ArrayList<FriendsDto>()
+    val adapter = AddGroupMemberAdapter(friendsList)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,65 +53,60 @@ class AddGroupActivity : AppCompatActivity() {
         //db 초기화
         database = Firebase.database.reference
 
-        val userList = ArrayList<User>()
-        val adapter = AddGroupMemberAdapter(userList)
-
         binding.recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(DividerItemDecoration(applicationContext, LinearLayoutManager.VERTICAL))
 
-        // 현재 사용자의 친구 UID들을 가져옴.
-        if (auth.currentUser?.uid != null) {
-            database.child("user").child(auth.currentUser?.uid!!).child("friends").get().addOnSuccessListener { snapshot ->
-                if (snapshot.exists()) {
-                    for (friendSnapshot in snapshot.children) {
-                        val friendUid = friendSnapshot.key // 친구 UID
-
-                        // 각 친구 UID로 해당 사용자의 정보를 가져옴.
-                        if (friendUid != null) {
-                            database.child("user").child(friendUid).get().addOnSuccessListener { userSnapshot ->
-                                if (userSnapshot.exists()) {
-                                    val image = userSnapshot.child("image").getValue(Int::class.java)?:0
-                                    val nickname = userSnapshot.child("nickname").getValue(String::class.java)
-                                    val email = userSnapshot.child("email").getValue(String::class.java)
-                                    val gender = userSnapshot.child("gender").getValue(String::class.java)
-                                    val birth = userSnapshot.child("birth").getValue(String::class.java)
-
-                                    Log.d("ksh", "$nickname $email $gender $birth $image")
-                                    if (nickname != null && email != null && gender != null && birth != null) {
-                                        userList.add(User(image, nickname, email, gender, birth))
-                                        adapter.notifyItemInserted(userList.size-1)
-                                    }
-                                }
-                            }.addOnFailureListener {
-                                Toast.makeText(applicationContext,"친구의 정보를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
-                } else {
-                    Toast.makeText(applicationContext, "친구가 없습니다.", Toast.LENGTH_SHORT).show()
+        // 서버에서 친구 목록 불러와서 띄워주기
+        friendsApi.getFriends().enqueue(object : Callback<List<FriendsDto>> {
+            override fun onResponse(p0: Call<List<FriendsDto>>, response: Response<List<FriendsDto>>) {
+                response.body()?.let {
+                    friends ->
+                    friendsList.clear()
+                    friendsList.addAll(friends)
+                    friendsList.sortBy { it.nickname }
+                    adapter.notifyDataSetChanged()
                 }
-            }.addOnFailureListener {
-                Toast.makeText(applicationContext, "친구 목록을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
-        }
+
+            override fun onFailure(p0: Call<List<FriendsDto>>, p1: Throwable) {
+                Toast.makeText(this@AddGroupActivity,"통신 실패", Toast.LENGTH_SHORT).show()
+            }
+
+        })
 
         binding.btnCreateGroup.setOnClickListener {
-            // 체크된 항목들의 이메일을 가져옴
-            val emails = adapter.getEmails()
-            val members = ArrayList<String>()
-            val groupId = UUID.randomUUID().toString() // 고유한 그룹 ID 생성
+            // 체크된 항목(친구)들을 가져옴
+            val groupMembers = adapter.getCheckedMembers()
+            //val members = ArrayList<String>()
+            //val groupId = UUID.randomUUID().toString() // 고유한 그룹 ID 생성
             val groupName = binding.etGroupName.text.toString().trim()
+            val inviteUserEmails = ArrayList<String>()
+            for (i in 0 until groupMembers.size) {
+                inviteUserEmails.add(groupMembers[i].email)
+            }
+            val groupMakeInfoRequestDto = GroupMakeInfoRequestDto(inviteUserEmails, groupName)
+            // 그룹 생성(서버)
+            groupApi.creatGroup(groupMakeInfoRequestDto).enqueue(object : Callback<Long> {
+                override fun onResponse(p0: Call<Long>, response: Response<Long>) {
 
-            // 본인의 UID를 members 리스트에 추가
+                }
+
+                override fun onFailure(p0: Call<Long>, p1: Throwable) {
+                    Toast.makeText(this@AddGroupActivity,"통신 실패",Toast.LENGTH_SHORT).show()
+                }
+
+            })
+
+            /*// 본인의 UID를 members 리스트에 추가
             val currentUserUid = auth.currentUser?.uid
             if (currentUserUid != null) {
                 members.add(currentUserUid)
-            }
+            }*/
 
-            val tasks = mutableListOf<Task<DataSnapshot>>()
+            //val tasks = mutableListOf<Task<DataSnapshot>>()
 
-            for (email in emails) {
+            /*for (email in emails) {
                 val task = database.child("user").orderByChild("email").equalTo(email).get()
                 tasks.add(task)
 
@@ -115,9 +124,9 @@ class AddGroupActivity : AppCompatActivity() {
                 }.addOnFailureListener {
                     Log.e("ksh", "이메일을 가져오는데 실패했습니다.", it)
                 }
-            }
+            }*/
 
-            Tasks.whenAllComplete(tasks).addOnCompleteListener {
+            /*Tasks.whenAllComplete(tasks).addOnCompleteListener {
                 // 모든 이메일에 대한 UID 처리 완료 후 그룹 생성
                 if (members.isNotEmpty()) {
                     val group = Group(groupName, members)
@@ -131,7 +140,7 @@ class AddGroupActivity : AppCompatActivity() {
                 } else {
                     Log.d("ksh", "그룹을 생성할 멤버가 없습니다.")
                 }
-            }
+            }*/
         }
     }
 
