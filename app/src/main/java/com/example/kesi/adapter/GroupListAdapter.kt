@@ -30,9 +30,9 @@ class GroupListAdapter(val group:ArrayList<Group>):RecyclerView.Adapter<Recycler
         binding.tvContent.text = "마지막 대화 내용"
         //채팅방을 클릭하면 ChatActivity 화면으로 이동
         binding.itemRoot.setOnClickListener {
-            val intent = Intent(binding.root.context,ChatActivity::class.java)
+            /*val intent = Intent(binding.root.context,ChatActivity::class.java)
             intent.putExtra("groupName",group[position].groupName)
-            binding.root.context.startActivity(intent)
+            binding.root.context.startActivity(intent)*/
         }
     }
 }

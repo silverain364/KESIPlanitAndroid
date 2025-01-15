@@ -1,5 +1,6 @@
 package com.example.kesi.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -89,7 +90,9 @@ class AddGroupActivity : AppCompatActivity() {
             // 그룹 생성(서버)
             groupApi.creatGroup(groupMakeInfoRequestDto).enqueue(object : Callback<Long> {
                 override fun onResponse(p0: Call<Long>, response: Response<Long>) {
-
+                    val intent = Intent(this@AddGroupActivity,ChatActivity::class.java)
+                    intent.putExtra("gid",response.body())
+                    startActivity(intent)
                 }
 
                 override fun onFailure(p0: Call<Long>, p1: Throwable) {
