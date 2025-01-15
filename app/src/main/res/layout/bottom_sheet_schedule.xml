@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/persistent_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_sheet_background"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <View android:layout_width="100dp" android:layout_height="5dp"
+          android:layout_gravity="center"
+          android:background="@color/white"/>
+
+    <!-- persistent bottom sheet의 Content -->
+    <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/day"
+            android:text="16일 Tue"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+
+    />
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/icon"
+            android:src="@drawable/ic_star2"
+
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+
+            android:text="오후 미팅"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/time"
+
+            android:text="15:00 - 17:00"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+
+            android:layout_marginLeft="15dp"
+/>
+
+</LinearLayout>
