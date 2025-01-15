@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -13,11 +14,14 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 import com.example.kesi.adapter.CalendarAdapter
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.*
 
 class HomeFragment : Fragment() {
+    private lateinit var bottomSheetLayout: LinearLayout
+    private lateinit var bottomSheetBehavior:BottomSheetBehavior<LinearLayout>;
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -25,6 +29,9 @@ class HomeFragment : Fragment() {
         val monthTv: TextView = root.findViewById(R.id.month)
         val yearTv: TextView = root.findViewById(R.id.year)
         val calendarRv: RecyclerView = root.findViewById(R.id.month_recycler)
+        bottomSheetLayout = root.findViewById(R.id.persistent_bottom_sheet);
+
+
 
         val calendarAdapter = CalendarAdapter(mutableListOf(), parentFragmentManager)
         for (i in -1..1) {
@@ -64,7 +71,25 @@ class HomeFragment : Fragment() {
         })
 
         calendarRv.scrollToPosition(calendarAdapter.itemCount / 2)
+        initializePersistentBottomSheet()
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
 
         return root
+    }
+
+    private fun initializePersistentBottomSheet(){
+        bottomSheetBehavior=BottomSheetBehavior.from(bottomSheetLayout);
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
+            override fun onStateChanged(p0: View, p1: Int) {
+                TODO("Not yet implemented")
+            }
+            override fun onSlide(p0: View, p1: Float) {
+                TODO("Not yet implemented")
+            }
+
+        }
+
+        )
     }
 }
