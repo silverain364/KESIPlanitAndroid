@@ -16,7 +16,7 @@ class MessageAdapter(private val context: Context, private val messageList: Arra
     private val receive = 1//받는 타입
     private val send = 2//보내는 타입
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if(viewType == 1){//받는 화면
+        return if(viewType == receive){//받는 화면
             val view: View = LayoutInflater.from(context).inflate(R.layout.receive, parent, false)
             ReceiveViewHolder(view)
         } else {//보내는 화면
