@@ -54,7 +54,6 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging:21.1.0") //FCM
 
 
-
     implementation("com.google.firebase:firebase-auth-ktx")//auth
     implementation("com.google.firebase:firebase-database-ktx:21.0.0")//realtime database
     implementation("com.google.android.gms:play-services-auth:20.7.0") //구글 로그인

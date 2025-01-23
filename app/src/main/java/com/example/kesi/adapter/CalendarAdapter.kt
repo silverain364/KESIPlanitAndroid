@@ -4,17 +4,20 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 import com.example.kesi.model.CalendarBoxDto
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.time.LocalDate
 
 class CalendarAdapter(
     private val dates: MutableList<LocalDate>,
-    private val fragmentManager: FragmentManager
+    private val fragmentManager: FragmentManager,
+    private val bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 ) : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -48,7 +51,7 @@ class CalendarAdapter(
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(date: LocalDate) {
-            val calendarAdapter = CalendarContentAdapter(mutableListOf(), fragmentManager)
+            val calendarAdapter = CalendarContentAdapter(mutableListOf(), fragmentManager, bottomSheetBehavior)
             val firstDayDate = LocalDate.of(date.year, date.month, 1)
             val lastMonthDate = date.minusMonths(1)
 

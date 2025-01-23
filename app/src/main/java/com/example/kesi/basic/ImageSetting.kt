@@ -29,10 +29,10 @@ class ImageSetting {
             try {
                 outputStream = FileOutputStream(resizeFile, true)
                 scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            }catch (e: Exception) {}
+            }catch (_: Exception) {}
             finally { //메모리 해제
                 outputStream?.close()
-                scaledBitmap.recycle()
+                scaledBitmap?.recycle()
             }
 
 
