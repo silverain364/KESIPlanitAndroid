@@ -2,18 +2,23 @@ package com.example.kesi.fragment
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
+import com.example.kesi.adapter.BottomSheetAdapter
 import com.example.kesi.adapter.CalendarAdapter
+import com.example.kesi.model.BottomSheetScheduleDto
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -21,7 +26,7 @@ import java.util.*
 
 class HomeFragment : Fragment() {
     private lateinit var bottomSheetLayout: LinearLayout
-    private lateinit var bottomSheetBehavior:BottomSheetBehavior<LinearLayout>;
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>;
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,7 +35,6 @@ class HomeFragment : Fragment() {
         val yearTv: TextView = root.findViewById(R.id.year)
         val calendarRv: RecyclerView = root.findViewById(R.id.month_recycler)
         bottomSheetLayout = root.findViewById(R.id.persistent_bottom_sheet);
-
 
 
         val calendarAdapter = CalendarAdapter(mutableListOf(), parentFragmentManager)
@@ -70,23 +74,61 @@ class HomeFragment : Fragment() {
             }
         })
 
+
+
         calendarRv.scrollToPosition(calendarAdapter.itemCount / 2)
+        initBottomSheetRecyclerView()
         initializePersistentBottomSheet()
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+
 
         return root
     }
 
-    private fun initializePersistentBottomSheet(){
-        bottomSheetBehavior=BottomSheetBehavior.from(bottomSheetLayout);
+    override fun onResume() {
+        super.onResume()
 
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
-            override fun onStateChanged(p0: View, p1: Int) {
+    }
+
+    private fun initializePersistentBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(p0: View, state: Int) {
+                Log.d("bottomSheet", "onStateChanged: " + state)
+//                if(state == BottomSheetBehavior.STATE_COLLAPSED) {
+//                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+//                }
 
             }
+
             override fun onSlide(p0: View, p1: Float) {
 
             }
         })
+    }
+
+    private fun initBottomSheetRecyclerView() {
+        val recyclerView = bottomSheetLayout.findViewById<RecyclerView>(R.id.ScheduleRecyclerView);
+
+
+        val items = listOf(
+            BottomSheetScheduleDto(R.drawable.ic_star2, "오후 미팅", "15:00 - 17:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "아침 회의", "09:00 - 10:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "팀 점심", "12:00 - 13:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "팀 점심", "12:00 - 13:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "팀 점심", "12:00 - 13:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "팀 점심", "12:00 - 13:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "팀 점심", "12:00 - 13:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "아침 회의", "09:00 - 10:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "팀 점심", "12:00 - 13:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "팀 점심", "12:00 - 13:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "팀 점심", "12:00 - 13:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "팀 점심", "12:00 - 13:00"),
+            BottomSheetScheduleDto(R.drawable.ic_star2, "팀 점심", "12:00 - 13:00")
+
+        )
+
+        recyclerView.layoutManager = LinearLayoutManager(this.activity)
+        recyclerView.adapter = BottomSheetAdapter(items)
     }
 }
