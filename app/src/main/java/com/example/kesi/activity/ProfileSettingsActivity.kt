@@ -59,7 +59,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
         //Todo. 나중에 필요하면 이미지 크기를 줄어야 할수도 있음
         // 1/8 사이즈로 축소
-        profileImage = ImageSetting.resizeImage(File(path), this.filesDir.absolutePath, 8)
+        profileImage = ImageSetting.resizeImage(File(path), this.filesDir.absolutePath, 4)
 
         Glide.with(this)
             .load(uri)

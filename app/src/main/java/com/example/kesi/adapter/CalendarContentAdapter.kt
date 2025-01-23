@@ -1,18 +1,23 @@
 package com.example.kesi.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 import com.example.kesi.model.CalendarBoxDto
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class CalendarContentAdapter(
     private val calendarBoxDtos: MutableList<CalendarBoxDto>,
-    private val fragmentManager: FragmentManager
+    private val fragmentManager: FragmentManager,
+    private val bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 ) : RecyclerView.Adapter<CalendarContentAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,6 +25,7 @@ class CalendarContentAdapter(
         return ViewHolder(view)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(calendarBoxDtos[position])
     }
@@ -33,6 +39,7 @@ class CalendarContentAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val dayTv: TextView = itemView.findViewById(R.id.dayTv)
 
+        @RequiresApi(Build.VERSION_CODES.M)
         fun bind(calendarBoxDto: CalendarBoxDto) {
             dayTv.text = calendarBoxDto.day.toString()
             if (calendarBoxDto.monthState != CalendarBoxDto.NOW_MONTH) {
@@ -41,6 +48,8 @@ class CalendarContentAdapter(
 
             itemView.setOnClickListener {
                 Toast.makeText(itemView.context, "${dayTv.text}을 클릭!", Toast.LENGTH_SHORT).show()
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+
                 // DialogFragment 추가 가능
             }
         }
