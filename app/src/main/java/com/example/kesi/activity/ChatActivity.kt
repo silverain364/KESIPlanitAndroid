@@ -3,23 +3,33 @@ package com.example.kesi.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kesi.adapter.MessageAdapter
+import com.example.kesi.api.GroupApi
 import com.example.kesi.data.Message
 import com.example.kesi.databinding.ActivityChatBinding
+import com.example.kesi.model.GroupDto
+import com.example.kesi.setting.RetrofitSetting
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ChatActivity : AppCompatActivity() {
     lateinit var binding: ActivityChatBinding
 
-    private lateinit var messageList: ArrayList<Message>
-    private lateinit var auth: FirebaseAuth // 인증 객체
-    private lateinit var database: DatabaseReference // DB 객체
+    //private lateinit var messageList: ArrayList<Message>
+    //private lateinit var auth: FirebaseAuth // 인증 객체
+    //private lateinit var database: DatabaseReference // DB 객체
 
-    private var groupId: String? = null
+    private val retrofit = RetrofitSetting.getRetrofit()
+    private val groupApi = retrofit.create(GroupApi::class.java)
+
+    private var gid: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +37,22 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val targetGroupName = intent.getStringExtra("groupName")
+        gid = intent.getLongExtra("gid",0);
+        Toast.makeText(this,gid.toString(),Toast.LENGTH_SHORT).show()
+        groupApi.getGroup(gid!!).enqueue(object : Callback<GroupDto> {
+            override fun onResponse(p0: Call<GroupDto>, response: Response<GroupDto>) {
+                Toast.makeText(this@ChatActivity,response.code(),Toast.LENGTH_SHORT).show()
+                // 액션바에 그룹 이름 보여주기
+                supportActionBar?.title = response.body()?.groupName;
+            }
 
-        // 메시지 리스트 초기화
+            override fun onFailure(p0: Call<GroupDto>, p1: Throwable) {
+                Toast.makeText(this@ChatActivity,p1.message,Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
+        /*// 메시지 리스트 초기화
         messageList = ArrayList()
 
         val messageAdapter: MessageAdapter = MessageAdapter(this, messageList)
@@ -41,12 +64,9 @@ class ChatActivity : AppCompatActivity() {
         // 인증 초기화
         auth = FirebaseAuth.getInstance()
         // DB 초기화
-        database = Firebase.database.reference
+        database = Firebase.database.reference*/
 
-        // 액션바에 그룹 이름 보여주기
-        supportActionBar?.title = targetGroupName
-
-        // 그룹 ID 가져오기
+        /*// 그룹 ID 가져오기
         database.child("groups").get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
                 for (groupSnapshot in snapshot.children) {
@@ -94,10 +114,10 @@ class ChatActivity : AppCompatActivity() {
                 // 입력값 초기화
                 binding.etMessage.setText("")
             }
-        }
+        }*/
     }
 
-    private fun setupMessageListener(messageAdapter: MessageAdapter) {
+    /*private fun setupMessageListener(messageAdapter: MessageAdapter) {
         database.child("messages").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 messageList.clear()
@@ -121,5 +141,5 @@ class ChatActivity : AppCompatActivity() {
                 Log.e("ksh", "메시지 수신 실패: ${error.message}")
             }
         })
-    }
+    }*/
 }
