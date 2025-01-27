@@ -122,11 +122,12 @@ class LoginActivity : AppCompatActivity() {
                 showToast("로그인 성공") //추후 nickName님 환영합니다.로 변경하면 좋을듯?
                 auth.currentUser!!.getIdToken(true).addOnSuccessListener {
                     SplashActivity.prefs.setString("token", it.token!!)
+                    val intent = Intent(this, MainActivity::class.java) //토큰을 저장하고 이동하도록 수정
+                    startActivity(intent)
                 }
 
                 sendFCMToken(); //FCM token를 전송한다.
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+
             }else{
                 showToast("이메일 또는 비밀번호가 틀렸습니다.")
             }
@@ -176,6 +177,7 @@ class LoginActivity : AppCompatActivity() {
                 override fun onResponse(p0: Call<String>, p1: Response<String>) {
                 }
                 override fun onFailure(p0: Call<String>, p1: Throwable) {
+                    p1.message
                 }
             })
         }
