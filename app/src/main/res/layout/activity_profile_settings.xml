@@ -90,17 +90,21 @@
 
     <RadioGroup
         android:id="@+id/rgGender"
-        android:layout_width="310dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:orientation="horizontal"
         android:background="@drawable/radio_group_background"
-        app:layout_constraintStart_toStartOf="@+id/tvGender"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvGender">
 
         <RadioButton
             android:id="@+id/rbMen"
-            android:layout_width="155dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="남자"
             android:checked="true"
             android:textAlignment="center"
@@ -110,8 +114,9 @@
 
         <RadioButton
             android:id="@+id/rbWomen"
-            android:layout_width="155dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="여자"
             android:textAlignment="center"
             android:background="@drawable/radio_button"
