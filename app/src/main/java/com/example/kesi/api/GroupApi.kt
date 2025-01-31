@@ -2,6 +2,7 @@ package com.example.kesi.api
 
 import com.example.kesi.model.GroupDto
 import com.example.kesi.model.GroupMakeInfoRequestDto
+import com.example.kesi.model.GroupSimpleDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -14,4 +15,7 @@ interface GroupApi {
 
     @GET("group")
     fun getGroup(@Query("gid") gid: Long) : Call<GroupDto>
+
+    @GET("group/list")
+    fun getAllGroups() : Call<List<GroupSimpleDto>>
 }
