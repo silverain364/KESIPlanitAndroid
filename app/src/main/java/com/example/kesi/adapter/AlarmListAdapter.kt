@@ -8,7 +8,7 @@ import com.example.kesi.holder.AlarmListViewHolder
 import com.example.kesi.model.AlarmDataDto
 import com.example.kesi.model.MessageDto
 
-class AlarmListAdapter(val alarmList : ArrayList<AlarmDataDto>) : RecyclerView.Adapter<AlarmListViewHolder>() {
+class AlarmListAdapter(private val alarmList : ArrayList<AlarmDataDto>) : RecyclerView.Adapter<AlarmListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): AlarmListViewHolder {
         val binding = ItemAlarmListBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return AlarmListViewHolder(binding)
@@ -19,9 +19,10 @@ class AlarmListAdapter(val alarmList : ArrayList<AlarmDataDto>) : RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: AlarmListViewHolder, position: Int) {
-        val binding = holder.binding
-        //binding.icon.setImageResource(R.drawable.ic_notification)
-        //binding.
+        holder.bind(alarmList[position])
     }
 
+    fun addItem(alarmDataDto: AlarmDataDto) {
+        alarmList.add(alarmDataDto)
+    }
 }
