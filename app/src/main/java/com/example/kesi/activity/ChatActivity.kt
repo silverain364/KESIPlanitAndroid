@@ -70,7 +70,7 @@ class ChatActivity : AppCompatActivity() {
         binding.btnSend.setOnClickListener {
             val messageText = binding.etMessage.text.toString()
             if (!messageText.isBlank()) {
-                val message = Message(messageText, auth.currentUser?.uid!!)
+                val message = Message(messageText, auth.currentUser?.email.toString())
 
                 // 데이터 저장
                 database.child("messages").child(gid.toString()).child(System.currentTimeMillis().toString()).setValue(message)

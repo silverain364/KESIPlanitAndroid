@@ -47,7 +47,7 @@ class MessageAdapter(private val context: Context, private val messageList: Arra
         //메시지 값
         val currentMessage = messageList[position]
 
-        return if(FirebaseAuth.getInstance().currentUser?.uid.equals(currentMessage.sendId)) {
+        return if(FirebaseAuth.getInstance().currentUser?.email.equals(currentMessage.sendUserEmail)) {
             send
         } else {
             receive
