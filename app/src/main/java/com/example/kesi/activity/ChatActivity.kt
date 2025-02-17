@@ -2,8 +2,10 @@ package com.example.kesi.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.util.Log
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kesi.adapter.MessageAdapter
 import com.example.kesi.api.GroupApi
@@ -38,6 +40,9 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(binding.constraintLayout)
+
         // 인증 초기화
         auth = FirebaseAuth.getInstance()
         // DB 초기화
@@ -66,17 +71,41 @@ class ChatActivity : AppCompatActivity() {
         // 메시지 리스너 설정
         setupMessageListener(messageAdapter)
 
+        // TODO 이미지 변경으로 바꿔야함.
+        binding.etMessage.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                // EditText가 포커스를 받았을 때 버튼 텍스트 변경
+                binding.btnSend.text = "전송"
+            } else {
+                // EditText의 포커스가 사라지면 버튼 텍스트 원래대로 변경
+                binding.btnSend.text = "캘린더"
+            }
+        }
+
         // 메시지 전송 버튼 이벤트
         binding.btnSend.setOnClickListener {
-            val messageText = binding.etMessage.text.toString()
-            if (!messageText.isBlank()) {
-                val message = Message(messageText, auth.currentUser?.email.toString())
-
-                // 데이터 저장
-                database.child("messages").child(gid.toString()).child(System.currentTimeMillis().toString()).setValue(message)
-
-                // 입력값 초기화
-                binding.etMessage.setText("")
+            // TODO 이미지 비교로 바꿔야함.
+            if (binding.btnSend.text.equals("캘린더")) { // 버튼이 캘린더인 경우
+                TransitionManager.beginDelayedTransition(binding.constraintLayout)
+                if (binding.calendarLayout.height != 0) {
+                    constraintSet.setGuidelinePercent(binding.guideline.id, 0.0F)
+                } else {
+                    constraintSet.setGuidelinePercent(binding.guideline.id, 0.3F)
+                }
+                constraintSet.applyTo(binding.constraintLayout)
+                // 가장 아래로 스크롤
+                binding.recyclerView.scrollToPosition(messageList.size-1)
+            } else {
+                val messageText = binding.etMessage.text.toString()
+                if (!messageText.isBlank()) {
+                    val message = Message(messageText, auth.currentUser?.email.toString())
+                    // 데이터 저장
+                    database.child("messages").child(gid.toString()).child(System.currentTimeMillis().toString()).setValue(message)
+                    // 입력값 초기화
+                    binding.etMessage.setText("")
+                    // 포커스 해제
+                    binding.etMessage.clearFocus()
+                }
             }
         }
     }
@@ -97,9 +126,10 @@ class ChatActivity : AppCompatActivity() {
                             messageList.add(message)
                         }
                     }
-
                     // 어댑터에 변경 사항 적용
                     messageAdapter.notifyDataSetChanged()
+                    // 가장 아래로 스크롤
+                    binding.recyclerView.scrollToPosition(messageList.size-1)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
