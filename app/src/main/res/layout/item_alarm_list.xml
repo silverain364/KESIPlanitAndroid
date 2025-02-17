@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="김시현 님께서 새로운 일정을 추가하였습니다."
             android:textSize="20dp"
-            android:id="@+id/tvNotificationMessage"
+            android:id="@+id/contentTv"
             android:textColor="@color/white"
             android:layout_marginLeft="20dp"
             app:layout_constraintLeft_toRightOf="@+id/ivIcon"
@@ -30,9 +30,9 @@
             android:layout_height="wrap_content"
             android:text="1시간 전"
             android:textSize="10dp"
-            android:id="@+id/tvTime"
+            android:id="@+id/timeTv"
             android:textColor="@color/gray"
-            app:layout_constraintLeft_toLeftOf="@+id/tvNotificationMessage"
-            app:layout_constraintTop_toBottomOf="@+id/tvNotificationMessage"/>
+            app:layout_constraintLeft_toLeftOf="@+id/contentTv"
+            app:layout_constraintTop_toBottomOf="@+id/contentTv"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
