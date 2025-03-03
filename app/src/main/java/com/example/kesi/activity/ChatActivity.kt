@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kesi.adapter.MessageAdapter
 import com.example.kesi.api.GroupApi
@@ -14,6 +16,7 @@ import com.example.kesi.databinding.ActivityChatBinding
 import com.example.kesi.model.GroupDto
 import com.example.kesi.model.MessageDto
 import com.example.kesi.setting.RetrofitSetting
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -40,9 +43,6 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(binding.constraintLayout)
-
         // 인증 초기화
         auth = FirebaseAuth.getInstance()
         // DB 초기화
@@ -62,11 +62,34 @@ class ChatActivity : AppCompatActivity() {
             }
         })
 
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                bottomSheet.postDelayed({
+                    when (newState) {
+                        BottomSheetBehavior.STATE_EXPANDED -> {
+                            binding.guideline.setGuidelinePercent(1f)
+                        }
+                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                            binding.guideline.setGuidelinePercent(0.6f)
+                        }
+                    }
+                    binding.rvChat.scrollToPosition(messageList.size-1)
+                }, 50) // 100ms 지연 후 실행
+            }
+
+            override fun onSlide(p0: View, p1: Float) {
+
+            }
+
+        })
+
         val messageAdapter = MessageAdapter(this@ChatActivity, messageList)
 
         // RecyclerView
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = messageAdapter
+        binding.rvChat.layoutManager = LinearLayoutManager(this)
+        binding.rvChat.adapter = messageAdapter
 
         // 메시지 리스너 설정
         setupMessageListener(messageAdapter)
@@ -86,15 +109,15 @@ class ChatActivity : AppCompatActivity() {
         binding.btnSend.setOnClickListener {
             // TODO 이미지 비교로 바꿔야함.
             if (binding.btnSend.text.equals("캘린더")) { // 버튼이 캘린더인 경우
-                TransitionManager.beginDelayedTransition(binding.constraintLayout)
+                /*TransitionManager.beginDelayedTransition(binding.constraintLayout)
                 if (binding.calendarLayout.height != 0) {
                     constraintSet.setGuidelinePercent(binding.guideline.id, 0.0F)
                 } else {
                     constraintSet.setGuidelinePercent(binding.guideline.id, 0.3F)
                 }
-                constraintSet.applyTo(binding.constraintLayout)
+                constraintSet.applyTo(binding.constraintLayout)*/
                 // 가장 아래로 스크롤
-                binding.recyclerView.scrollToPosition(messageList.size-1)
+                binding.rvChat.scrollToPosition(messageList.size-1)
             } else {
                 val messageText = binding.etMessage.text.toString()
                 if (!messageText.isBlank()) {
@@ -129,7 +152,7 @@ class ChatActivity : AppCompatActivity() {
                     // 어댑터에 변경 사항 적용
                     messageAdapter.notifyDataSetChanged()
                     // 가장 아래로 스크롤
-                    binding.recyclerView.scrollToPosition(messageList.size-1)
+                    binding.rvChat.scrollToPosition(messageList.size-1)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
