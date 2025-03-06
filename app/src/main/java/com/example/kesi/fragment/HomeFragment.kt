@@ -1,5 +1,6 @@
 package com.example.kesi.fragment
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,22 +10,27 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
+import com.example.kesi.activity.AddScheduleActivity
 import com.example.kesi.adapter.BottomSheetAdapter
 import com.example.kesi.adapter.CalendarAdapter
 import com.example.kesi.model.BottomSheetScheduleDto
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.*
 
-    class HomeFragment : Fragment() {
+class HomeFragment : Fragment() {
         private lateinit var bottomSheetLayout: LinearLayout
         private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>;
+        private lateinit var fabAddConstraintLayout: ConstraintLayout;
 
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,6 +39,13 @@ import java.util.*
             val yearTv: TextView = root.findViewById(R.id.year)
             val calendarRv: RecyclerView = root.findViewById(R.id.month_recycler)
             bottomSheetLayout = root.findViewById(R.id.persistent_bottom_sheet);
+            fabAddConstraintLayout = root.findViewById(R.id.fabAddCL)
+
+            val fabAddBtn = fabAddConstraintLayout.findViewById<ExtendedFloatingActionButton>(R.id.fabAdd);
+            fabAddBtn.setOnClickListener {
+                val intent: Intent = Intent(activity, AddScheduleActivity::class.java)
+                startActivity(intent)
+            }
 
             initBottomSheetRecyclerView()
             initializePersistentBottomSheet()
@@ -76,9 +89,10 @@ import java.util.*
 
             calendarRv.scrollToPosition(calendarAdapter.itemCount / 2)
 
-
             //화면에 보이기 전에 bottom sheet state 설정이 되어있어야 함.
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+
             return root
         }
 
@@ -87,15 +101,13 @@ import java.util.*
 
             bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(p0: View, state: Int) {
-                    Log.d("bottomSheet", "onStateChanged: " + state)
-    //                if(state == BottomSheetBehavior.STATE_COLLAPSED) {
-    //                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-    //                }
-
                 }
 
                 override fun onSlide(p0: View, p1: Float) {
-
+                    Log.d("bottom", " boottom : " + bottomSheetBehavior.state);
+                    if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_SETTLING
+                        && p1 < 0.5 && p1 > 0.2)
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
                 }
             })
 

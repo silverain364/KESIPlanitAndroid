@@ -37,8 +37,7 @@ class GroupListAdapter(val group:ArrayList<GroupSimpleDto>):RecyclerView.Adapter
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as GroupListViewHolder).binding
         binding.tvGroupName.text = group[position].groupName
-        binding.tvNumber.text = (group.size).toString()
-        //TODO 마지막 대화내용 보여주기
+        binding.tvNumber.text = (group[position].userNumber).toString()
         database.child("messages").child(group[position].gid.toString()).orderByKey() // 메시지를 키(시간순)로 정렬
             .limitToLast(1) // 마지막 1개 항목 가져오기
             .get()
