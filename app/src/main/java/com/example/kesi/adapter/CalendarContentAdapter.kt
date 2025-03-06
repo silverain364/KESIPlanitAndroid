@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 import com.example.kesi.model.CalendarBoxDto
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class CalendarContentAdapter(
@@ -25,7 +26,6 @@ class CalendarContentAdapter(
         return ViewHolder(view)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(calendarBoxDtos[position])
     }
@@ -38,8 +38,8 @@ class CalendarContentAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val dayTv: TextView = itemView.findViewById(R.id.dayTv)
+        private val scheduleLegendRv = itemView.findViewById<RecyclerView>(R.id.scheduleLegendRv)
 
-        @RequiresApi(Build.VERSION_CODES.M)
         fun bind(calendarBoxDto: CalendarBoxDto) {
             dayTv.text = calendarBoxDto.day.toString()
             if (calendarBoxDto.monthState != CalendarBoxDto.NOW_MONTH) {
@@ -52,6 +52,18 @@ class CalendarContentAdapter(
 
                 // DialogFragment 추가 가능
             }
+
+
         }
     }
 }
+
+
+//class ScheduleLegendSpanSizeLookup: GridLayoutManager.SpanSizeLookup(){
+
+
+//    override fun getSpanSize(position: Int): Int {
+//
+//    }
+
+//}

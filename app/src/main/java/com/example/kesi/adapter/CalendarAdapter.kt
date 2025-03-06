@@ -14,7 +14,7 @@ import com.example.kesi.model.CalendarBoxDto
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.time.LocalDate
 
-class CalendarAdapter(
+class CalendarAdapter( //Todo. Month Adapter 도입후 삭제
     private val dates: MutableList<LocalDate>,
     private val fragmentManager: FragmentManager,
     private val bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
@@ -25,7 +25,6 @@ class CalendarAdapter(
         return ViewHolder(view)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(dates[position])
     }
@@ -49,7 +48,6 @@ class CalendarAdapter(
             calendarContentRv.layoutManager = GridLayoutManager(itemView.context, 7)
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
         fun bind(date: LocalDate) {
             val calendarAdapter = CalendarContentAdapter(mutableListOf(), fragmentManager, bottomSheetBehavior)
             val firstDayDate = LocalDate.of(date.year, date.month, 1)
