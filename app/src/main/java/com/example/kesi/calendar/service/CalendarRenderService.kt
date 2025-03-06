@@ -23,12 +23,15 @@ class CalendarRenderService(
     private val lineViewRender = DayLineViewRender(container)
     private val dayLineViews: HashMap<DayLine, List<View>> = HashMap()
 
-
-    //schedule과 연결된 view를 반환해줘야 겠지?
-    fun renderLine(dayLine: DayLine, startDate: LocalDate): List<View> { //line 단위로 랜더한다.
+    fun viewClear(dayLine: DayLine){
         dayLineViews[dayLine]?.forEach { //기존에 다른게 랜더 되어 있다면 삭제한다.
             container.removeView(it)
         }
+    }
+
+    //schedule과 연결된 view를 반환해줘야 겠지?
+    fun renderLine(dayLine: DayLine, startDate: LocalDate): List<View> { //line 단위로 랜더한다.
+        viewClear(dayLine)
 
         val views = ArrayList<View>()
         val validMaxEnd = (dayLine.dayBoxes.last().date.toEpochDay() - startDate.toEpochDay()).toInt() // 0 ~ 31

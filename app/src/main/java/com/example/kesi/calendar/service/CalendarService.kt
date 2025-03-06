@@ -66,4 +66,11 @@ class CalendarService(
             updateLineList.remove(it)
         }
     }
+
+
+    fun renderClear(dayLines: List<DayLine>) {
+        dayLines.forEach {
+            calendarRender.viewClear(it)
+        }
+    }
 }

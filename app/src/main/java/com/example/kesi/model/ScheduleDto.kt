@@ -8,8 +8,11 @@ import java.time.LocalTime
 
 data class ScheduleDto(
     val id: Long,
-    val colorId: String,
+    val makerName: GroupMemberDto,
+    val colorValue: Int,
     val title: String,
+    val link: String,
+    val place: String,
     val description: String,
     val startDate: String,
     val endDate: String,
@@ -23,7 +26,7 @@ data class ScheduleDto(
         end = LocalDate.parse(endDate),
         startTime = LocalTime.parse(startTime),
         endTime = LocalTime.parse(endTime),
-        color = Color.parseColor(colorId).toColor(),
+        color = Color.valueOf(colorValue),
         title = title,
         description = description
     )

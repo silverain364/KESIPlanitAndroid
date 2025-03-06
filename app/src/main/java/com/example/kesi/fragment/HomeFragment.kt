@@ -17,8 +17,10 @@ import com.example.kesi.R
 import com.example.kesi.activity.AddScheduleActivity
 import com.example.kesi.adapter.BottomSheetAdapter
 import com.example.kesi.adapter.FullCalendarAdapter
+import com.example.kesi.api.ScheduleApi
 import com.example.kesi.model.BottomSheetScheduleDto
 import com.example.kesi.model.MonthData
+import com.example.kesi.setting.RetrofitSetting
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import java.time.LocalDate
@@ -31,6 +33,7 @@ class HomeFragment : Fragment() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>;
     private lateinit var fabAddConstraintLayout: ConstraintLayout;
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_item_month, container, false)
         val monthTv: TextView = root.findViewById(R.id.month)
@@ -38,6 +41,9 @@ class HomeFragment : Fragment() {
         val calendarRv: RecyclerView = root.findViewById(R.id.month_recycler)
         bottomSheetLayout = root.findViewById(R.id.persistent_bottom_sheet);
         fabAddConstraintLayout = root.findViewById(R.id.fabAddCL)
+
+        monthTv.text = LocalDate.now().month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+        yearTv.text = LocalDate.now().year.toString()
 
         val fabAddBtn = fabAddConstraintLayout.findViewById<ExtendedFloatingActionButton>(R.id.fabAdd);
         fabAddBtn.setOnClickListener {
@@ -53,7 +59,7 @@ class HomeFragment : Fragment() {
 
         for (i in -1..1) {
 //                calendarAdapter.addItem(LocalDate.now().plusMonths(i.toLong()))
-            calendarAdapter.addItem(MonthData(LocalDate.now(), arrayListOf()))
+            calendarAdapter.addItem(MonthData(LocalDate.now().plusMonths(i.toLong()), arrayListOf()))
         }
 
         calendarRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -63,6 +69,7 @@ class HomeFragment : Fragment() {
         if (calendarRv.onFlingListener == null) {
             snapHelper.attachToRecyclerView(calendarRv)
         }
+
 
         calendarRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
