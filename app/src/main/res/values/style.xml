@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="category_toggle">
+        <item name="thumbTint">@color/white</item>
+        <item name="track">@drawable/gender_toggle_btn</item>
+        <item name="android:thumb">@drawable/gender_toggle_thumb</item>
+        <item name="android:enabled">true</item>
+    </style>
+</resources>
