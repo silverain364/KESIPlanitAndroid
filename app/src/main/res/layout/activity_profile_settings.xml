@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ProfileSettingsActivity">
+    tools:context=".activity.ProfileSettingsActivity"
+    android:background="@color/white">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -21,33 +22,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="프로필 설정"
-        android:layout_marginTop="10dp"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="@+id/toolbar"
+        app:layout_constraintRight_toRightOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        app:srcCompat="@drawable/ic_back_white"
+        app:layout_constraintLeft_toLeftOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"/>
 
     <ImageButton
         android:id="@+id/ivProfilePicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
-        android:background="@drawable/ic_user"
+        android:background="@drawable/ic_profile_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
-    <ImageButton
-        android:id="@+id/btnCamera"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="80dp"
-        android:background="@drawable/ic_camera"
-        app:layout_constraintBottom_toBottomOf="@+id/ivProfilePicture"
-        app:layout_constraintEnd_toEndOf="@+id/ivProfilePicture"
-        app:layout_constraintStart_toStartOf="@+id/ivProfilePicture" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로필 이미지"
+        android:textSize="16dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivProfilePicture"/>
+    //밑줄 추가하기
 
     <TextView
         android:id="@+id/tvNickname"
@@ -67,6 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="닉네임"
         android:inputType="text"
@@ -80,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="성별"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -91,15 +103,16 @@
         android:id="@+id/rgGender"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal"
-        android:background="@drawable/radio_group_background"
+        android:background="@color/edit_text_stroke"
         app:layout_constraintStart_toStartOf="@+id/tvGender"
         app:layout_constraintTop_toBottomOf="@+id/tvGender">
 
         <RadioButton
             android:id="@+id/rbMen"
-            android:layout_width="155dp"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
             android:text="남자"
             android:checked="true"
             android:textAlignment="center"
@@ -110,20 +123,31 @@
         <RadioButton
             android:id="@+id/rbWomen"
             android:layout_width="155dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="여자"
             android:textAlignment="center"
-            android:background="@drawable/radio_button"
+            android:background="@color/edit_text_stroke"
             android:textColor="@drawable/radio_button_text"
             android:button="@null"/>
     </RadioGroup>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/category_toggle_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        app:layout_constraintTop_tBottomOf="@id/rgGender"
+        app:layout_constraintBottom_toTopOf="@id/tvDOB"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        style="@style/category_toggle"/>
 
     <TextView
         android:id="@+id/tvDOB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="생년월일"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -136,22 +160,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
+        android:layout_marginTop="5dp"
         android:inputType="text"
-        android:hint="생년월일 8자리"
+        android:hint="생년월일을 선택해주세요"
         android:background="@drawable/edit_text_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDOB" />
 
     <Button
-        android:id="@+id/btnSignUp"
+        android:id="@+id/btnNext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="40dp"
         android:text="회원가입"
-        android:textSize="20sp"
+        android:textSize="16dp"
         android:textStyle="bold"
         android:background="@drawable/button_background"
         app:layout_constraintBottom_toBottomOf="parent"
