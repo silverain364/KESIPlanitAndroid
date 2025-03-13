@@ -24,6 +24,7 @@ import com.example.kesi.adapter.FullCalendarAdapter
 import com.example.kesi.data.AddScheduleDto
 import com.example.kesi.model.BottomSheetScheduleDto
 import com.example.kesi.data.MonthData
+import com.example.kesi.util.ActivityResultKeys
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.CoroutineScope
@@ -41,8 +42,9 @@ class HomeFragment : Fragment() {
     private lateinit var bottomSheetLayout: LinearLayout
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>;
     private lateinit var fabAddConstraintLayout: ConstraintLayout;
-    private val bottomSheetAdapter = BottomSheetAdapter(testBottomSchedule())
+    private lateinit var bottomSheetAdapter: BottomSheetAdapter
     private lateinit var addScheduleLauncher: ActivityResultLauncher<Intent>
+    private lateinit var editScheduleLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var calendarAdapter: FullCalendarAdapter
     private lateinit var calendarRv: RecyclerView
@@ -66,6 +68,9 @@ class HomeFragment : Fragment() {
 
 
         setAddScheduleLauncher()
+        setEditScheduleLauncher()
+        bottomSheetAdapter = BottomSheetAdapter(arrayListOf(), editScheduleLauncher)
+
         scheduleBottomSheet = ScheduleBottomSheet(bottomSheetAdapter, bottomSheetLayout)
 
 
@@ -133,6 +138,29 @@ class HomeFragment : Fragment() {
                 }
 
             addSchedule(addScheduleDto)
+        }
+    }
+
+    private fun editSchedule(){
+
+    }
+
+    private fun removeSchedule() {
+
+    }
+
+    private fun setEditScheduleLauncher() {
+        editScheduleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode != Activity.RESULT_OK) return@registerForActivityResult
+
+            val actionType = it.data?.getStringExtra(ActivityResultKeys.ACTION_TYPE) ?: return@registerForActivityResult
+
+            when(actionType) {
+                ActivityResultKeys.EDIT -> editSchedule()
+                ActivityResultKeys.DELETE -> removeSchedule()
+                else -> throw RuntimeException("unknown action type")
+            }
+
         }
     }
 
