@@ -91,12 +91,28 @@ class ChatActivity : AppCompatActivity() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 //                (binding.rvChat.layoutParams as ConstraintLayout.LayoutParams).apply {
 //                    bottomMargin = (bottomSheet.height * (1 - slideOffset)).toInt()
-//                    Log.d("ChatActivity", "onSlide : height : ${bottomSheet.height * slideOffset}")
 //                }
 
-                binding.bottomGuide.setGuidelinePercent((slideOffset))
 
 
+                //실제 동작 범위
+                val realHeight = (bottomSheet.height - bottomSheetBehavior.expandedOffset - bottomSheetBehavior.peekHeight)
+
+                val validRange = realHeight / bottomSheet.height.toFloat()//최대 반경
+
+                //bottomBar가 다 보이기 위한 퍼센트를 구함
+                val bottomBarHeight = binding.bottomBar.height
+                val topBarHeight = binding.topBar.height
+
+                val bottomBarRange = (bottomBarHeight + topBarHeight) / realHeight.toFloat()
+
+
+                Log.d("ChatActivity", "onSlide : height : ${bottomSheet.height} realHeight : ${realHeight} validRange : $validRange")
+
+                if(bottomBarRange <= validRange * slideOffset)
+                    binding.bottomGuide.setGuidelinePercent(validRange * slideOffset)
+                else
+                    binding.bottomGuide.setGuidelinePercent(1f)
             }
 
         })
