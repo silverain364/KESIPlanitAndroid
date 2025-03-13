@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomDatePickerStyle" parent="Theme.Material3.DayNight">
+
+        <!-- 상단 Title 배경색 -->
+        <item name="colorAccent">@color/black</item>
+
+        <!-- 선택한 날짜 배경 색 -->
+        <item name="colorControlActivated">@color/white</item>
+
+        <!-- Highlight item color-->
+        <item name="colorControlHighlight">@color/black</item>
+
+        <!--Calender Background color -->
+        <item name="android:colorBackground">@color/black</item>
+
+        <!-- Week TextColor-->
+        <item name="android:textColorSecondary">@color/white</item>
+
+        <!-- Calender Number color arrow color (< >) -->
+        <item name="android:textColorPrimary">@color/white</item>
+
+        <!--day , month TextColor-->
+        <item name="android:textColorPrimaryInverse">@color/black</item>
+
+        <!-- year-->
+        <item name="android:textColorSecondaryInverse">@color/white</item>
+
+        <!-- 취소/확인버튼 색상
+                 <item name="android:textColor">@color/calendar_day_normal_font</item>
+         -->
+
+        <item name="android:textSize">20sp</item>
+
+        <item name="cornerSize">16dp</item>
+
+        <item name="windowActionBar">false</item>
+
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CustomTimePickerStyle" parent="Base.Theme.KESI">
+        <item name="android:background">@color/black</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+</resources>

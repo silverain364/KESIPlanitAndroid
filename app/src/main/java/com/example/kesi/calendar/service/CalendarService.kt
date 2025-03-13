@@ -2,6 +2,7 @@ package com.example.kesi.calendar.service
 
 import com.example.kesi.calendar.domain.DayLine
 import com.example.kesi.domain.Schedule
+import java.time.LocalDate
 
 
 class CalendarService(
@@ -25,6 +26,7 @@ class CalendarService(
 
         return Pair(validStartLineIndex, validEndLIneIndex)
     }
+
 
     fun addSchedule(schedule: Schedule, dayLines: List<DayLine>){
         val validLineIndex = getValidLineIndex(schedule, dayLines)

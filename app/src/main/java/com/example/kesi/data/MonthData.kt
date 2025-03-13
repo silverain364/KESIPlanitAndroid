@@ -1,4 +1,4 @@
-package com.example.kesi.model
+package com.example.kesi.data
 
 import com.example.kesi.domain.Schedule
 import java.time.LocalDate

@@ -8,7 +8,7 @@ class HeightScheduleViewList {
     private val heightMap: HashMap<Schedule, Int> = HashMap() //Todo. 나중에 이것보다 효율적인 방법 있으면 수정할 예정
 
     companion object {
-        const val MAX_VIEW_COUNT = 5
+        const val MAX_VIEW_COUNT = 4
     }
 
     fun lastIndex() = heightScheduleViewList.lastIndex

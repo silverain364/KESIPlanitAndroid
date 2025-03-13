@@ -1,5 +1,6 @@
 package com.example.kesi.calendar.service
 
+import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +24,12 @@ class CalendarRenderService(
     private val lineViewRender = DayLineViewRender(container)
     private val dayLineViews: HashMap<DayLine, List<View>> = HashMap()
 
+
+    companion object {
+        fun Context.dpToPx(dp: Int): Int {
+            return (dp * resources.displayMetrics.density).toInt()
+        }
+    }
     fun viewClear(dayLine: DayLine){
         dayLineViews[dayLine]?.forEach { //기존에 다른게 랜더 되어 있다면 삭제한다.
             container.removeView(it)
@@ -35,16 +42,17 @@ class CalendarRenderService(
 
         val views = ArrayList<View>()
         val validMaxEnd = (dayLine.dayBoxes.last().date.toEpochDay() - startDate.toEpochDay()).toInt() // 0 ~ 31
+        val lastOccupyList = BooleanArray(DayLine.LINE_SIZE)
 
-        dayLine.dayBoxes.forEach { dayBox -> //모든 박스에 대해서 반복문을 실행
-            views.addAll(renderBox(dayBox, validMaxEnd, startDate))
-        }
+
+        for(i in 0..dayLine.dayBoxes.lastIndex)
+            views.addAll(renderBox(dayLine.dayBoxes[i], i, validMaxEnd, startDate, lastOccupyList))
 
         dayLineViews[dayLine] = views
         return views
     }
 
-    fun renderBox(dayBox: DayBox, validMaxEnd: Int, startDate: LocalDate): List<View> {
+    fun renderBox(dayBox: DayBox, index: Int, validMaxEnd: Int, startDate: LocalDate, lastOccupyList: BooleanArray): List<View> {
         //해당 박스에 위치한 backborundView를 가져옴
         val views = ArrayList<View>()
         val backgroundView =
@@ -72,15 +80,26 @@ class CalendarRenderService(
                     if (endBackgroundViewIndex < validMaxEnd) endBackgroundViewIndex.toInt() else validMaxEnd
                 val endBackgroundView = backgroundViewList[validEndBackgroundViewIndex]
 
-                Log.d("LineRender", "create! height $i schedule: $lineSchedule")
+                Log.d("LineRender", "create! height $i schedule: ${lineSchedule.title}")
                 val view =
-                    lineViewRender.createLine(topView.id, endBackgroundView.id, backgroundView.id, lineSchedule)
+                    lineViewRender.createLine(topView.id, endBackgroundView.id, backgroundView.id,
+                        isStart =  lineSchedule.start == dayBox.date,
+                        isEnd =  lineSchedule.end.toEpochDay() - startDate.toEpochDay() <= validMaxEnd,
+                        schedule = lineSchedule)
                 container.addView(view)
                 views.add(view)
 
                 scheduleViewMap.add(lineSchedule, view)
 
                 topView = view //다음 상단에 있는 view가 됨
+
+                if(i == DayBox.MAX_VIEW_COUNT - 1) {
+                    val endIndex = lineSchedule.end.toEpochDay() - dayBox.date.toEpochDay()
+                    val validEndIndex = if (endIndex >= DayLine.LINE_SIZE) DayLine.LINE_SIZE - 1 else endIndex.toInt()
+
+                    for (j in index..validEndIndex)
+                        lastOccupyList[j] = true
+                }
                 return@forEach
             }
 
@@ -110,17 +129,20 @@ class CalendarRenderService(
             }
 
 
-            //overflow인 경우
-            val overFlowView = boxViewRender.createOverFlowView(topView.id, backgroundView.id)
-            overFlowView.text = "+${schedules.size}"
-            container.addView(overFlowView)
-            schedules.forEach {
-                scheduleViewMap.add(it, overFlowView)
-            }
-            views.add(overFlowView)
+            if(!lastOccupyList[i]) {
+                //overflow인 경우
+                val overFlowView = boxViewRender.createOverFlowView(topView.id, backgroundView.id)
+                overFlowView.text = "+${schedules.size}"
+                container.addView(overFlowView)
+                schedules.forEach {
+                    scheduleViewMap.add(it, overFlowView)
+                }
+                views.add(overFlowView)
 
-            //상단에 있는 view를 탐색
-            topView = scheduleViewMap[dayBox.getSchedulesByHeight(i).first()]?.last() ?: topView
+                //상단에 있는 view를 탐색
+                topView = scheduleViewMap[dayBox.getSchedulesByHeight(i).first()]?.last() ?: topView
+                lastOccupyList[i] = true
+            }
         }
 
         return views

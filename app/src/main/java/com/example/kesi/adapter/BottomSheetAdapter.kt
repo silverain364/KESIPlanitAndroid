@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 import com.example.kesi.model.BottomSheetScheduleDto
 
-class BottomSheetAdapter(private val items: List<BottomSheetScheduleDto>) :
+class BottomSheetAdapter(private val items: ArrayList<BottomSheetScheduleDto>) :
     RecyclerView.Adapter<BottomSheetAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -32,4 +32,15 @@ class BottomSheetAdapter(private val items: List<BottomSheetScheduleDto>) :
     }
 
     override fun getItemCount(): Int = items.size
+
+    fun reset() {
+        val size = items.size
+        items.clear()
+        this.notifyItemRangeRemoved(0, size) //Todo. Exception 확인
+    }
+
+    fun addItem(bottomSheetScheduleDto: BottomSheetScheduleDto) {
+        items.add(bottomSheetScheduleDto)
+        this.notifyItemInserted(items.lastIndex)
+    }
 }

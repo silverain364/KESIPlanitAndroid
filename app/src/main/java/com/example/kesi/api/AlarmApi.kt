@@ -10,5 +10,4 @@ interface AlarmApi {
     fun getAlarm(@Query("alarmId") alarmId: String): Call<AlarmDataDto>
     @GET("alarm/all")
     fun getAlarmAll(): Call<List<AlarmDataDto>>
-
 }

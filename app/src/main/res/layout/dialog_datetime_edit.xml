@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/black"
+    >
+
+    <DatePicker
+        android:layout_gravity="center"
+        android:theme="@style/CustomDatePickerStyle"
+        android:id="@+id/datePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:datePickerMode="calendar"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        />
+
+    <TimePicker
+        android:layout_gravity="center"
+        android:id="@+id/timePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        android:theme="@style/CustomTimePickerStyle"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/saveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+
+            android:background="@drawable/button_background_white"
+            android:textColor="@color/black"
+            android:text="저장"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+
+            android:background="@drawable/button_background"
+            android:backgroundTint="@color/cancel"
+            android:textColor="@color/white"
+            android:text="취소"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

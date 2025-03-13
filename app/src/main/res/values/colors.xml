@@ -12,4 +12,12 @@
     <color name="nav_bottom_alarm">#FF3F60C1</color>
     <color name="nav_bottom_account">#FFFFFF00</color>
     <color name="nav_bottom_list">#FFB60CBE</color>
+    <color name="cancel">#FFFF0000</color>
+
+
+    <color name="schedule_red">#FFFF0000</color>
+    <color name="schedule_pink">#FFFF009D</color>
+    <color name="schedule_orange">#FFFFA800</color>
+    <color name="schedule_yellow">#FFFFE100</color>
+    <color name="schedule_green">#FF00FF57</color>
 </resources>

@@ -1,5 +1,4 @@
 package com.example.kesi.basic
-
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log

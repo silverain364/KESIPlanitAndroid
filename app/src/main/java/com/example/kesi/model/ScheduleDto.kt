@@ -28,6 +28,8 @@ data class ScheduleDto(
         endTime = LocalTime.parse(endTime),
         color = Color.valueOf(colorValue),
         title = title,
-        description = description
+        description = description,
+        link = link ?: " ",
+        place = place ?: " "
     )
 }

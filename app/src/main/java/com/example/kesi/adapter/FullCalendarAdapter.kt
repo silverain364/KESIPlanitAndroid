@@ -1,10 +1,10 @@
 package com.example.kesi.adapter
 
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -14,13 +14,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 import com.example.kesi.calendar.view.DayTextView
 import com.example.kesi.holder.FullCalendarHolder
-import com.example.kesi.model.MonthData
+import com.example.kesi.data.MonthData
 import com.example.kesi.util.view.GuideRender
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.time.LocalDate
 
-class FullCalendarAdapter (private val monthData: MutableList<MonthData>) :
-    RecyclerView.Adapter<FullCalendarHolder>() {
+class FullCalendarAdapter (
+    private val monthData: MutableList<MonthData>,
+    private val bottomSheetBehavior: BottomSheetBehavior<LinearLayout>,
+    private val bottomSheetAdapter: BottomSheetAdapter
+) : RecyclerView.Adapter<FullCalendarHolder>() {
     private val guideRender = GuideRender()
+    private lateinit var nowHolder: FullCalendarHolder
 
     companion object {
         private const val VIEW_TYPE_FIVE = 1;
@@ -49,7 +54,9 @@ class FullCalendarAdapter (private val monthData: MutableList<MonthData>) :
             view,
             guides,
             createBackgroundView(view, guides),
-            createTextView(view, guides)
+            createTextView(view, guides),
+            bottomSheetBehavior,
+            bottomSheetAdapter
         )
     }
 
@@ -79,8 +86,10 @@ class FullCalendarAdapter (private val monthData: MutableList<MonthData>) :
 
     override fun onBindViewHolder(holder: FullCalendarHolder, position: Int) {
         holder.bind(monthData[position])
+        nowHolder = holder
     }
 
+    fun getNowHolder() = nowHolder
 
     private fun createBackgroundView(
         view: View,
@@ -148,7 +157,7 @@ class FullCalendarAdapter (private val monthData: MutableList<MonthData>) :
             for (j in 1..<guides.second.size) {
                 dayTvList.add(DayTextView(view.context).apply {
                     id = TextView.generateViewId()
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
                     setTextColor(resources.getColor(android.R.color.black, null))
                     layoutParams = ConstraintLayout.LayoutParams(
                         Constraints.LayoutParams.WRAP_CONTENT,

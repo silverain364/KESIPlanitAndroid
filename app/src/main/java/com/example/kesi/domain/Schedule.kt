@@ -12,7 +12,9 @@ class Schedule (
     val endTime: LocalTime,
     val color: Color,
     val title: String,
-    val description: String
+    val description: String,
+    val link: String,
+    val place: String
 ) {
     fun isStar() = start == end
     fun isLine() = start != end
