@@ -6,7 +6,10 @@ import android.transition.TransitionManager
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kesi.adapter.MessageAdapter
@@ -24,6 +27,7 @@ import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.log
 
 class ChatActivity : AppCompatActivity() {
     lateinit var binding: ActivityChatBinding
@@ -66,21 +70,49 @@ class ChatActivity : AppCompatActivity() {
 
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                bottomSheet.postDelayed({
+                //bottomSheet.postDelayed({
                     when (newState) {
                         BottomSheetBehavior.STATE_EXPANDED -> {
-                            binding.guideline.setGuidelinePercent(1f)
+//                            binding.bottomBar.visibility = View.VISIBLE
                         }
+
                         BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                            binding.guideline.setGuidelinePercent(0.6f)
+//                            binding.bottomBar.visibility = View.VISIBLE
+                        }
+
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+//                            binding.bottomBar.visibility = View.INVISIBLE
                         }
                     }
-                    binding.rvChat.scrollToPosition(messageList.size-1)
-                }, 50) // 100ms 지연 후 실행
+                    binding.rvChat.scrollToPosition(messageList.lastIndex)
+                //}, 10) // 50ms 지연 후 실행
             }
 
-            override fun onSlide(p0: View, p1: Float) {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//                (binding.rvChat.layoutParams as ConstraintLayout.LayoutParams).apply {
+//                    bottomMargin = (bottomSheet.height * (1 - slideOffset)).toInt()
+//                }
 
+
+
+                //실제 동작 범위
+                val realHeight = (bottomSheet.height - bottomSheetBehavior.expandedOffset - bottomSheetBehavior.peekHeight)
+
+                val validRange = realHeight / bottomSheet.height.toFloat()//최대 반경
+
+                //bottomBar가 다 보이기 위한 퍼센트를 구함
+                val bottomBarHeight = binding.bottomBar.height
+                val topBarHeight = binding.topBar.height
+
+                val bottomBarRange = (bottomBarHeight + topBarHeight) / realHeight.toFloat()
+
+
+                Log.d("ChatActivity", "onSlide : height : ${bottomSheet.height} realHeight : ${realHeight} validRange : $validRange")
+
+                if(bottomBarRange <= validRange * slideOffset)
+                    binding.bottomGuide.setGuidelinePercent(validRange * slideOffset)
+                else
+                    binding.bottomGuide.setGuidelinePercent(1f)
             }
 
         })
