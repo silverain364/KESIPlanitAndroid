@@ -66,21 +66,26 @@ class ChatActivity : AppCompatActivity() {
 
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                bottomSheet.postDelayed({
+                //bottomSheet.postDelayed({
                     when (newState) {
                         BottomSheetBehavior.STATE_EXPANDED -> {
-                            binding.guideline.setGuidelinePercent(1f)
+                            binding.bottomBar.visibility = View.VISIBLE
+                            binding.bottomGuide.setGuidelinePercent(0.9f)
                         }
                         BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                            binding.guideline.setGuidelinePercent(0.6f)
+                            binding.bottomBar.visibility = View.VISIBLE
+                            binding.bottomGuide.setGuidelinePercent(0.5f)
+                        }
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+                            binding.bottomBar.visibility = View.INVISIBLE
                         }
                     }
                     binding.rvChat.scrollToPosition(messageList.size-1)
-                }, 50) // 100ms 지연 후 실행
+                //}, 10) // 50ms 지연 후 실행
             }
 
-            override fun onSlide(p0: View, p1: Float) {
-
+            override fun onSlide(newState: View, p1: Float) {
+//                binding.bottomGuide.setGuidelinePercent(0.5f)
             }
 
         })
