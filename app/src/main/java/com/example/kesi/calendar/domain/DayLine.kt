@@ -2,6 +2,7 @@ package com.example.kesi.calendar.domain
 import android.util.Log
 import com.example.kesi.domain.Schedule
 import java.time.LocalDate
+import kotlin.math.log
 
 class DayLine(
     val startDate: LocalDate,
@@ -26,38 +27,52 @@ class DayLine(
         if (schedule.isLine()) addLineSchedule(schedule)
     }
 
-    private fun addLineSchedule(schedule: Schedule) {
+    private fun calScheduleValidRange(schedule: Schedule): Pair<Int, Int> {
+        //달력 화면에서 유요한 범위를 구한다.
         val start = (schedule.start.toEpochDay() - startDate.toEpochDay()).toInt()
         val end = (schedule.end.toEpochDay() - startDate.toEpochDay()).toInt()
 
+        //현재 라인에서 유요한 범위를 구한다.
         var validStart = if (start < 0) 0 else start
         val validEnd = if (end < dayBoxes.size) end else dayBoxes.lastIndex
 
-        //해당 일정이 마지막 일정과 충돌한다면
-        //findHeightBySchedule -> 현재 스케줄이 몇번째 높이 들어가야 하는지 구하는 함수
-        //순위를 구했는데 box에 포함이 안되는 경우
-        while (validStart <= validEnd &&
-            dayBoxes[validStart].findHeightBySchedule(schedule) >= DayBox.MAX_VIEW_COUNT - 1
-        ) {
-//          Log.d("DayLine", "over")
+        return Pair(validStart, validEnd)
+    }
 
-            if (crashSingleLine(dayBoxes[validStart], schedule)) {
-                validStart++
-                continue
-            }
+    private fun calScheduleRenderStartIndex(schedule: Schedule): Int {
+        val validRange = calScheduleValidRange(schedule)
+        var renderStartIndex = validRange.first
 
-//          Log.d("DayLine", "over start : ${schedule.start} end : ${schedule.end}")
-            dayBoxes[validStart].addLastHeightSchedule(schedule)
-            validStart++
+        while(renderStartIndex <= validRange.second
+            && dayBoxes[renderStartIndex].findHeightBySchedule(schedule) >= DayBox.MAX_VIEW_COUNT - 1) {
+
+            if (dayBoxes[renderStartIndex].findHeightBySchedule(schedule) == DayBox.MAX_VIEW_COUNT - 1)
+                if (dayBoxes[renderStartIndex].isEmptyByHeight(DayBox.MAX_VIEW_COUNT - 1)) return renderStartIndex
+
+            renderStartIndex++
         }
 
-        if (validStart > validEnd) return
+        return renderStartIndex
+    }
 
-        val height = dayBoxes[validStart].findHeightBySchedule(schedule)
-        dayBoxes[validStart].addScheduleViewStart(schedule) //실제로 그려야하는 위치를 표시!!
+    private fun addLineSchedule(schedule: Schedule) { //2일 이상 일정인 경우
+        val validRange = calScheduleValidRange(schedule) //현재 라인에서 유효한 범위를 구함
+
+        //박스에서 일정이 많아서 그리지 못 하는 경우(+n 과 같이 표현해야 되는 경우)
+        val renderStart = calScheduleRenderStartIndex(schedule) //실제로 랜더해야 하는 인덱스를 구한다.
+
+        for(i in validRange.first..<renderStart) {
+            if (crashSingleLine(dayBoxes[i], schedule)) continue //원래 마지막 줄에 한 개의 일정만 존재 했던 경우 충돌처리
+            dayBoxes[i].addLastHeightSchedule(schedule) //마지막 줄에 일정 추가
+        }
+
+        if (renderStart > validRange.second) return
+
+        val height = dayBoxes[renderStart].findHeightBySchedule(schedule)
+        dayBoxes[renderStart].addScheduleViewStart(schedule) //실제로 그려야하는 위치를 표시!!
 
         //높이가 결정된 상태에서 뒤에 일정이 height와 충돌한다면
-        for (i in validStart..validEnd) {
+        for (i in renderStart..validRange.second) {
             if (dayBoxes[i].isNotEmptyByHeight(height)) { //이미 공간을 점유하고 있는 일정이 있다면
                 insertSchedule(dayBoxes[i], schedule, height)
                 continue
@@ -70,10 +85,8 @@ class DayLine(
     //특정 박스 특정 높이에 스케줄을 삽입
     private fun insertSchedule(dayBox: DayBox, schedule: Schedule, height: Int) {
         val replaceSchedules = dayBox.getSchedulesAfter(schedule, height) //재정렬이 필요한 스케줄을 가져온다.
-        //Log.d("DayLine", " date : ${schedule.start} replace: $replaceSchedules")
 
         replaceSchedules.forEach { removeSchedule(it) } //해당 일정을 잠시 삭제한다.
-        //Log.d("DayLine", "removed : " + dayBoxes[i].heightScheduleViewList.findAllScheduleOrderByHeight())
 
         dayBox.addFixedHeightSchedule(schedule, height)
 

@@ -1,5 +1,6 @@
 package com.example.kesi.calendar.view
 
+import android.content.Context
 import android.graphics.Color
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,13 +11,6 @@ import java.time.LocalDate
 class DayBoxViewRender (
     private val container: ConstraintLayout,
 ){
-    fun setupDayTextView(date: LocalDate) {
-//        dayTv.apply {
-//            text = date.dayOfMonth.toString()
-//            setTextColor(getDayColor(date))
-//        }
-    }
-
     private fun getDayColor(date: LocalDate) =
         when (date.dayOfWeek.value) {
             6 -> Color.BLUE // 토요일
@@ -24,10 +18,15 @@ class DayBoxViewRender (
             else -> Color.BLACK
         }
 
+    private fun createStarView(context: Context) = ImageView(context).apply {
+        id = ImageView.generateViewId()
+        setImageResource(R.drawable.star)
+    }
+
     fun createSingleStar(topReferenceViewId: Int, backgroundViewId: Int) = ImageView(container.context).apply {
         id = ImageView.generateViewId()
         setImageResource(R.drawable.star)
-        layoutParams = ConstraintLayout.LayoutParams(30, 30).apply {
+        layoutParams = ConstraintLayout.LayoutParams(40, 40).apply {
             topMargin = 10
 
             topToBottom = topReferenceViewId
@@ -46,13 +45,13 @@ class DayBoxViewRender (
             setImageResource(R.drawable.star)
         }
 
-        leftStar.layoutParams = ConstraintLayout.LayoutParams(30, 30).apply {
+        leftStar.layoutParams = ConstraintLayout.LayoutParams(40, 40).apply {
             topToBottom = topReferenceViewId
             leftToLeft = backgroundViewId
             rightToLeft = rightStar.id
         }
         
-        rightStar.layoutParams = ConstraintLayout.LayoutParams(30, 30).apply {
+        rightStar.layoutParams = ConstraintLayout.LayoutParams(40, 40).apply {
             topToBottom = topReferenceViewId
             leftToRight = leftStar.id
             rightToRight = backgroundViewId
@@ -70,7 +69,8 @@ class DayBoxViewRender (
             topMargin = 10
             leftMargin = 10
             rightMargin = 10
-            setBackgroundColor(Color.GRAY)
+            setTextColor(Color.WHITE)
+            setTextColor(textColors.withAlpha(200))
 
             topToBottom = topReferenceViewId
             leftToLeft = backgroundViewId

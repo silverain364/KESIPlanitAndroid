@@ -11,7 +11,7 @@ class DayBox(
     private val scheduleViewStartList: MutableSet<Schedule> = mutableSetOf() //특정 칸에서 실제로 그리는 스케줄 정보를 저장한다.
 
     companion object {
-        const val MAX_VIEW_COUNT = 5
+        const val MAX_VIEW_COUNT = 4
     }
 
     fun addStar(schedule: Schedule) {
