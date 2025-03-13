@@ -52,7 +52,7 @@ class CalendarRenderService(
         return views
     }
 
-    fun renderBox(dayBox: DayBox, index: Int, validMaxEnd: Int, startDate: LocalDate, lastOccupyList: BooleanArray): List<View> {
+    fun renderBox(dayBox: DayBox, boxIndex: Int, validMaxEnd: Int, startDate: LocalDate, lastOccupyList: BooleanArray): List<View> {
         //해당 박스에 위치한 backborundView를 가져옴
         val views = ArrayList<View>()
         val backgroundView =
@@ -97,7 +97,7 @@ class CalendarRenderService(
                     val endIndex = lineSchedule.end.toEpochDay() - dayBox.date.toEpochDay()
                     val validEndIndex = if (endIndex >= DayLine.LINE_SIZE) DayLine.LINE_SIZE - 1 else endIndex.toInt()
 
-                    for (j in index..validEndIndex)
+                    for (j in boxIndex..validEndIndex)
                         lastOccupyList[j] = true
                 }
                 return@forEach
@@ -129,7 +129,7 @@ class CalendarRenderService(
             }
 
 
-            if(!lastOccupyList[i]) {
+            if(!lastOccupyList[boxIndex]) {
                 //overflow인 경우
                 val overFlowView = boxViewRender.createOverFlowView(topView.id, backgroundView.id)
                 overFlowView.text = "+${schedules.size}"
@@ -141,7 +141,7 @@ class CalendarRenderService(
 
                 //상단에 있는 view를 탐색
                 topView = scheduleViewMap[dayBox.getSchedulesByHeight(i).first()]?.last() ?: topView
-                lastOccupyList[i] = true
+                lastOccupyList[boxIndex] = true
             }
         }
 

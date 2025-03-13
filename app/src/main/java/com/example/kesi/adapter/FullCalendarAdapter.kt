@@ -15,14 +15,14 @@ import com.example.kesi.R
 import com.example.kesi.calendar.view.DayTextView
 import com.example.kesi.holder.FullCalendarHolder
 import com.example.kesi.data.MonthData
+import com.example.kesi.fragment.ScheduleBottomSheet
 import com.example.kesi.util.view.GuideRender
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.time.LocalDate
 
 class FullCalendarAdapter (
     private val monthData: MutableList<MonthData>,
-    private val bottomSheetBehavior: BottomSheetBehavior<LinearLayout>,
-    private val bottomSheetAdapter: BottomSheetAdapter
+    private val scheduleBottomSheet: ScheduleBottomSheet
 ) : RecyclerView.Adapter<FullCalendarHolder>() {
     private val guideRender = GuideRender()
     private lateinit var nowHolder: FullCalendarHolder
@@ -55,8 +55,7 @@ class FullCalendarAdapter (
             guides,
             createBackgroundView(view, guides),
             createTextView(view, guides),
-            bottomSheetBehavior,
-            bottomSheetAdapter
+            scheduleBottomSheet
         )
     }
 

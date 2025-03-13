@@ -18,6 +18,7 @@ import com.example.kesi.data.AddScheduleDto
 import com.example.kesi.domain.Schedule
 import com.example.kesi.model.BottomSheetScheduleDto
 import com.example.kesi.data.MonthData
+import com.example.kesi.fragment.ScheduleBottomSheet
 import com.example.kesi.model.RequestPersonalScheduleDto
 import com.example.kesi.model.ScheduleDto
 import com.example.kesi.setting.RetrofitSetting
@@ -34,8 +35,7 @@ class FullCalendarHolder(
     private val guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
     private val backgroundViewList: ArrayList<View>, //Todo. 추후 터치 인식을 위해서 forwardViewList를 만들면 괜찮을듯
     private val dayTvList: ArrayList<DayTextView>,
-    private val bottomSheetBehavior: BottomSheetBehavior<LinearLayout>,
-    private val bottomSheetAdapter: BottomSheetAdapter
+    private val scheduleBottomSheet: ScheduleBottomSheet
 ) : RecyclerView.ViewHolder(itemView) {
     lateinit var date: LocalDate
     private val dayLines = ArrayList<DayLine>()
@@ -59,12 +59,12 @@ class FullCalendarHolder(
             backgroundViewList[i].setOnClickListener {
                 if(schedules.isEmpty()) return@setOnClickListener
 
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-                bottomSheetAdapter.reset()
-
-                dayLines[i / 7].dayBoxes[i % 7].getAllScheduleOrderByHeight().map {
-                    bottomSheetAdapter.addItem(BottomSheetScheduleDto.toDto(it))
-                }
+                val dayBox = dayLines[i / 7].dayBoxes[i % 7] //Todo. DayBox 자체를 넘겨줘도 괜찮을 것 같은데
+                scheduleBottomSheet.showSchedules(
+                    dayBox.date, //클릭한 스케줄 정보 보여주기
+                    dayBox.getAllScheduleOrderByHeight().map {
+                        BottomSheetScheduleDto.toDto(it) }.toList()
+                )
             }
         }
     }

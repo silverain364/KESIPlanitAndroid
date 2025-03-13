@@ -7,15 +7,26 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
+import com.example.kesi.fragment.ScheduleBottomSheet
 import com.example.kesi.model.BottomSheetScheduleDto
 
 class BottomSheetAdapter(private val items: ArrayList<BottomSheetScheduleDto>) :
     RecyclerView.Adapter<BottomSheetAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val icon: ImageView = itemView.findViewById(R.id.item_icon)
-        val title: TextView = itemView.findViewById(R.id.item_title)
-        val time: TextView = itemView.findViewById(R.id.item_time)
+        private val icon: ImageView = itemView.findViewById(R.id.item_icon)
+        private val title: TextView = itemView.findViewById(R.id.item_title)
+        private val time: TextView = itemView.findViewById(R.id.item_time)
+
+        fun bind(bottomSheetScheduleDto: BottomSheetScheduleDto) {
+            icon.setImageResource(bottomSheetScheduleDto.iconResId)
+            title.text = bottomSheetScheduleDto.title
+            time.text = bottomSheetScheduleDto.time
+
+            itemView.setOnClickListener {
+                
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -25,10 +36,7 @@ class BottomSheetAdapter(private val items: ArrayList<BottomSheetScheduleDto>) :
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = items[position]
-        holder.icon.setImageResource(item.iconResId)
-        holder.title.text = item.title
-        holder.time.text = item.time
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size
