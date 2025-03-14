@@ -31,6 +31,7 @@ data class AddScheduleDto(
         start = LocalDate.parse(startDate),
         end = LocalDate.parse(endDate),
         startTime =  LocalTime.parse(startTime),
-        endTime = LocalTime.parse(endTime)
+        endTime = LocalTime.parse(endTime),
+        securityLevel = securityLevel
     )
 }

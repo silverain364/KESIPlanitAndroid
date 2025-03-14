@@ -24,6 +24,7 @@ import com.example.kesi.adapter.FullCalendarAdapter
 import com.example.kesi.data.AddScheduleDto
 import com.example.kesi.model.BottomSheetScheduleDto
 import com.example.kesi.data.MonthData
+import com.example.kesi.domain.Schedule
 import com.example.kesi.util.ActivityResultKeys
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -134,7 +135,7 @@ class HomeFragment : Fragment() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     it.data?.getParcelableExtra("schedule", AddScheduleDto::class.java) ?: return@registerForActivityResult
                 }else {
-                    it.data?.getParcelableExtra("scheudle") ?: return@registerForActivityResult
+                    it.data?.getParcelableExtra("schedule") ?: return@registerForActivityResult
                 }
 
             addSchedule(addScheduleDto)
@@ -258,11 +259,11 @@ class ScheduleBottomSheet(
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    fun showSchedules(date: LocalDate, bottomSheetScheduleList: List<BottomSheetScheduleDto>) {
+    fun showSchedules(date: LocalDate, schedules: List<Schedule>) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         bottomSheetAdapter.reset()
 
-        bottomSheetScheduleList.forEach {
+        schedules.forEach {
             bottomSheetAdapter.addItem(it)
         }
 

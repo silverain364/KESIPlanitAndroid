@@ -20,4 +20,6 @@
     <color name="schedule_orange">#FFFFA800</color>
     <color name="schedule_yellow">#FFFFE100</color>
     <color name="schedule_green">#FF00FF57</color>
+    
+    <color name="radio_group_black">#FF242424</color>
 </resources>

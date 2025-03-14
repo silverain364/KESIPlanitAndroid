@@ -1,6 +1,7 @@
 package com.example.kesi.adapter
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +11,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 import com.example.kesi.activity.AddScheduleActivity
+import com.example.kesi.activity.EditScheduleActivity
+import com.example.kesi.data.EditScheduleDto
+import com.example.kesi.domain.Schedule
 import com.example.kesi.fragment.ScheduleBottomSheet
 import com.example.kesi.model.BottomSheetScheduleDto
 
 class BottomSheetAdapter(
-    private val items: ArrayList<BottomSheetScheduleDto>,
+    private val items: ArrayList<Schedule>,
     private val editScheduleLauncher: ActivityResultLauncher<Intent>) :
     RecyclerView.Adapter<BottomSheetAdapter.ItemViewHolder>() {
 
@@ -23,13 +27,15 @@ class BottomSheetAdapter(
         private val title: TextView = itemView.findViewById(R.id.item_title)
         private val time: TextView = itemView.findViewById(R.id.item_time)
 
-        fun bind(bottomSheetScheduleDto: BottomSheetScheduleDto) {
-            icon.setImageResource(bottomSheetScheduleDto.iconResId)
-            title.text = bottomSheetScheduleDto.title
-            time.text = bottomSheetScheduleDto.time
+        fun bind(schedule: Schedule) {
+            icon.backgroundTintList = ColorStateList.valueOf(schedule.color.toArgb())
+            title.text = schedule.title
+            time.text = schedule.endTime.toString()
 
             itemView.setOnClickListener {
-                editScheduleLauncher.launch(Intent(itemView.context, AddScheduleActivity::class.java))
+                val intent = Intent(itemView.context, EditScheduleActivity::class.java)
+                intent.putExtra("schedule", EditScheduleDto.from(schedule))
+                editScheduleLauncher.launch(intent)
             }
         }
     }
@@ -52,8 +58,8 @@ class BottomSheetAdapter(
         this.notifyItemRangeRemoved(0, size) //Todo. Exception 확인
     }
 
-    fun addItem(bottomSheetScheduleDto: BottomSheetScheduleDto) {
-        items.add(bottomSheetScheduleDto)
+    fun addItem(schedule: Schedule) {
+        items.add(schedule)
         this.notifyItemInserted(items.lastIndex)
     }
 }

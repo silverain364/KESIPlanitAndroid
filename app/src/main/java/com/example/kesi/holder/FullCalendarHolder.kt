@@ -62,8 +62,7 @@ class FullCalendarHolder(
                 val dayBox = dayLines[i / 7].dayBoxes[i % 7] //Todo. DayBox 자체를 넘겨줘도 괜찮을 것 같은데
                 scheduleBottomSheet.showSchedules(
                     dayBox.date, //클릭한 스케줄 정보 보여주기
-                    dayBox.getAllScheduleOrderByHeight().map {
-                        BottomSheetScheduleDto.toDto(it) }.toList()
+                    dayBox.getAllScheduleOrderByHeight().toList()
                 )
             }
         }
@@ -125,6 +124,8 @@ class FullCalendarHolder(
         scheduleApi.addSchedule(RequestPersonalScheduleDto.toDto(addScheduleDto)).enqueue(object : Callback<Long> {
             override fun onResponse(p0: Call<Long>, p1: Response<Long>) {
                 if(p1.body() == null) return
+
+                Log.d("FullCalendar", "addSchedule: id : ${p1.body()}")
 
                 //Todo. 추후 처리
                 val id = p1.body()!!

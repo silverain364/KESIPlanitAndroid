@@ -14,7 +14,8 @@ class Schedule (
     val title: String,
     val description: String,
     val link: String,
-    val place: String
+    val place: String,
+    val securityLevel: SecurityLevel
 ) {
     fun isStar() = start == end
     fun isLine() = start != end

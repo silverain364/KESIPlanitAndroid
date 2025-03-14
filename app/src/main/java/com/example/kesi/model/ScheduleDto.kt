@@ -3,6 +3,7 @@ package com.example.kesi.model
 import android.graphics.Color
 import androidx.core.graphics.toColor
 import com.example.kesi.domain.Schedule
+import com.example.kesi.domain.SecurityLevel
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -17,9 +18,9 @@ data class ScheduleDto(
     val startDate: String,
     val endDate: String,
     val startTime: String,
-    val endTime: String
+    val endTime: String,
+    val securityLevel: SecurityLevel
 ) {
-
     fun toDomain() = Schedule(
         id = id,
         start = LocalDate.parse(startDate),
@@ -30,6 +31,7 @@ data class ScheduleDto(
         title = title,
         description = description,
         link = link ?: " ",
-        place = place ?: " "
+        place = place ?: " ",
+        securityLevel = securityLevel
     )
 }

@@ -61,8 +61,12 @@
         <activity
                 android:name=".activity.LoginActivity"
                 android:exported="true">
-
         </activity>
+        <activity
+            android:name=".activity.EditScheduleActivity"
+            android:exported="true">
+        </activity>
+
         <activity
                 android:name=".activity.SplashActivity"
                 android:exported="true">
