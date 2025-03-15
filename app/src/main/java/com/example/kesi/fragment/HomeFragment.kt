@@ -22,9 +22,11 @@ import com.example.kesi.activity.AddScheduleActivity
 import com.example.kesi.adapter.BottomSheetAdapter
 import com.example.kesi.adapter.FullCalendarAdapter
 import com.example.kesi.data.AddScheduleDto
+import com.example.kesi.data.EditScheduleDto
 import com.example.kesi.model.BottomSheetScheduleDto
 import com.example.kesi.data.MonthData
 import com.example.kesi.domain.Schedule
+import com.example.kesi.model.ScheduleDto
 import com.example.kesi.util.ActivityResultKeys
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -127,14 +129,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun setAddScheduleLauncher() {
-        addScheduleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        addScheduleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             Log.d("HomeFragment", "setAddScheduleLauncher: rst : ${it.resultCode}")
-            if(it.resultCode != Activity.RESULT_OK) return@registerForActivityResult
+            if (it.resultCode != Activity.RESULT_OK) return@registerForActivityResult
 
-            val addScheduleDto:AddScheduleDto =
+            val addScheduleDto: AddScheduleDto =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    it.data?.getParcelableExtra("schedule", AddScheduleDto::class.java) ?: return@registerForActivityResult
-                }else {
+                    it.data?.getParcelableExtra("schedule", AddScheduleDto::class.java)
+                        ?: return@registerForActivityResult
+                } else {
                     it.data?.getParcelableExtra("schedule") ?: return@registerForActivityResult
                 }
 
@@ -142,35 +145,50 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun editSchedule(){
+    private fun editSchedule(editScheduleDto: EditScheduleDto) {
 
     }
 
-    private fun removeSchedule() {
-
+    private fun removeSchedule(scheduleId: Long) {
+        calendarAdapter.getNowHolder().removeSchedule(scheduleId)
     }
 
     private fun setEditScheduleLauncher() {
         editScheduleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if(it.resultCode != Activity.RESULT_OK) return@registerForActivityResult
+            if (it.resultCode != Activity.RESULT_OK) return@registerForActivityResult
 
             val actionType = it.data?.getStringExtra(ActivityResultKeys.ACTION_TYPE) ?: return@registerForActivityResult
 
-            when(actionType) {
-                ActivityResultKeys.EDIT -> editSchedule()
-                ActivityResultKeys.DELETE -> removeSchedule()
+            when (actionType) {
+                ActivityResultKeys.EDIT -> {
+                    val editedSchedule =
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                            it.data!!.getParcelableExtra("schedule", EditScheduleDto::class.java)
+                        else
+                            it.data!!.getParcelableExtra("schedule")
+
+                    editedSchedule ?: throw RuntimeException("empty edited schedule!")
+                    editSchedule(editedSchedule)
+                }
+
+                ActivityResultKeys.DELETE -> removeSchedule(it.data!!.getLongExtra("scheduleId", -1L))
                 else -> throw RuntimeException("unknown action type")
             }
-
         }
     }
 
     private fun addSchedule(addScheduleDto: AddScheduleDto) {
         //다른 화면에 있다면
-        if(ChronoUnit.MONTHS.between(calendarAdapter.getNowHolder().date.withDayOfMonth(1)
-            ,LocalDate.parse(addScheduleDto.startDate).withDayOfMonth(1)) != 0L) {
+        if (ChronoUnit.MONTHS.between(
+                calendarAdapter.getNowHolder().date.withDayOfMonth(1),
+                LocalDate.parse(addScheduleDto.startDate).withDayOfMonth(1)
+            ) != 0L
+        ) {
             var diffMonthValue = //Todo. diffMonthValue가 만약 많이 크다면 그냥 배열을 다 삭제하고 이동하는 방법도 나쁘지 않을 것 같다.
-                ChronoUnit.MONTHS.between(calendarAdapter.getItem(0).date.withDayOfMonth(1), LocalDate.parse(addScheduleDto.startDate).withDayOfMonth(1)).toInt()
+                ChronoUnit.MONTHS.between(
+                    calendarAdapter.getItem(0).date.withDayOfMonth(1),
+                    LocalDate.parse(addScheduleDto.startDate).withDayOfMonth(1)
+                ).toInt()
 
 
             while (diffMonthValue < 0) { //음수라면
@@ -180,7 +198,13 @@ class HomeFragment : Fragment() {
             }
 
             while (diffMonthValue > calendarAdapter.itemCount) { //현재 갱신된 달력보다 크다면
-                calendarAdapter.addItem(MonthData(calendarAdapter.getItem(calendarAdapter.itemCount - 1).date.plusMonths(1), arrayListOf()))
+                calendarAdapter.addItem(
+                    MonthData(
+                        calendarAdapter.getItem(calendarAdapter.itemCount - 1).date.plusMonths(
+                            1
+                        ), arrayListOf()
+                    )
+                )
                 calendarAdapter.notifyItemInserted(calendarAdapter.itemCount - 1)
             }
 

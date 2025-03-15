@@ -5,11 +5,17 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.toColor
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 
-class CircleColorAdapter(private val colorList: List<Color>): RecyclerView.Adapter<CircleColorAdapter.ViewHolder>() {
+class CircleColorAdapter(
+    private val colorList: List<Color>,
+    private var initColor: Color = colorList.first()
+): RecyclerView.Adapter<CircleColorAdapter.ViewHolder>() {
+    init {
+        if(!colorList.contains(initColor))
+            initColor = colorList.first()
+    }
     private lateinit var selectedHolder: ViewHolder
     private var init = false
 
@@ -22,10 +28,10 @@ class CircleColorAdapter(private val colorList: List<Color>): RecyclerView.Adapt
         return colorList.size
     }
 
-    override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-        p0.bind(colorList[p1])
+    override fun onBindViewHolder(p0: ViewHolder, position: Int) {
+        p0.bind(colorList[position])
 
-        if(!init && p1 == 0) { //처음 초기화 시
+        if(!init && colorList[position] == initColor) { //처음 초기화 시
             selectedHolder = p0
             selectedHolder.selectView.visibility = View.VISIBLE
             init = true

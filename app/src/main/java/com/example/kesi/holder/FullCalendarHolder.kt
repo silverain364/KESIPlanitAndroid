@@ -11,6 +11,7 @@ import com.example.kesi.adapter.BottomSheetAdapter
 import com.example.kesi.api.ScheduleApi
 import com.example.kesi.calendar.domain.DayLine
 import com.example.kesi.calendar.domain.ScheduleViewMap
+import com.example.kesi.calendar.repository.ScheduleRepository
 import com.example.kesi.calendar.service.CalendarRenderService
 import com.example.kesi.calendar.service.CalendarService
 import com.example.kesi.calendar.view.DayTextView
@@ -35,7 +36,7 @@ class FullCalendarHolder(
     private val guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
     private val backgroundViewList: ArrayList<View>, //Todo. 추후 터치 인식을 위해서 forwardViewList를 만들면 괜찮을듯
     private val dayTvList: ArrayList<DayTextView>,
-    private val scheduleBottomSheet: ScheduleBottomSheet
+    private val scheduleBottomSheet: ScheduleBottomSheet,
 ) : RecyclerView.ViewHolder(itemView) {
     lateinit var date: LocalDate
     private val dayLines = ArrayList<DayLine>()
@@ -46,7 +47,7 @@ class FullCalendarHolder(
     private val calendarRender: CalendarRenderService =
         CalendarRenderService(container, backgroundViewList, dayTvList, ScheduleViewMap())
 
-    private val calendarService = CalendarService(calendarRender)
+    private val calendarService = CalendarService(calendarRender, ScheduleRepository())
 
     private val retrofit = RetrofitSetting.getRetrofit()
     private val scheduleApi = retrofit.create(ScheduleApi::class.java)
@@ -140,5 +141,9 @@ class FullCalendarHolder(
                 Log.d("FullCalendarHolder", "onFailure: ${p1.message}")
             }
         })
+    }
+
+    fun removeSchedule(scheduleId: Long) {
+        //calendarService.removeSchedule(scheduleId, dayLines)
     }
 }

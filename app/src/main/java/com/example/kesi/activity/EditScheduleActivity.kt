@@ -5,12 +5,14 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
+import com.example.kesi.adapter.CircleColorAdapter
 import com.example.kesi.data.EditScheduleDto
 import com.example.kesi.databinding.ActivityEditScheduleBinding
 import com.example.kesi.domain.SecurityLevel
 import com.example.kesi.util.ActivityResultKeys
 import com.example.kesi.util.DateTimeRange
 import com.example.kesi.util.DateTimeTv
+import com.example.kesi.util.ScheduleColorList
 import com.example.kesi.util.view.DateRangeSelectorView
 import com.google.android.material.button.MaterialButton.OnCheckedChangeListener
 import java.time.LocalDate
@@ -20,6 +22,7 @@ import java.time.LocalTime
 class EditScheduleActivity: AppCompatActivity() {
     private lateinit var binding: ActivityEditScheduleBinding
     private lateinit var dateRangeSelectorView: DateRangeSelectorView
+    private lateinit var colorAdapter: CircleColorAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +70,8 @@ class EditScheduleActivity: AppCompatActivity() {
             endDateTime = LocalDateTime.of(schedule.end, schedule.endTime)
         )
 
+        val scheduleColorList = ScheduleColorList.getColorList(this)
+        colorAdapter = CircleColorAdapter(scheduleColorList, schedule.color)
 
         removeScheduleBtn.setOnClickListener {
             val intent = Intent()
@@ -79,7 +84,26 @@ class EditScheduleActivity: AppCompatActivity() {
         editScheduleBtn.setOnClickListener {
             val intent = Intent()
             intent.putExtra(ActivityResultKeys.ACTION_TYPE, ActivityResultKeys.EDIT)
-
+            intent.putExtra("schedule", EditScheduleDto(
+                id = schedule.id,
+                colorValue = schedule.color.toArgb(),
+                title = titleEt.text.toString(),
+                link = "",
+                place = "",
+                description = textMemoEt.text.toString(),
+                startDate = dateRangeSelectorView.getStartDate().toString(),
+                startTime = dateRangeSelectorView.getStartTime().withNano(0).toString(),
+                endDate = dateRangeSelectorView.getEndDate().toString(),
+                endTime = dateRangeSelectorView.getEndTime().withNano(0).toString(),
+                securityLevel = when(securityRatioGroup.checkedRadioButtonId) {
+                    binding.highRadioBtn.id -> SecurityLevel.HIGH
+                    binding.mediumRadioBtn.id -> SecurityLevel.MEDIUM
+                    binding.lowRadioBtn.id -> SecurityLevel.LOW
+                    else -> throw RuntimeException("no selected security level!")
+                }
+            ))
+            setResult(RESULT_OK, intent)
+            finish()
         }
     }
 }

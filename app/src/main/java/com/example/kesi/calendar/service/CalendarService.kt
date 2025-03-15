@@ -1,12 +1,14 @@
 package com.example.kesi.calendar.service
 
 import com.example.kesi.calendar.domain.DayLine
+import com.example.kesi.calendar.repository.ScheduleRepository
 import com.example.kesi.domain.Schedule
 import java.time.LocalDate
 
 
 class CalendarService(
     private val calendarRender: CalendarRenderService,
+    private val scheduleRepository: ScheduleRepository
 ) {
     private val updateLineList: MutableSet<DayLine> = mutableSetOf()
 
@@ -39,12 +41,13 @@ class CalendarService(
 
     fun addSchedules(schedules: List<Schedule>, dayLines: List<DayLine>) {
         schedules.forEach { addSchedule(it, dayLines) }
+        scheduleRepository.addSchedules(schedules)
     }
 
     fun removeSchedule(schedule: Schedule, dayLines: List<DayLine>) {
         val validLineIndex = getValidLineIndex(schedule, dayLines)
 
-        for(i in validLineIndex.first..validLineIndex.second) {
+        for(i in validLineIndex.first..validLineIndex.second) { //모든 삭제가 이루어진 경우에만
             dayLines[i].removeScheduleAndReplace(schedule)
             updateLineList.add(dayLines[i])
         }
