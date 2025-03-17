@@ -12,6 +12,9 @@
     <color name="nav_bottom_alarm">#FF3F60C1</color>
     <color name="nav_bottom_account">#FFFFFF00</color>
     <color name="nav_bottom_list">#FFB60CBE</color>
+    <color name="edit_text_stroke">#CCCCCC</color>
+    <color name="edit_text_background">#F8F8F8</color>
+    <color name="edit_text_background_dark">#191919</color>
     <color name="cancel">#FFFF0000</color>
 
 
@@ -20,6 +23,6 @@
     <color name="schedule_orange">#FFFFA800</color>
     <color name="schedule_yellow">#FFFFE100</color>
     <color name="schedule_green">#FF00FF57</color>
-    
+
     <color name="radio_group_black">#FF242424</color>
 </resources>
