@@ -12,12 +12,18 @@ import androidx.constraintlayout.widget.Constraints
 import androidx.constraintlayout.widget.Guideline
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
+import com.example.kesi.api.ScheduleApi
 import com.example.kesi.calendar.view.DayTextView
 import com.example.kesi.holder.FullCalendarHolder
 import com.example.kesi.data.MonthData
 import com.example.kesi.fragment.ScheduleBottomSheet
+import com.example.kesi.model.ScheduleDto
+import com.example.kesi.setting.RetrofitSetting
 import com.example.kesi.util.view.GuideRender
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDate
 
 class FullCalendarAdapter (
@@ -25,7 +31,9 @@ class FullCalendarAdapter (
     private val scheduleBottomSheet: ScheduleBottomSheet
 ) : RecyclerView.Adapter<FullCalendarHolder>() {
     private val guideRender = GuideRender()
-    private lateinit var nowHolder: FullCalendarHolder
+    private val holders = ArrayList<FullCalendarHolder>()
+
+    fun getHolders() = holders.toList()
 
     companion object {
         private const val VIEW_TYPE_FIVE = 1;
@@ -50,13 +58,17 @@ class FullCalendarAdapter (
                     horizontal = 6
                 )
 
-        return FullCalendarHolder(
-            view,
-            guides,
-            createBackgroundView(view, guides),
-            createTextView(view, guides),
-            scheduleBottomSheet
+        holders.add(
+            FullCalendarHolder(
+                view,
+                guides,
+                createBackgroundView(view, guides),
+                createTextView(view, guides),
+                scheduleBottomSheet
+            )
         )
+
+        return holders.last()
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -85,10 +97,8 @@ class FullCalendarAdapter (
 
     override fun onBindViewHolder(holder: FullCalendarHolder, position: Int) {
         holder.bind(monthData[position])
-        nowHolder = holder
     }
 
-    fun getNowHolder() = nowHolder
 
     private fun createBackgroundView(
         view: View,

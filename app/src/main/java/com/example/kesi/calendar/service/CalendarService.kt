@@ -8,9 +8,9 @@ import java.time.LocalDate
 
 class CalendarService(
     private val calendarRender: CalendarRenderService,
-    private val scheduleRepository: ScheduleRepository
 ) {
     private val updateLineList: MutableSet<DayLine> = mutableSetOf()
+
 
     private fun getValidLineIndex(schedule: Schedule, dayLines: List<DayLine>): Pair<Int, Int> {
         val calendarLastIndex = dayLines.size * DayLine.LINE_SIZE
@@ -41,7 +41,6 @@ class CalendarService(
 
     fun addSchedules(schedules: List<Schedule>, dayLines: List<DayLine>) {
         schedules.forEach { addSchedule(it, dayLines) }
-        scheduleRepository.addSchedules(schedules)
     }
 
     fun removeSchedule(schedule: Schedule, dayLines: List<DayLine>) {

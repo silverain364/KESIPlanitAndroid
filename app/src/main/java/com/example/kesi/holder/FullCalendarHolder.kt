@@ -41,24 +41,24 @@ class FullCalendarHolder(
     lateinit var date: LocalDate
     private val dayLines = ArrayList<DayLine>()
     private var startEpochDay = LocalDate.now().toEpochDay()
-    private lateinit var schedules: ArrayList<Schedule>
+
+    private val scheduleMap: HashMap<Long, Schedule> = HashMap()
 
     private val container: ConstraintLayout = itemView.findViewById(R.id.main)
     private val calendarRender: CalendarRenderService =
         CalendarRenderService(container, backgroundViewList, dayTvList, ScheduleViewMap())
 
-    private val calendarService = CalendarService(calendarRender, ScheduleRepository())
-
+    private val calendarService = CalendarService(calendarRender)
     private val retrofit = RetrofitSetting.getRetrofit()
     private val scheduleApi = retrofit.create(ScheduleApi::class.java)
-
     private var bindCompleted = CompletableDeferred<Unit>()
+
 
 
     init {
         for(i in backgroundViewList.indices) {
             backgroundViewList[i].setOnClickListener {
-                if(schedules.isEmpty()) return@setOnClickListener
+                if(scheduleMap.isEmpty()) return@setOnClickListener
 
                 val dayBox = dayLines[i / 7].dayBoxes[i % 7] //Todo. DayBox 자체를 넘겨줘도 괜찮을 것 같은데
                 scheduleBottomSheet.showSchedules(
@@ -101,14 +101,19 @@ class FullCalendarHolder(
     fun bind(monthData: MonthData) {
         bindCompleted = CompletableDeferred()
 
+        scheduleMap.clear()
+
         initDate(monthData.date)
         scheduleApi.findByMonth(monthData.date.toString()).enqueue(object: Callback<List<ScheduleDto>> {
             override fun onResponse(p0: Call<List<ScheduleDto>>, p1: Response<List<ScheduleDto>>) {
                 Log.d("FullCalendarHolder", "size : ${p1.body()?.size}")
 
                 if(p1.body() == null) return
-                schedules = ArrayList(p1.body()!!.map { it.toDomain() })
-                calendarService.addSchedules(schedules, dayLines)
+                p1.body()!!.forEach {
+                    scheduleMap[it.id] = it.toDomain()
+                }
+
+                calendarService.addSchedules(scheduleMap.values.toList(), dayLines)
                 calendarService.render(dayLines)
                 bindCompleted.complete(Unit)
             }
@@ -119,31 +124,20 @@ class FullCalendarHolder(
         })
     }
 
-    suspend fun addSchedule(addScheduleDto: AddScheduleDto) { //데이터를 이 함수가 더 빨리 받아올 수도 있음
+    suspend fun addSchedule(schedule: Schedule) { //데이터를 이 함수가 더 빨리 받아올 수도 있음
         bindCompleted.await()
+        Log.d("FullCalendarHolder", "addSchedule: id : ${schedule.id} / containsCheck : ${schedule}")
 
-        scheduleApi.addSchedule(RequestPersonalScheduleDto.toDto(addScheduleDto)).enqueue(object : Callback<Long> {
-            override fun onResponse(p0: Call<Long>, p1: Response<Long>) {
-                if(p1.body() == null) return
 
-                Log.d("FullCalendar", "addSchedule: id : ${p1.body()}")
-
-                //Todo. 추후 처리
-                val id = p1.body()!!
-                val schedule = addScheduleDto.toDomain(id)
-
-                schedules.add(schedule)
-                calendarService.addSchedule(schedule, dayLines)
-                calendarService.render(dayLines)
-            }
-
-            override fun onFailure(p0: Call<Long>, p1: Throwable) {
-                Log.d("FullCalendarHolder", "onFailure: ${p1.message}")
-            }
-        })
+        scheduleMap[schedule.id] = schedule
+        calendarService.addSchedule(schedule, dayLines)
+        calendarService.render(dayLines)
     }
 
     fun removeSchedule(scheduleId: Long) {
-        //calendarService.removeSchedule(scheduleId, dayLines)
+        //Todo. 서버 통신
+        Log.d("FullCalendarHolder", "removeSchedule: id : $scheduleId / containsCheck : ${scheduleMap.containsKey(scheduleId)}")
+        calendarService.removeSchedule(scheduleMap[scheduleId] ?: return, dayLines)
+        calendarService.render(dayLines)
     }
 }
