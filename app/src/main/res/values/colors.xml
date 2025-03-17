@@ -13,4 +13,5 @@
     <color name="nav_bottom_list">#FFB60CBE</color>
     <color name="edit_text_stroke">#CCCCCC</color>
     <color name="edit_text_background">#F8F8F8</color>
+    <color name="edit_text_background_dark">#191919</color>
 </resources>

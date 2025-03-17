@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.SignUpActivity"
-    android:background="@color/white">
+    android:background="@color/black">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -22,7 +22,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="회원가입"
+        android:text="계정"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -47,51 +47,40 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:text="이메일"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="30dp"
-        android:hint="이메일 등록"
-        android:background="@drawable/edit_text_background"
+        tools:text="soneunbi03@gmail.com"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_text_background_dark"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
 
-    <Button
-            android:id="@+id/btnEmail"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:text="이메일 인증하기"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/button_background"
-            app:layout_constraintTop_toBottomOf="@+id/etEmail"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-    />
-
     <TextView
         android:id="@+id/tvPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:text="비밀번호"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/etEmail"
-        app:layout_constraintTop_toBottomOf="@+id/btnEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -99,13 +88,14 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="30dp"
         android:hint="비밀번호"
+        android:textColorHint="@color/white"
         android:inputType="textPassword"
-        android:background="@drawable/edit_text_background"
+        android:background="@drawable/edit_text_background_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etPasswordConfirm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -113,23 +103,38 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="30dp"
         android:hint="비밀번호 확인"
+        android:textColorHint="@color/white"
         android:inputType="textPassword"
-        android:background="@drawable/edit_text_background"
+        android:background="@drawable/edit_text_background_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
 
-    <Button
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="계정 삭제하기"
+        android:textColor="@color/sun"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPasswordConfirm"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnNext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="40dp"
-        android:text="다음"
+        android:text="저장"
         android:textSize="16dp"
         android:textStyle="bold"
-        android:background="@drawable/button_background"
+        android:background="@drawable/button_background_white"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

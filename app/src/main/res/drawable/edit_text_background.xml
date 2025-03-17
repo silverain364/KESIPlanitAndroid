@@ -4,8 +4,8 @@
     <stroke android:color="@color/edit_text_stroke"
             android:width="2dp"/>
     <solid android:color="@color/edit_text_background"/>
-    <padding android:top="10dp"
-            android:bottom="10dp"
+    <padding android:top="15dp"
+            android:bottom="15dp"
              android:right="15dp"
              android:left="15dp"/>
 </shape>
