@@ -124,7 +124,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnNext"
+        android:id="@+id/signUpBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"

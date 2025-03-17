@@ -179,7 +179,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvDOB" />
 
     <Button
-        android:id="@+id/btnNext"
+        android:id="@+id/signUpBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"

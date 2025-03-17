@@ -42,7 +42,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
     private var profileImage: File? = null;
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(it.resultCode != RESULT_OK) return@registerForActivityResult
         if(it.data == null) return@registerForActivityResult
@@ -66,7 +65,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
             .into(binding.ivProfilePicture)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -91,7 +89,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         //회원가입 버튼 클릭 시 데이터베이스에 저장 후 로그인 화면으로 이동
-        binding.btnSignUp.setOnClickListener {
+        binding.signUpBtn.setOnClickListener {
             /*val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)*/
 

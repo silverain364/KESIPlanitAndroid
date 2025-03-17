@@ -27,7 +27,7 @@ class SignUpActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         //Next 버튼 클릭 시 프로필 설정 화면으로 이동
-        binding.btnNext.setOnClickListener {
+        binding.signUpBtn.setOnClickListener {
             //val intent = Intent(this, ProfileSettingsActivity::class.java)
             //startActivity(intent)
 
