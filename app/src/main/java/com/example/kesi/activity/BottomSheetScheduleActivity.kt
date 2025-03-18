@@ -9,7 +9,6 @@ import com.example.kesi.adapter.BottomSheetAdapter
 import com.example.kesi.model.BottomSheetScheduleDto
 
 class BottomSheetScheduleActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

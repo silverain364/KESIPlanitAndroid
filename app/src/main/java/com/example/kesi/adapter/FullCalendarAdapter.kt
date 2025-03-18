@@ -4,7 +4,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -12,18 +11,11 @@ import androidx.constraintlayout.widget.Constraints
 import androidx.constraintlayout.widget.Guideline
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
-import com.example.kesi.api.ScheduleApi
 import com.example.kesi.calendar.view.DayTextView
 import com.example.kesi.holder.FullCalendarHolder
 import com.example.kesi.data.MonthData
 import com.example.kesi.fragment.ScheduleBottomSheet
-import com.example.kesi.model.ScheduleDto
-import com.example.kesi.setting.RetrofitSetting
 import com.example.kesi.util.view.GuideRender
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDate
 
 class FullCalendarAdapter (

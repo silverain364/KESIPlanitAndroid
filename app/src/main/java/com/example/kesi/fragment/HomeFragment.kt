@@ -210,10 +210,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun removeSchedule(scheduleId: Long) {
-        Log.d("HomeFragment", "removeSchedule: childCount : ${calendarRv.childCount}")
 
         scheduleApi.deleteSchedule(scheduleId).enqueue(object: Callback<Void> {
             override fun onResponse(p0: Call<Void>, p1: Response<Void>) {
+                Log.d("HomeFragment", "removeApi-code : ${p1.code()}")
+
                 if(p1.isSuccessful) {
                     calendarAdapter.getHolders().forEach {
                         it.removeSchedule(scheduleId)

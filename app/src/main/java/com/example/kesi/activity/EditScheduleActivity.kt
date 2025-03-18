@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kesi.adapter.CircleColorAdapter
 import com.example.kesi.data.EditScheduleDto
 import com.example.kesi.databinding.ActivityEditScheduleBinding
@@ -71,7 +72,13 @@ class EditScheduleActivity: AppCompatActivity() {
         )
 
         val scheduleColorList = ScheduleColorList.getColorList(this)
+
         colorAdapter = CircleColorAdapter(scheduleColorList, schedule.color)
+
+        binding.colorRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@EditScheduleActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = colorAdapter
+        }
 
         removeScheduleBtn.setOnClickListener {
             val intent = Intent()

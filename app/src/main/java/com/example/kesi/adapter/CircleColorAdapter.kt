@@ -2,6 +2,7 @@ package com.example.kesi.adapter
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,14 @@ class CircleColorAdapter(
     private var initColor: Color = colorList.first()
 ): RecyclerView.Adapter<CircleColorAdapter.ViewHolder>() {
     init {
-        if(!colorList.contains(initColor))
+        if(!colorList.stream().anyMatch {
+                Log.d("CircleColorAdapter", "color : ${it.toArgb()} / initColor : ${initColor.toArgb()}")
+                it.toArgb() == initColor.toArgb()
+        })
             initColor = colorList.first()
+
     }
+
     private lateinit var selectedHolder: ViewHolder
     private var init = false
 

@@ -16,6 +16,9 @@ object ScheduleColorList {
             ContextCompat.getColor(context, R.color.schedule_orange).toColor(),
             ContextCompat.getColor(context, R.color.schedule_yellow).toColor(),
             ContextCompat.getColor(context, R.color.schedule_green).toColor(),
+            ContextCompat.getColor(context, R.color.schedule_cyan).toColor(),
+            ContextCompat.getColor(context, R.color.schedule_blue).toColor(),
+            ContextCompat.getColor(context, R.color.schedule_purple).toColor()
         )
 
         return colorList!!

@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import com.example.kesi.R
 import com.example.kesi.adapter.BottomSheetAdapter
 import com.example.kesi.api.ScheduleApi
@@ -30,7 +31,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 
-
 class FullCalendarHolder(
     itemView: View,
     private val guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
@@ -54,8 +54,9 @@ class FullCalendarHolder(
     private var bindCompleted = CompletableDeferred<Unit>()
 
 
-
     init {
+        TransitionManager.beginDelayedTransition(container) //animation
+
         for(i in backgroundViewList.indices) {
             backgroundViewList[i].setOnClickListener {
                 if(scheduleMap.isEmpty()) return@setOnClickListener
