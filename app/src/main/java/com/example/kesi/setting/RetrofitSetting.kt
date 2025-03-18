@@ -15,7 +15,9 @@ class RetrofitSetting {
         //LOCAL GATEWAY ADDRESS
         //한 PC 내에서 모든 걸 테스트(API SERVER, MOBILE CLIENT)할 경우에 위 주소를 사용한다.
         val TEST_URL = "http://10.0.2.2:8080/"
-//        val TEST_URL = "http://192.168.0.26:8080/"
+//        val TEST_URL = "http://172.30.1.24:8080/"
+
+        //        val TEST_URL = "http://192.168.0.26:8080/"
 //        val TEST_URL="http://192.168.0.10:8080/"
         val IMAGE_URL = "http://49.50.164.110:8071/plan_it/"
         private var interceptorClient: OkHttpClient? = null

@@ -93,7 +93,7 @@ class EditScheduleActivity: AppCompatActivity() {
             intent.putExtra(ActivityResultKeys.ACTION_TYPE, ActivityResultKeys.EDIT)
             intent.putExtra("schedule", EditScheduleDto(
                 id = schedule.id,
-                colorValue = schedule.color.toArgb(),
+                colorValue = colorAdapter.getSelectedColor().toArgb(),
                 title = titleEt.text.toString(),
                 link = "",
                 place = "",
