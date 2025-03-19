@@ -1,5 +1,7 @@
 package com.example.kesi.adapter
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +11,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Constraints
 import androidx.constraintlayout.widget.Guideline
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
-import com.example.kesi.calendar.view.DayTextView
+import com.example.kesi.calendar.render.DayTextView
 import com.example.kesi.holder.FullCalendarHolder
 import com.example.kesi.data.MonthData
 import com.example.kesi.fragment.ScheduleBottomSheet
@@ -104,6 +107,7 @@ class FullCalendarAdapter (
                 backgroundViewList.add(View(view.context).apply {
                     id = View.generateViewId()
                     layoutParams = ConstraintLayout.LayoutParams(0, 0)
+                    setBackgroundResource(R.drawable.view_box_background)
                 })
 
                 constraints.addView(backgroundViewList.last())

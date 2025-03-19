@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.adapter.FullCalendarAdapter
 import com.example.kesi.api.ScheduleApi
+import com.example.kesi.calendar.domain.DayBox
+import com.example.kesi.calendar.view.DayBoxView
 import com.example.kesi.data.AddScheduleDto
 import com.example.kesi.data.EditScheduleDto
 import com.example.kesi.data.MonthData
@@ -41,6 +43,8 @@ class SpaceCalendar(
     private val scheduleApi = retrofit.create(ScheduleApi::class.java)
     private val calendarAdapter: FullCalendarAdapter = FullCalendarAdapter(ArrayList(), scheduleBottomSheet)
 
+    private lateinit var selectedBox: DayBoxView
+
 
     ///Todo. 추후 Coroutine 학습필요
     private val job = Job()
@@ -51,7 +55,7 @@ class SpaceCalendar(
         yearTv.text = LocalDate.now().year.toString()
 
         for (i in -1..1) {
-            calendarAdapter.addItem(MonthData(LocalDate.now().plusMonths(i.toLong()), arrayListOf()))
+            calendarAdapter.addItem(MonthData(LocalDate.now().withDayOfMonth(1).plusMonths(i.toLong()), arrayListOf()))
         }
 
         calendarRv.apply {
@@ -76,13 +80,18 @@ class SpaceCalendar(
                         monthTv.text = data.date.month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)
                         yearTv.text = data.date.year.toString()
 
+                        val holder = calendarRv.findViewHolderForAdapterPosition(position) as FullCalendarHolder
+                        holder.select(holder.date)
+
+
+                        //부족한 페이지 추가
                         if (position == 0) {
-                            calendarAdapter.addFirstItem(MonthData(data.date.minusMonths(1), arrayListOf()))
+                            calendarAdapter.addFirstItem(MonthData(data.date.withDayOfMonth(1).minusMonths(1), arrayListOf()))
                             calendarAdapter.notifyItemInserted(0)
                         }
 
                         if (position == calendarAdapter.itemCount - 1) {
-                            calendarAdapter.addItem(MonthData(data.date.plusMonths(1), arrayListOf()))
+                            calendarAdapter.addItem(MonthData(data.date.withDayOfMonth(1).plusMonths(1), arrayListOf()))
                             calendarAdapter.notifyItemInserted(calendarAdapter.itemCount - 1)
                         }
                     }

@@ -1,4 +1,4 @@
-package com.example.kesi.calendar.view
+package com.example.kesi.calendar.render
 
 import android.content.Context
 import android.graphics.Color

@@ -2,29 +2,24 @@ package com.example.kesi.holder
 
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.example.kesi.R
-import com.example.kesi.adapter.BottomSheetAdapter
 import com.example.kesi.api.ScheduleApi
 import com.example.kesi.calendar.domain.DayLine
 import com.example.kesi.calendar.domain.ScheduleViewMap
-import com.example.kesi.calendar.repository.ScheduleRepository
 import com.example.kesi.calendar.service.CalendarRenderService
 import com.example.kesi.calendar.service.CalendarService
-import com.example.kesi.calendar.view.DayTextView
-import com.example.kesi.data.AddScheduleDto
+import com.example.kesi.calendar.render.DayTextView
+import com.example.kesi.calendar.view.DayBoxView
+import com.example.kesi.calendar.view.DayLineView
 import com.example.kesi.domain.Schedule
-import com.example.kesi.model.BottomSheetScheduleDto
 import com.example.kesi.data.MonthData
 import com.example.kesi.fragment.ScheduleBottomSheet
-import com.example.kesi.model.RequestPersonalScheduleDto
 import com.example.kesi.model.ScheduleDto
 import com.example.kesi.setting.RetrofitSetting
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.CompletableDeferred
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,15 +35,19 @@ class FullCalendarHolder(
 ) : RecyclerView.ViewHolder(itemView) {
     lateinit var date: LocalDate
     private val dayLines = ArrayList<DayLine>()
-    private var startEpochDay = LocalDate.now().toEpochDay()
+    private val dayViewLines = ArrayList<DayLineView>()
+    private var selectedBox: DayBoxView? = null
+
 
     private val scheduleMap: HashMap<Long, Schedule> = HashMap()
 
     private val container: ConstraintLayout = itemView.findViewById(R.id.main)
+
     private val calendarRender: CalendarRenderService =
         CalendarRenderService(container, backgroundViewList, dayTvList, ScheduleViewMap())
 
     private val calendarService = CalendarService(calendarRender)
+
     private val retrofit = RetrofitSetting.getRetrofit()
     private val scheduleApi = retrofit.create(ScheduleApi::class.java)
     private var bindCompleted = CompletableDeferred<Unit>()
@@ -62,40 +61,55 @@ class FullCalendarHolder(
                 if(scheduleMap.isEmpty()) return@setOnClickListener
 
                 val dayBox = dayLines[i / 7].dayBoxes[i % 7] //Todo. DayBox 자체를 넘겨줘도 괜찮을 것 같은데
-                scheduleBottomSheet.showSchedules(
-                    dayBox.date, //클릭한 스케줄 정보 보여주기
-                    dayBox.getAllScheduleOrderByHeight().toList()
-                )
+                select(dayBox.date)
             }
         }
     }
 
     private fun clear() {
         calendarService.renderClear(dayLines) //기존에 view를 사제
+        dayViewLines.clear()
         dayLines.clear() //기본에 동적으로 표시할 정보를 제거
     }
 
     private fun initDate(nowMonth: LocalDate) {
         clear()
         this.date = nowMonth
-        var cnt = 0;
 
         val firstDayDate = LocalDate.of(nowMonth.year, nowMonth.month, 1) //해당 월에 첫일을 구함.
-        startEpochDay = firstDayDate.toEpochDay() - firstDayDate.dayOfWeek.value % 7 //해당 화면에 보여주는 첫 번째 화면을 구함.
+        val startEpochDay = firstDayDate.toEpochDay() - firstDayDate.dayOfWeek.value % 7 //해당 화면에 보여주는 첫 번째 화면을 구함.
 
 
         for (i in 0..<guides.second.size - 1) { //가로줄 만큼 반복
             dayLines.add(DayLine(LocalDate.ofEpochDay(startEpochDay + (guides.first.size - 1) * i)))
-            for (j in 0..<guides.first.size - 1) {
-                val date = LocalDate.ofEpochDay(startEpochDay + cnt)
-                dayTvList[cnt].setDate(date)
 
-                if (date.month != nowMonth.month)
-                    dayTvList[cnt].setTextColor(dayTvList[cnt].textColors.withAlpha(100))
-
-                cnt++;
-            }
+            dayViewLines.add(DayLineView(
+                monthDate = date,
+                dayLine = dayLines[i],
+                backgroundView = backgroundViewList.subList(i * DayLine.LINE_SIZE, (i + 1) * DayLine.LINE_SIZE),
+                dayTvList = dayTvList.subList(i * DayLine.LINE_SIZE, (i + 1) * DayLine.LINE_SIZE)
+            ))
         }
+    }
+
+    fun select(selectDate: LocalDate) {
+        selectedBox?.unSelect()
+
+        val firstDayDate = LocalDate.of(date.year, date.month, 1) //해당 월에 첫일을 구함.
+        val startEpochDay = firstDayDate.toEpochDay() - firstDayDate.dayOfWeek.value % 7 //해당 화면에 보여주는 첫 번째 화면을 구함.
+
+        val dayBoxViewIndex = (selectDate.toEpochDay() - startEpochDay).toInt()
+
+        selectedBox = dayViewLines[dayBoxViewIndex / DayLine.LINE_SIZE]
+            .backBoxViewList[dayBoxViewIndex % DayLine.LINE_SIZE]
+
+        scheduleBottomSheet.showSchedules(
+            selectedBox!!.dayBox.date, //클릭한 스케줄 정보 보여주기
+            selectedBox!!.dayBox.getAllScheduleOrderByHeight().toList()
+        )
+
+
+        selectedBox!!.select()
     }
 
 
@@ -129,14 +143,12 @@ class FullCalendarHolder(
         bindCompleted.await()
         Log.d("FullCalendarHolder", "addSchedule: id : ${schedule.id} / containsCheck : ${schedule}")
 
-
         scheduleMap[schedule.id] = schedule
         calendarService.addSchedule(schedule, dayLines)
         calendarService.render(dayLines)
     }
 
     fun removeSchedule(scheduleId: Long) {
-        //Todo. 서버 통신
         Log.d("FullCalendarHolder", "removeSchedule: id : $scheduleId / containsCheck : ${scheduleMap.containsKey(scheduleId)}")
         calendarService.removeSchedule(scheduleMap[scheduleId] ?: return, dayLines)
         calendarService.render(dayLines)

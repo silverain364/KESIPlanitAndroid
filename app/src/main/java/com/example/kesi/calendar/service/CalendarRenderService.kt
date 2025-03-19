@@ -6,9 +6,9 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.kesi.calendar.domain.DayBox
 import com.example.kesi.calendar.domain.ScheduleViewMap
-import com.example.kesi.calendar.view.DayBoxViewRender
+import com.example.kesi.calendar.render.DayBoxViewRender
 import com.example.custormcalendardeom.view.DayLineViewRender
-import com.example.kesi.calendar.view.DayTextView
+import com.example.kesi.calendar.render.DayTextView
 import com.example.kesi.calendar.domain.DayLine
 import java.time.LocalDate
 
