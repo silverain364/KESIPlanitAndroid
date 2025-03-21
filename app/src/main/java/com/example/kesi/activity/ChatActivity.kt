@@ -24,6 +24,7 @@ import com.example.kesi.model.BottomSheetScheduleDto
 import com.example.kesi.model.GroupDto
 import com.example.kesi.model.MessageDto
 import com.example.kesi.setting.RetrofitSetting
+import com.example.kesi.util.view.GroupSpaceCalendar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -47,6 +48,7 @@ class ChatActivity : AppCompatActivity() {
     private var gid: Long? = null
 
     private lateinit var allSchedulesRecyclerViewAdapter: AllSchedulesRecyclerViewAdapter // 전체 일정 리사이클러뷰 어댑터
+    private lateinit var groupSpaceCalendar: GroupSpaceCalendar
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +56,8 @@ class ChatActivity : AppCompatActivity() {
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        initCalendar()
 
         // 인증 초기화
         auth = FirebaseAuth.getInstance()
@@ -220,5 +224,13 @@ class ChatActivity : AppCompatActivity() {
                     Log.e("ksh", "메시지 수신 실패: ${error.message}")
                 }
             })
+    }
+
+    private fun initCalendar(){
+        groupSpaceCalendar = GroupSpaceCalendar(
+            binding.monthTv,
+            binding.yearTv,
+            binding.calendarRv
+        )
     }
 }

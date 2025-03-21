@@ -59,7 +59,6 @@ class FullCalendarAdapter (
                 )
 
         holders.add(
-
             holderFactory.create(view,
                 guides,
                 createBackgroundView(view, guides),
