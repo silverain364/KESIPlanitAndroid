@@ -75,19 +75,19 @@ class ChatActivity : AppCompatActivity() {
         })
 
         var testSchedule: ArrayList<AllSchedulesDto> = arrayListOf(
-            AllSchedulesDto(R.drawable.ic_star2, "오후 미팅", "2025-01-11","15:00 - 17:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "아침 회의", "2025-01-11","09:00 - 10:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "2025-01-11","12:00 - 13:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "2025-01-12","12:00 - 13:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "2025-01-12","12:00 - 13:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "2025-01-12","12:00 - 13:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "2025-01-12","12:00 - 13:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "아침 회의", "2025-01-12","09:00 - 10:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "2025-01-12","12:00 - 13:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "2025-01-13","12:00 - 13:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "2025-01-14","12:00 - 13:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "2025-01-14","12:00 - 13:00"),
-            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "2025-01-14","12:00 - 13:00")
+            AllSchedulesDto(R.drawable.ic_star2, "오후 미팅", "11","15:00 - 17:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "아침 회의", "11","09:00 - 10:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "11","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "12","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "12","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "12","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "12","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "아침 회의", "12","09:00 - 10:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "12","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "13","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "14","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "14","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "14","12:00 - 13:00")
         )
 
         // 전체 일정 리사이클러뷰

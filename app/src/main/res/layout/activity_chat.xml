@@ -104,7 +104,7 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add"
+                    android:src="@drawable/ic_left_arrow"
                     android:id="@+id/ibPre"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -125,7 +125,7 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add"
+                    android:src="@drawable/ic_right_arrow"
                     android:id="@+id/ibNext"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -170,7 +170,7 @@
                     android:id="@+id/btnSend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="캘린더"/>
+                    android:background="@drawable/ic_send"/>
             </LinearLayout>
 
             <androidx.constraintlayout.widget.Guideline
