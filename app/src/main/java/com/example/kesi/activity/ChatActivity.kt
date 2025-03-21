@@ -232,5 +232,13 @@ class ChatActivity : AppCompatActivity() {
             binding.yearTv,
             binding.calendarRv
         )
+
+        binding.calendarPreviousBtn.setOnClickListener {
+            groupSpaceCalendar.previousMonth()
+        }
+
+        binding.calendarNextBtn.setOnClickListener {
+            groupSpaceCalendar.nextMonth()
+        }
     }
 }

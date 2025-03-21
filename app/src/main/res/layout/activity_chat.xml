@@ -7,108 +7,138 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.ChatActivity">
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mainColor">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/mainColor"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent">
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
                 <TextView
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="KESI"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_horizontal"/>
+                    android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/calendar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/calendarTopLayout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:gravity="center_horizontal"
+                    android:paddingHorizontal="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:paddingHorizontal="30dp"
-                    android:orientation="horizontal"
-                    >
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/calendarPreviousBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:background="#00000000"
+                        android:src="@drawable/ic_group_calendar_arrow_left"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        >
-                    <TextView
-                        android:id="@+id/yearTv"
-                        android:text="2025"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/calendarPreviousBtn"
+                        app:layout_constraintRight_toLeftOf="@+id/calendarNextBtn"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <View
-                        android:layout_width="10dp"
-                        android:layout_height="wrap_content"
-                        />
+                        <TextView
+                            android:id="@+id/yearTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2025"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/monthTv"
-                        android:text="february"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        />
+                        <View
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/monthTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="february"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
-                </LinearLayout>
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/calendarNextBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:background="#00000000"
+                        android:src="@drawable/ic_group_calendar_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/calendarRv"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/calendarTopLayout"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/calendarTopLayout" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <LinearLayout
+                android:id="@+id/all_schedule_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/all_schedule_layout"
-                android:orientation="vertical"
-                android:layout_weight="6">
+                android:layout_weight="6"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="전체 일정"
                     android:layout_gravity="center"
+                    android:text="전체 일정"
                     android:textColor="@color/subColor"
                     android:textSize="25sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvAllSchdules"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
             </LinearLayout>
         </LinearLayout>
 
@@ -116,14 +146,14 @@
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:background="@drawable/bottom_sheet_background"
+            android:orientation="vertical"
+            app:behavior_expandedOffset="50dp"
             app:behavior_fitToContents="false"
+
             app:behavior_halfExpandedRatio="0.6"
 
             app:behavior_peekHeight="20dp"
-
-            app:behavior_expandedOffset="50dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <View
@@ -133,9 +163,9 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:background="@color/white"
-                app:layout_constraintTop_toTopOf="@+id/bottom_sheet"
                 app:layout_constraintLeft_toLeftOf="@+id/bottom_sheet"
-                app:layout_constraintRight_toRightOf="@+id/bottom_sheet"/>
+                app:layout_constraintRight_toRightOf="@+id/bottom_sheet"
+                app:layout_constraintTop_toTopOf="@+id/bottom_sheet" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/topBar"
@@ -143,38 +173,39 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
 
-                app:layout_constraintTop_toBottomOf="@+id/top"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent">
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/top">
+
                 <ImageButton
+                    android:id="@+id/ibPre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_left_arrow"
-                    android:id="@+id/ibPre"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tvDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tvDate"
                     android:text="2월 17일"
-                    android:textStyle="bold"
                     android:textColor="@color/subColor"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/ibPre"
-                    app:layout_constraintRight_toLeftOf="@+id/ibNext"/>
+                    app:layout_constraintRight_toLeftOf="@+id/ibNext"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
+                    android:id="@+id/ibNext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_right_arrow"
-                    android:id="@+id/ibNext"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -182,12 +213,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/gray"
-                tools:listitem="@layout/receive_person"
-                app:layout_constraintTop_toBottomOf="@+id/topBar"
+                app:layout_constraintBottom_toTopOf="@+id/bottomBar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/bottomBar"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/topBar"
+                tools:listitem="@layout/receive_person" />
 
             <LinearLayout
                 android:id="@+id/bottomBar"
@@ -195,27 +225,29 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/mainColor"
+                app:layout_constraintBottom_toBottomOf="@+id/bottomGuide"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rvChat"
-                app:layout_constraintBottom_toBottomOf="@+id/bottomGuide"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/rvChat">
+
                 <Button
+                    android:id="@+id/btnPlus"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:id="@+id/btnPlus"
-                    android:background="@drawable/ic_add"/>
+                    android:background="@drawable/ic_add" />
+
                 <EditText
                     android:id="@+id/etMessage"
-                    android:background="@color/gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:background="@color/gray" />
+
                 <Button
                     android:id="@+id/btnSend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_send"/>
+                    android:background="@drawable/ic_send" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.Guideline
@@ -223,8 +255,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="1"
-                />
+                app:layout_constraintGuide_percent="1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

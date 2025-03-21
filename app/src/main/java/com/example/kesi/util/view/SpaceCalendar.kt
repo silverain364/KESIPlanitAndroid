@@ -73,7 +73,7 @@ class SpaceCalendar(
         yearTv.text = LocalDate.now().year.toString()
 
 
-        for (i in -1..1) {
+        for (i in -2..2) {
             calendarAdapter.addItem(MonthData(LocalDate.now().withDayOfMonth(1).plusMonths(i.toLong()), arrayListOf()))
         }
 
@@ -104,13 +104,14 @@ class SpaceCalendar(
 
 
                         //부족한 페이지 추가
-                        if (position == 0) {
-                            calendarAdapter.addFirstItem(MonthData(data.date.withDayOfMonth(1).minusMonths(1), arrayListOf()))
+                        if (position <= 1) { //한 칸 여유를 둠
+                            calendarAdapter.addFirstItem(MonthData(data.date.withDayOfMonth(1).minusMonths(position + 1L), arrayListOf()))
                             calendarAdapter.notifyItemInserted(0)
                         }
 
-                        if (position == calendarAdapter.itemCount - 1) {
-                            calendarAdapter.addItem(MonthData(data.date.withDayOfMonth(1).plusMonths(1), arrayListOf()))
+                        if (position >= calendarAdapter.itemCount - 2) {
+                            val diff = calendarAdapter.itemCount - position //이미 하나 앞써 있음
+                            calendarAdapter.addItem(MonthData(data.date.withDayOfMonth(1).plusMonths(diff.toLong()), arrayListOf()))
                             calendarAdapter.notifyItemInserted(calendarAdapter.itemCount - 1)
                         }
                     }

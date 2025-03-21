@@ -41,7 +41,7 @@ class GroupSpaceCalendar(
         yearTv.text = LocalDate.now().year.toString()
 
 
-        for (i in -1..1) {
+        for (i in -2..2) {
             calendarAdapter.addItem(MonthData(LocalDate.now().withDayOfMonth(1).plusMonths(i.toLong()), arrayListOf()))
         }
 
@@ -67,18 +67,19 @@ class GroupSpaceCalendar(
                         monthTv.text = data.date.month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)
                         yearTv.text = data.date.year.toString()
 
-                        val holder = calendarRv.findViewHolderForAdapterPosition(position) as MiniCalendarHolder
+//                        val holder = calendarRv.findViewHolderForAdapterPosition(position) as MiniCalendarHolder
 //                        holder.select(holder.date)
 
 
                         //부족한 페이지 추가
-                        if (position == 0) {
-                            calendarAdapter.addFirstItem(MonthData(data.date.withDayOfMonth(1).minusMonths(1), arrayListOf()))
+                        if (position <= 1) {
+                            calendarAdapter.addFirstItem(MonthData(data.date.withDayOfMonth(1).minusMonths(position + 1L), arrayListOf()))
                             calendarAdapter.notifyItemInserted(0)
                         }
 
-                        if (position == calendarAdapter.itemCount - 1) {
-                            calendarAdapter.addItem(MonthData(data.date.withDayOfMonth(1).plusMonths(1), arrayListOf()))
+                        if (position >= calendarAdapter.itemCount - 2) {
+                            val diff = calendarAdapter.itemCount - position
+                            calendarAdapter.addItem(MonthData(data.date.withDayOfMonth(1).plusMonths(diff.toLong()), arrayListOf()))
                             calendarAdapter.notifyItemInserted(calendarAdapter.itemCount - 1)
                         }
                     }
@@ -87,5 +88,17 @@ class GroupSpaceCalendar(
 
             scrollToPosition(calendarAdapter.itemCount / 2)
         }
+    }
+
+    fun nextMonth() {
+        val layoutManager = calendarRv.layoutManager as? LinearLayoutManager ?: return
+        val position = layoutManager.findFirstVisibleItemPosition()
+        calendarRv.smoothScrollToPosition(position + 1)
+    }
+
+    fun previousMonth() {
+        val layoutManager = calendarRv.layoutManager as? LinearLayoutManager ?: return
+        val position = layoutManager.findFirstVisibleItemPosition()
+        calendarRv.smoothScrollToPosition(position - 1)
     }
 }
