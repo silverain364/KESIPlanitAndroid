@@ -24,16 +24,24 @@ class CalendarRenderService(
     private val lineViewRender = DayLineViewRender(container)
     private val dayLineViews: HashMap<DayLine, List<View>> = HashMap()
 
-
-    companion object {
-        fun Context.dpToPx(dp: Int): Int {
-            return (dp * resources.displayMetrics.density).toInt()
-        }
-    }
     fun viewClear(dayLine: DayLine){
         dayLineViews[dayLine]?.forEach { //기존에 다른게 랜더 되어 있다면 삭제한다.
             container.removeView(it)
         }
+    }
+
+    fun select(dayBox: DayBox) {
+        val schedules = dayBox.getLastHeightSchedules()
+        if(schedules.isEmpty()) return
+
+        val views = scheduleViewMap[schedules.first()]
+    }
+
+    fun unSelect(dayBox:DayBox) {
+        val schedules = dayBox.getLastHeightSchedules()
+        if(schedules.isEmpty()) return
+
+
     }
 
     //schedule과 연결된 view를 반환해줘야 겠지?

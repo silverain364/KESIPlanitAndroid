@@ -3,20 +3,25 @@ package com.example.kesi.util.view
 import android.app.Activity
 import android.os.Build
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.Guideline
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kesi.adapter.CalendarHolderFactory
 import com.example.kesi.adapter.FullCalendarAdapter
 import com.example.kesi.api.ScheduleApi
 import com.example.kesi.calendar.domain.DayBox
+import com.example.kesi.calendar.render.DayTextView
 import com.example.kesi.calendar.view.DayBoxView
 import com.example.kesi.data.AddScheduleDto
 import com.example.kesi.data.EditScheduleDto
 import com.example.kesi.data.MonthData
 import com.example.kesi.domain.Schedule
 import com.example.kesi.fragment.ScheduleBottomSheet
+import com.example.kesi.holder.CalendarHolder
 import com.example.kesi.holder.FullCalendarHolder
 import com.example.kesi.model.RequestPersonalScheduleDto
 import com.example.kesi.model.RequestPersonalUpdateScheduleDto
@@ -41,9 +46,22 @@ class SpaceCalendar(
 ) {
     private val retrofit = RetrofitSetting.getRetrofit()
     private val scheduleApi = retrofit.create(ScheduleApi::class.java)
-    private val calendarAdapter: FullCalendarAdapter = FullCalendarAdapter(ArrayList(), scheduleBottomSheet)
+    private val holderFactory = object: CalendarHolderFactory {
+        override fun create(
+            view: View, guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
+            backgroundViewList: List<View>, dayTvList: List<DayTextView>, dayBoxOnClickListener: (DayBoxView) -> Unit
+        ): CalendarHolder {
+            return FullCalendarHolder(view, guides, backgroundViewList, dayTvList, dayBoxOnClickListener)
+        }
+    }
 
-    private lateinit var selectedBox: DayBoxView
+    private val calendarAdapter: FullCalendarAdapter = FullCalendarAdapter(
+        ArrayList(), holderFactory) { //dayBoxView를 클릭했을 때 이벤트
+        scheduleBottomSheet.showSchedules(
+            it.dayBox.date, //클릭한 스케줄 정보 보여주기
+            it.dayBox.getAllScheduleOrderByHeight().toList()
+        )
+    }
 
 
     ///Todo. 추후 Coroutine 학습필요
@@ -53,6 +71,7 @@ class SpaceCalendar(
     init {
         monthTv.text = LocalDate.now().month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)
         yearTv.text = LocalDate.now().year.toString()
+
 
         for (i in -1..1) {
             calendarAdapter.addItem(MonthData(LocalDate.now().withDayOfMonth(1).plusMonths(i.toLong()), arrayListOf()))
@@ -100,8 +119,9 @@ class SpaceCalendar(
 
             scrollToPosition(calendarAdapter.itemCount / 2)
         }
-
     }
+
+
     fun editSchedule(editScheduleDto: EditScheduleDto) {
         val schedule = editScheduleDto.toDomain()
         val holderPosition = (calendarRv.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()

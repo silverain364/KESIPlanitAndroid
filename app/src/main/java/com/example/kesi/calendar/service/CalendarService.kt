@@ -11,7 +11,6 @@ class CalendarService(
 ) {
     private val updateLineList: MutableSet<DayLine> = mutableSetOf()
 
-
     private fun getValidLineIndex(schedule: Schedule, dayLines: List<DayLine>): Pair<Int, Int> {
         val calendarLastIndex = dayLines.size * DayLine.LINE_SIZE
 

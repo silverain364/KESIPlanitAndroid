@@ -2,6 +2,7 @@ package com.example.kesi.holder
 
 import android.util.Log
 import android.view.View
+import android.view.View.OnClickListener
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.recyclerview.widget.RecyclerView
@@ -26,18 +27,23 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 
-class FullCalendarHolder(
+class FullCalendarHolder (
     itemView: View,
-    private val guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
-    private val backgroundViewList: ArrayList<View>, //Todo. 추후 터치 인식을 위해서 forwardViewList를 만들면 괜찮을듯
-    private val dayTvList: ArrayList<DayTextView>,
-    private val scheduleBottomSheet: ScheduleBottomSheet,
-) : RecyclerView.ViewHolder(itemView) {
+    guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
+    backgroundViewList: List<View>, //Todo. 추후 터치 인식을 위해서 forwardViewList를 만들면 괜찮을듯
+    dayTvList: List<DayTextView>,
+    dayBoxOnClickListener: (DayBoxView) -> (Unit) = { }
+) : CalendarHolder(
+    itemView,
+    guides,
+    backgroundViewList,
+    dayTvList,
+    dayBoxOnClickListener
+) {
     lateinit var date: LocalDate
     private val dayLines = ArrayList<DayLine>()
     private val dayViewLines = ArrayList<DayLineView>()
     private var selectedBox: DayBoxView? = null
-
 
     private val scheduleMap: HashMap<Long, Schedule> = HashMap()
 
@@ -51,6 +57,7 @@ class FullCalendarHolder(
     private val retrofit = RetrofitSetting.getRetrofit()
     private val scheduleApi = retrofit.create(ScheduleApi::class.java)
     private var bindCompleted = CompletableDeferred<Unit>()
+
 
 
     init {
@@ -92,7 +99,7 @@ class FullCalendarHolder(
         }
     }
 
-    fun select(selectDate: LocalDate) {
+    override fun select(selectDate: LocalDate) {
         selectedBox?.unSelect()
 
         val firstDayDate = LocalDate.of(date.year, date.month, 1) //해당 월에 첫일을 구함.
@@ -103,17 +110,18 @@ class FullCalendarHolder(
         selectedBox = dayViewLines[dayBoxViewIndex / DayLine.LINE_SIZE]
             .backBoxViewList[dayBoxViewIndex % DayLine.LINE_SIZE]
 
-        scheduleBottomSheet.showSchedules(
-            selectedBox!!.dayBox.date, //클릭한 스케줄 정보 보여주기
-            selectedBox!!.dayBox.getAllScheduleOrderByHeight().toList()
-        )
+//        scheduleBottomSheet.showSchedules(
+//            selectedBox!!.dayBox.date, //클릭한 스케줄 정보 보여주기
+//            selectedBox!!.dayBox.getAllScheduleOrderByHeight().toList()
+//        )
 
+        dayBoxOnClickListener(selectedBox!!) //외부 시스템과 연결하기 위해서 위 설정이 좋은 것 같다.
 
         selectedBox!!.select()
     }
 
 
-    fun bind(monthData: MonthData) {
+    override fun bind(monthData: MonthData) {
         bindCompleted = CompletableDeferred()
 
         scheduleMap.clear()
@@ -139,7 +147,7 @@ class FullCalendarHolder(
         })
     }
 
-    suspend fun addSchedule(schedule: Schedule) { //데이터를 이 함수가 더 빨리 받아올 수도 있음
+    override suspend fun addSchedule(schedule: Schedule) { //데이터를 이 함수가 더 빨리 받아올 수도 있음
         bindCompleted.await()
         Log.d("FullCalendarHolder", "addSchedule: id : ${schedule.id} / containsCheck : ${schedule}")
 
@@ -148,7 +156,7 @@ class FullCalendarHolder(
         calendarService.render(dayLines)
     }
 
-    fun removeSchedule(scheduleId: Long) {
+    override fun removeSchedule(scheduleId: Long) {
         Log.d("FullCalendarHolder", "removeSchedule: id : $scheduleId / containsCheck : ${scheduleMap.containsKey(scheduleId)}")
         calendarService.removeSchedule(scheduleMap[scheduleId] ?: return, dayLines)
         calendarService.render(dayLines)

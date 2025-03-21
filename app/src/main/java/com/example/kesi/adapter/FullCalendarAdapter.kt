@@ -1,7 +1,6 @@
 package com.example.kesi.adapter
 
-import android.content.res.ColorStateList
-import android.graphics.Color
+
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -11,22 +10,28 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Constraints
 import androidx.constraintlayout.widget.Guideline
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 import com.example.kesi.calendar.render.DayTextView
-import com.example.kesi.holder.FullCalendarHolder
+import com.example.kesi.calendar.view.DayBoxView
 import com.example.kesi.data.MonthData
-import com.example.kesi.fragment.ScheduleBottomSheet
+import com.example.kesi.holder.CalendarHolder
 import com.example.kesi.util.view.GuideRender
 import java.time.LocalDate
 
+interface CalendarHolderFactory { //여기부터
+    fun create(view: View, guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
+               backgroundViewList: List<View>, dayTvList: List<DayTextView>,
+               dayBoxOnClickListener: (DayBoxView) -> (Unit)): CalendarHolder  //Todo. 여기부터
+}
+
 class FullCalendarAdapter (
     private val monthData: MutableList<MonthData>,
-    private val scheduleBottomSheet: ScheduleBottomSheet
-) : RecyclerView.Adapter<FullCalendarHolder>() {
+    private val holderFactory: CalendarHolderFactory,
+    private val dayBoxOnClickListener: (DayBoxView) -> (Unit) = { }
+) : RecyclerView.Adapter<CalendarHolder>() {
     private val guideRender = GuideRender()
-    private val holders = ArrayList<FullCalendarHolder>()
+    private val holders = ArrayList<CalendarHolder>()
 
     fun getHolders() = holders.toList()
 
@@ -35,7 +40,7 @@ class FullCalendarAdapter (
         private const val VIEW_TYPE_SIX = 2;
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FullCalendarHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_month, parent, false);
         val layout = view.findViewById<ConstraintLayout>(R.id.main)
 
@@ -54,13 +59,12 @@ class FullCalendarAdapter (
                 )
 
         holders.add(
-            FullCalendarHolder(
-                view,
+
+            holderFactory.create(view,
                 guides,
                 createBackgroundView(view, guides),
                 createTextView(view, guides),
-                scheduleBottomSheet
-            )
+                dayBoxOnClickListener)
         )
 
         return holders.last()
@@ -90,7 +94,7 @@ class FullCalendarAdapter (
         return monthData[position]
     }
 
-    override fun onBindViewHolder(holder: FullCalendarHolder, position: Int) {
+    override fun onBindViewHolder(holder: CalendarHolder, position: Int) {
         holder.bind(monthData[position])
     }
 
