@@ -1,5 +1,6 @@
 package com.example.kesi.activity
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.transition.TransitionManager
@@ -12,10 +13,14 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kesi.R
+import com.example.kesi.adapter.AllSchedulesRecyclerViewAdapter
 import com.example.kesi.adapter.MessageAdapter
 import com.example.kesi.api.GroupApi
 import com.example.kesi.data.Message
 import com.example.kesi.databinding.ActivityChatBinding
+import com.example.kesi.model.AllSchedulesDto
+import com.example.kesi.model.BottomSheetScheduleDto
 import com.example.kesi.model.GroupDto
 import com.example.kesi.model.MessageDto
 import com.example.kesi.setting.RetrofitSetting
@@ -41,6 +46,9 @@ class ChatActivity : AppCompatActivity() {
 
     private var gid: Long? = null
 
+    private lateinit var allSchedulesRecyclerViewAdapter: AllSchedulesRecyclerViewAdapter // 전체 일정 리사이클러뷰 어댑터
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -65,6 +73,27 @@ class ChatActivity : AppCompatActivity() {
                 Toast.makeText(this@ChatActivity,p1.message,Toast.LENGTH_SHORT).show()
             }
         })
+
+        var testSchedule: ArrayList<AllSchedulesDto> = arrayListOf(
+            AllSchedulesDto(R.drawable.ic_star2, "오후 미팅", "11","15:00 - 17:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "아침 회의", "11","09:00 - 10:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "11","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "12","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "12","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "12","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "12","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "아침 회의", "12","09:00 - 10:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "12","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "13","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "14","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "14","12:00 - 13:00"),
+            AllSchedulesDto(R.drawable.ic_star2, "팀 점심", "14","12:00 - 13:00")
+        )
+
+        // 전체 일정 리사이클러뷰
+        binding.rvAllSchdules.layoutManager = LinearLayoutManager(this@ChatActivity)
+        allSchedulesRecyclerViewAdapter = AllSchedulesRecyclerViewAdapter(testSchedule)
+        binding.rvAllSchdules.adapter = allSchedulesRecyclerViewAdapter
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
 
