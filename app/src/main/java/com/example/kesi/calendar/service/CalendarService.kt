@@ -1,7 +1,6 @@
 package com.example.kesi.calendar.service
 
 import com.example.kesi.calendar.domain.DayLine
-import com.example.kesi.calendar.repository.ScheduleRepository
 import com.example.kesi.domain.Schedule
 import java.time.LocalDate
 
