@@ -6,9 +6,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     tools:context=".activity.ChatActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mainColor">
@@ -151,7 +153,7 @@
             app:behavior_expandedOffset="50dp"
             app:behavior_fitToContents="false"
 
-            app:behavior_halfExpandedRatio="0.6"
+            app:behavior_halfExpandedRatio="0.55"
 
             app:behavior_peekHeight="20dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -167,7 +169,7 @@
                 app:layout_constraintRight_toRightOf="@+id/bottom_sheet"
                 app:layout_constraintTop_toTopOf="@+id/bottom_sheet" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!--<androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/topBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -206,17 +208,18 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvChat"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/gray"
+                android:layout_marginTop="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/bottomBar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/topBar"
+                app:layout_constraintTop_toBottomOf="@+id/top"
                 tools:listitem="@layout/receive_person" />
 
             <LinearLayout
@@ -230,24 +233,27 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvChat">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnPlus"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/ic_add" />
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/ic_add_file" />
 
                 <EditText
                     android:id="@+id/etMessage"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/gray" />
+                    android:layout_weight="0.6"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/edit_text_background_chat" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnSend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_send" />
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/ic_btn_calendar" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.Guideline

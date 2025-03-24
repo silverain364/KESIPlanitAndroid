@@ -1,17 +1,21 @@
 package com.example.kesi.activity
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.graphics.Rect
 import android.os.Bundle
-import android.transition.TransitionManager
 import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnFocusChangeListener
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.Lifecycle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.getSystemService
+import androidx.core.view.GestureDetectorCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kesi.R
 import com.example.kesi.adapter.AllSchedulesRecyclerViewAdapter
@@ -20,9 +24,7 @@ import com.example.kesi.api.GroupApi
 import com.example.kesi.data.Message
 import com.example.kesi.databinding.ActivityChatBinding
 import com.example.kesi.model.AllSchedulesDto
-import com.example.kesi.model.BottomSheetScheduleDto
 import com.example.kesi.model.GroupDto
-import com.example.kesi.model.MessageDto
 import com.example.kesi.setting.RetrofitSetting
 import com.example.kesi.util.view.GroupSpaceCalendar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -33,7 +35,7 @@ import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.log
+
 
 class ChatActivity : AppCompatActivity() {
     lateinit var binding: ActivityChatBinding
@@ -50,7 +52,10 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var allSchedulesRecyclerViewAdapter: AllSchedulesRecyclerViewAdapter // 전체 일정 리사이클러뷰 어댑터
     private lateinit var groupSpaceCalendar: GroupSpaceCalendar
 
-    @SuppressLint("NotifyDataSetChanged")
+    private lateinit var mDetector: GestureDetectorCompat
+    private var prevFocus: View? = null
+
+    @SuppressLint("NotifyDataSetChanged", "UseCompatLoadingForDrawables", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -77,6 +82,8 @@ class ChatActivity : AppCompatActivity() {
                 Toast.makeText(this@ChatActivity,p1.message,Toast.LENGTH_SHORT).show()
             }
         })
+
+        mDetector = GestureDetectorCompat(this, SingleTapListener())
 
         var testSchedule: ArrayList<AllSchedulesDto> = arrayListOf(
             AllSchedulesDto(R.drawable.ic_star2, "오후 미팅", "11","15:00 - 17:00"),
@@ -135,9 +142,9 @@ class ChatActivity : AppCompatActivity() {
 
                 //bottomBar가 다 보이기 위한 퍼센트를 구함
                 val bottomBarHeight = binding.bottomBar.height
-                val topBarHeight = binding.topBar.height
+                //val topBarHeight = binding.topBar.height
 
-                val bottomBarRange = (bottomBarHeight + topBarHeight) / realHeight.toFloat()
+                val bottomBarRange = (bottomBarHeight/* + topBarHeight*/) / realHeight.toFloat()
 
 
                 Log.d("ChatActivity", "onSlide : height : ${bottomSheet.height} realHeight : ${realHeight} validRange : $validRange")
@@ -159,14 +166,11 @@ class ChatActivity : AppCompatActivity() {
         // 메시지 리스너 설정
         setupMessageListener(messageAdapter)
 
-        // TODO 이미지 변경으로 바꿔야함.
         binding.etMessage.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                // EditText가 포커스를 받았을 때 버튼 텍스트 변경
-                binding.btnSend.text = "전송"
+                binding.btnSend.background = getDrawable(R.drawable.ic_send)
             } else {
-                // EditText의 포커스가 사라지면 버튼 텍스트 원래대로 변경
-                binding.btnSend.text = "캘린더"
+                binding.btnSend.background = getDrawable(R.drawable.ic_btn_calendar)
             }
         }
 
@@ -239,6 +243,43 @@ class ChatActivity : AppCompatActivity() {
 
         binding.calendarNextBtn.setOnClickListener {
             groupSpaceCalendar.nextMonth()
+        }
+    }
+
+    // 터치 영역에 따라 키보드를 숨기기 위해 구현
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        // Activity에서 터치 이벤트가 발생할 때 현재 포커스를 가진 뷰를 저장
+        if (ev.action == MotionEvent.ACTION_UP)
+            prevFocus = currentFocus
+        val result = super.dispatchTouchEvent(ev)
+        // dispatchTouchEvent 호출 후 singleTapUp 제스처 탐지
+        mDetector.onTouchEvent(ev)
+        return result
+    }
+
+    private inner class SingleTapListener : GestureDetector.SimpleOnGestureListener() {
+
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
+            // ACTION_UP 이벤트에서 포커스를 가진 뷰가 EditText일 때 터치 영역을 확인하여 키보드를 토글
+            if (e.action == MotionEvent.ACTION_UP && prevFocus is EditText) {
+                val prevFocus = prevFocus ?: return false
+                // 포커를 가진 EditText의 터치 영역 계산
+                val hitRect = Rect()
+                prevFocus.getGlobalVisibleRect(hitRect)
+
+                // 터치 이벤트가 EditText의 터치 영역에 속하지 않을 때 키보드를 숨길지 결정
+                if (!hitRect.contains(e.x.toInt(), e.y.toInt())) {
+                    if (currentFocus is EditText && currentFocus != prevFocus) {
+                        // 터치한 영역의 뷰가 다른 EditText일 때는 키보드를 가리지 않는다.
+                        return false
+                    } else {
+                        // 터치한 영역이 EditText의 터치 영역 밖이면서 다른 EditText가 아닐 때 키보드 hide
+                        getSystemService<InputMethodManager>()?.hideSoftInputFromWindow(prevFocus.windowToken, 0)
+                        prevFocus.clearFocus()
+                    }
+                }
+            }
+            return super.onSingleTapUp(e)
         }
     }
 }
