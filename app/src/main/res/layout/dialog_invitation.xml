@@ -20,6 +20,7 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/invitation_logo"/>
         <TextView
+            android:id="@+id/tvInvite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="손은비님이 초대함 : "
@@ -30,11 +31,13 @@
             android:layout_margin="5dp"
             android:gravity="center">
             <ImageView
+                android:id="@+id/ivGroup"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_btn_calendar"
                 android:layout_marginRight="5dp"/>
             <TextView
+                android:id="@+id/tvGruopName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="KESI"
@@ -50,7 +53,7 @@
             android:textSize="20sp"
             android:layout_marginVertical="5dp"/>
         <RadioGroup
-            android:id="@+id/rgGender"
+            android:id="@+id/rgSecurity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
@@ -58,6 +61,7 @@
             android:background="@drawable/radio_group_background_security">
 
             <RadioButton
+                android:id="@+id/rbHigh"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -70,6 +74,7 @@
                 android:button="null"
                 android:gravity="center"/>
             <RadioButton
+                android:id="@+id/rbMedium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -81,6 +86,7 @@
                 android:button="null"
                 android:gravity="center"/>
             <RadioButton
+                android:id="@+id/rbLow"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -93,6 +99,7 @@
                 android:gravity="center"/>
         </RadioGroup>
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAcceptance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_background_white"
