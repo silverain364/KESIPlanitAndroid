@@ -31,4 +31,6 @@
 
     <color name="chat_background">#121212</color>
     <color name="chat_edit_text_background">#33FFFFFF</color>
+
+    <color name="invitation_background">#2F2F2F</color>
 </resources>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    >
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="450dp"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/invitation_background">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/invitation_logo"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="손은비님이 초대함 : "
+            android:textColor="@color/gray"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_btn_calendar"
+                android:layout_marginRight="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KESI"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개인 스케줄 공유 보안감도"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_marginVertical="5dp"/>
+        <RadioGroup
+            android:id="@+id/rgGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:orientation="horizontal"
+            android:background="@drawable/radio_group_background_security">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="High"
+                android:textColor="@drawable/radio_button_text_security"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:background="@drawable/radio_button_security"
+                android:checked="true"
+                android:button="null"
+                android:gravity="center"/>
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Medium"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@drawable/radio_button_text_security"
+                android:background="@drawable/radio_button_security"
+                android:button="null"
+                android:gravity="center"/>
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Low"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@drawable/radio_button_text_security"
+                android:background="@drawable/radio_button_security"
+                android:button="null"
+                android:gravity="center"/>
+        </RadioGroup>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background_white"
+            android:text="수락"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+</FrameLayout>
