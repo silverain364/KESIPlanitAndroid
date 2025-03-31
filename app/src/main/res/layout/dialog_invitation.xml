@@ -55,48 +55,59 @@
         <RadioGroup
             android:id="@+id/rgSecurity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
+            android:layout_height="50dp"
             android:orientation="horizontal"
-            android:background="@drawable/radio_group_background_security">
+            android:gravity="center"
+            android:background="@drawable/shape_radio_group_background"
+            android:backgroundTint="@color/radio_group_black"
+            android:layout_marginBottom="10dp"
+            >
 
             <RadioButton
                 android:id="@+id/rbHigh"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="High"
-                android:textColor="@drawable/radio_button_text_security"
-                android:textStyle="bold"
                 android:textSize="20sp"
-                android:background="@drawable/radio_button_security"
+                android:textStyle="bold"
+                android:textColor="@drawable/selector_radio_text_security"
+                android:background="@drawable/selector_radio_button_security"
+                android:button="@null"
                 android:checked="true"
-                android:button="null"
-                android:gravity="center"/>
+                android:layout_marginHorizontal="7dp"
+                />
+
             <RadioButton
                 android:id="@+id/rbMedium"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="Medium"
-                android:textStyle="bold"
                 android:textSize="20sp"
-                android:textColor="@drawable/radio_button_text_security"
-                android:background="@drawable/radio_button_security"
-                android:button="null"
-                android:gravity="center"/>
+                android:textStyle="bold"
+                android:textColor="@drawable/selector_radio_text_security"
+                android:background="@drawable/selector_radio_button_security"
+                android:button="@null"
+                android:layout_marginHorizontal="7dp"
+                />
+
             <RadioButton
                 android:id="@+id/rbLow"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="Low"
-                android:textStyle="bold"
                 android:textSize="20sp"
-                android:textColor="@drawable/radio_button_text_security"
-                android:background="@drawable/radio_button_security"
-                android:button="null"
-                android:gravity="center"/>
+                android:textStyle="bold"
+                android:textColor="@drawable/selector_radio_text_security"
+                android:background="@drawable/selector_radio_button_security"
+                android:button="@null"
+                android:layout_marginHorizontal="7dp"
+                />
         </RadioGroup>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnAcceptance"
