@@ -18,4 +18,6 @@ interface GroupApi {
 
     @GET("group/list")
     fun getAllGroups() : Call<List<GroupSimpleDto>>
+
+
 }

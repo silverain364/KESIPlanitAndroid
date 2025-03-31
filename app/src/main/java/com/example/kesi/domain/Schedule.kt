@@ -1,10 +1,11 @@
 package com.example.kesi.domain
 
+import android.content.Context
 import android.graphics.Color
 import java.time.LocalDate
 import java.time.LocalTime
 
-class Schedule (
+abstract class Schedule (
     val id: Long,
     val start: LocalDate,
     val end: LocalDate,
@@ -32,4 +33,8 @@ class Schedule (
     override fun hashCode(): Int {
         return id.hashCode()
     }
+
+    abstract fun getType(): ScheduleType
+
+    abstract fun getSingleLineColor(context: Context): Int
 }

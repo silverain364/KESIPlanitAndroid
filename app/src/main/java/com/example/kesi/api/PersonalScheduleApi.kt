@@ -10,7 +10,7 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-interface ScheduleApi {
+interface PersonalScheduleApi {
     @GET("schedule")
     fun findByMonth(@Query("monthDate") date: String): retrofit2.Call<List<ScheduleDto>>
 

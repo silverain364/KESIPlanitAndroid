@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.CalendarView
 import android.widget.TextView
@@ -49,11 +50,14 @@ class AddScheduleActivity : AppCompatActivity() {
         val addScheduleBtn = binding.scheduleAddBtn
         val textMemoEt = binding.textMemoEdit
 
-        val startDateTv = binding.startDateTv
-        val startTimeTv = binding.startTimeTv
+        val startDateTv = binding.dateSetLayout.startDateTv
+        val startTimeTv = binding.dateSetLayout.startTimeTv
 
-        val endDateTv = binding.endDateTv
-        val endTimeTv = binding.endTimeTv
+        val endDateTv = binding.dateSetLayout.endDateTv
+        val endTimeTv = binding.dateSetLayout.endTimeTv
+
+        val date = intent.getSerializableExtra("date", LocalDate::class.java)
+        Log.d("AddScheduleActivity", "intent select date : ${date}")
 
         dateRangeSelectorView = DateRangeSelectorView(
             startDateTv = startDateTv,
@@ -61,7 +65,9 @@ class AddScheduleActivity : AppCompatActivity() {
             endDateTv = endDateTv,
             endTimeTv = endTimeTv,
             calendarLayout = binding.calendarLayout,
-            timeLayout = binding.timeLayout
+            timeLayout = binding.timeLayout,
+            startDateTime = LocalDateTime.of(date, LocalTime.now()),
+            endDateTime = LocalDateTime.of(date, LocalTime.now())
         )
 
         colorAdapter = CircleColorAdapter(ScheduleColorList.getColorList(this))
@@ -89,7 +95,14 @@ class AddScheduleActivity : AppCompatActivity() {
                 startTime = dateRangeSelectorView.getStartTime().withNano(0).toString(),
                 endDate = dateRangeSelectorView.getEndDate().toString(),
                 endTime = dateRangeSelectorView.getEndTime().withNano(0).toString(),
-                securityLevel = SecurityLevel.LOW
+                securityLevel = when(binding.securityLayout.securityRadioGroup.checkedRadioButtonId) {
+                    binding.securityLayout.highRadioBtn.id -> SecurityLevel.HIGH
+                    binding.securityLayout.mediumRadioBtn.id -> SecurityLevel.MEDIUM
+                    binding.securityLayout.lowRadioBtn.id -> SecurityLevel.LOW
+                    else -> throw RuntimeException("no selected security level!")
+                }
+
+
             )
 
             val intent = Intent()

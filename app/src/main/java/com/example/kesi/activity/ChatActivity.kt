@@ -57,7 +57,6 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initCalendar()
 
         // 인증 초기화
         auth = FirebaseAuth.getInstance()
@@ -69,8 +68,10 @@ class ChatActivity : AppCompatActivity() {
         // 서버에서 gid에 해당하는 그룹을 가져와서 액션바 그룹 이름 변경
         groupApi.getGroup(gid!!).enqueue(object : Callback<GroupDto> {
             override fun onResponse(p0: Call<GroupDto>, response: Response<GroupDto>) {
-                // 액션바에 그룹 이름 보여주기
-                binding.tvTitle.setText(response.body()?.groupName)
+                if(response.body() == null) return
+                binding.tvTitle.setText(response.body()?.groupName) // 액션바에 그룹 이름 보여주기
+                initCalendar(response.body()!!)
+
             }
 
             override fun onFailure(p0: Call<GroupDto>, p1: Throwable) {
@@ -226,11 +227,12 @@ class ChatActivity : AppCompatActivity() {
             })
     }
 
-    private fun initCalendar(){
+    private fun initCalendar(groupDto: GroupDto){
         groupSpaceCalendar = GroupSpaceCalendar(
             binding.monthTv,
             binding.yearTv,
-            binding.calendarRv
+            binding.calendarRv,
+            groupDto
         )
 
         binding.calendarPreviousBtn.setOnClickListener {

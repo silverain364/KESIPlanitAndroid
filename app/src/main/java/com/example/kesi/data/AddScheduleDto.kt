@@ -2,6 +2,7 @@ package com.example.kesi.data
 
 import android.graphics.Color
 import android.os.Parcelable
+import com.example.kesi.domain.PersonalSchedule
 import com.example.kesi.domain.Schedule
 import com.example.kesi.domain.SecurityLevel
 import kotlinx.parcelize.Parcelize
@@ -21,7 +22,7 @@ data class AddScheduleDto(
     val endTime: String,
     val securityLevel: SecurityLevel
 ): Parcelable {
-    fun toDomain(id: Long) = Schedule(
+    fun toDomain(id: Long) = PersonalSchedule(
         id = id,
         color = Color.valueOf(colorValue),
         title = title,

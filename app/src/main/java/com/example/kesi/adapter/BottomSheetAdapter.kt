@@ -28,7 +28,7 @@ class BottomSheetAdapter(
         private val time: TextView = itemView.findViewById(R.id.item_time)
 
         fun bind(schedule: Schedule) {
-            icon.backgroundTintList = ColorStateList.valueOf(schedule.color.toArgb())
+            icon.imageTintList = ColorStateList.valueOf(schedule.color.toArgb())
             title.text = schedule.title
             time.text = schedule.endTime.toString()
 

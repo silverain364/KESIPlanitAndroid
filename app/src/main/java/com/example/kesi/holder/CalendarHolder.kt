@@ -3,8 +3,8 @@ package com.example.kesi.holder
 import android.view.View
 import androidx.constraintlayout.widget.Guideline
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kesi.calendar.render.DayTextView
-import com.example.kesi.calendar.view.DayBoxView
+import com.example.kesi.calendar.mutiple_line.render.DayTextView
+import com.example.kesi.calendar.mutiple_line.view.DayBoxView
 import com.example.kesi.data.MonthData
 import com.example.kesi.domain.Schedule
 import java.time.LocalDate

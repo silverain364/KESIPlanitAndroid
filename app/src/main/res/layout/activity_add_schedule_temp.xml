@@ -51,76 +51,9 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleEt" />
 
-            <LinearLayout
-                android:id="@+id/dateSetContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="30dp"
-                android:layout_gravity="center"
-
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleEt">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/startDateTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:textSize="20sp"
-                        android:text="2025.02.16(화)"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:id="@+id/startTimeTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:textSize="24sp"
-                        android:text="오후 02:00"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-
-                    android:src="@drawable/ic_date_arrow"
-                    android:layout_marginHorizontal="40dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/endDateTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:textSize="20sp"
-                        android:text="2025.02.16(화)"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:id="@+id/endTimeTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:textSize="24sp"
-                        android:text="오후 02:00"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-            </LinearLayout>
+            <include
+                android:id="@+id/dateSetLayout"
+                layout="@layout/date_set_layout" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/allDayBtn"
@@ -188,6 +121,17 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/allDayBtn">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"
+                    android:layout_marginTop="10dp" />
+
+                <include
+                    android:id="@+id/securityLayout"
+                    layout="@layout/radio_group_security_level"/>
+
 
                 <View
                     android:layout_width="match_parent"

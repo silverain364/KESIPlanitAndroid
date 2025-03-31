@@ -1,5 +1,6 @@
 package com.example.kesi.util.view
 
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.Guideline
@@ -8,11 +9,12 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.adapter.CalendarHolderFactory
 import com.example.kesi.adapter.FullCalendarAdapter
-import com.example.kesi.calendar.render.DayTextView
-import com.example.kesi.calendar.view.DayBoxView
+import com.example.kesi.calendar.mutiple_line.render.DayTextView
+import com.example.kesi.calendar.mutiple_line.view.DayBoxView
 import com.example.kesi.data.MonthData
 import com.example.kesi.holder.CalendarHolder
 import com.example.kesi.holder.MiniCalendarHolder
+import com.example.kesi.model.GroupDto
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.*
@@ -22,13 +24,14 @@ class GroupSpaceCalendar(
     private val monthTv: TextView,
     private val yearTv: TextView,
     private val calendarRv: RecyclerView,
+    private val groupDto: GroupDto
 ) {
     private val holderFactory = object: CalendarHolderFactory {
         override fun create(
             view: View, guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
             backgroundViewList: List<View>, dayTvList: List<DayTextView>, dayBoxOnClickListener: (DayBoxView) -> Unit
         ): CalendarHolder {
-            return MiniCalendarHolder(view, guides, backgroundViewList, dayTvList, dayBoxOnClickListener)
+            return MiniCalendarHolder(view, guides, backgroundViewList, dayTvList, dayBoxOnClickListener, groupDto)
         }
     }
 
@@ -37,6 +40,7 @@ class GroupSpaceCalendar(
     ) //Todo. 추후 선택시 발생시킬 이벤트 있음 설정해야 됨
 
     init {
+        Log.d("GroupSpaceCalendar", "group calendar Id: ${groupDto.calendarId}")
         monthTv.text = LocalDate.now().month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)
         yearTv.text = LocalDate.now().year.toString()
 

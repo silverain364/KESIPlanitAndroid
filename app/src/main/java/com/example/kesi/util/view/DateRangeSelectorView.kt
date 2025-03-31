@@ -5,6 +5,7 @@ import android.widget.CalendarView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.TimePicker
+import androidx.core.content.ContextCompat
 import com.example.kesi.R
 import com.example.kesi.util.DateTimeRange
 import com.example.kesi.util.DateTimeTv
@@ -27,6 +28,8 @@ class DateRangeSelectorView(
     private val timePicker: TimePicker = timeLayout.findViewById(R.id.timePicker)
     private var selectedDateTv: TextView? = null
     private var selectedTimeTv: TextView? = null
+    private var selectTv: TextView? = null
+
     private val dateTimeRange: DateTimeRange
 
     init {
@@ -45,6 +48,9 @@ class DateRangeSelectorView(
             if(!(calendarLayout.visibility == View.VISIBLE && selectedDateTv == endDateTv))
                 toggleVisibility(calendarLayout)
 
+            if(selectTv == it) unSelect()
+            else select(it as TextView)
+
             selectedDateTv = startDateTv
             //calendarView에 date는 UTC기준 milli second를 기준으로 설정되어 있어 변환이 필요
             //LocalDate > Instant > Millis 로 변환
@@ -57,6 +63,9 @@ class DateRangeSelectorView(
             if(calendarLayout.visibility == View.GONE || selectedDateTv == endDateTv)
                 toggleVisibility(calendarLayout)
 
+            if(selectTv == it) unSelect()
+            else select(it as TextView)
+
             selectedDateTv = endDateTv
             calendarView.date = dateTimeRange.getEndDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
         }
@@ -66,6 +75,9 @@ class DateRangeSelectorView(
             calendarLayout.visibility = View.GONE
             if(timeLayout.visibility == View.GONE || selectedTimeTv == startTimeTv)
                 toggleVisibility(timeLayout)
+
+            if(selectTv == it) unSelect()
+            else select(it as TextView)
 
             selectedTimeTv = startTimeTv
             timePicker.hour = dateTimeRange.getStartTime().hour
@@ -77,6 +89,9 @@ class DateRangeSelectorView(
             calendarLayout.visibility = View.GONE
             if(timeLayout.visibility == View.GONE || selectedTimeTv == endTimeTv)
                 toggleVisibility(timeLayout)
+
+            if(selectTv == it) unSelect()
+            else select(it as TextView)
 
             selectedTimeTv = endTimeTv
             timePicker.hour = dateTimeRange.getEndTime().hour
@@ -107,6 +122,21 @@ class DateRangeSelectorView(
             view.visibility = View.VISIBLE
     }
 
+    private fun select(textView: TextView) {
+        textView.backgroundTintList = ContextCompat.getColorStateList(textView.context, R.color.selectPrimaryColor)
+
+        if(selectTv != null)
+            selectTv!!.backgroundTintList = ContextCompat.getColorStateList(selectTv!!.context, R.color.black)
+
+        selectTv = textView
+    }
+
+    private fun unSelect() {
+        if(selectTv == null) return
+
+        selectTv?.backgroundTintList = ContextCompat.getColorStateList(selectTv!!.context, R.color.black)
+        selectTv = null
+    }
 
     fun getStartDate() = dateTimeRange.getStartDate()
     fun getEndDate() = dateTimeRange.getEndDate()

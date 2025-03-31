@@ -1,11 +1,11 @@
-package com.example.kesi.calendar.view
+package com.example.kesi.calendar.mutiple_line.view
 
 import android.content.res.ColorStateList
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.kesi.R
-import com.example.kesi.calendar.domain.DayBox
-import com.example.kesi.calendar.render.DayTextView
+import com.example.kesi.calendar.mutiple_line.domain.DayBox
+import com.example.kesi.calendar.mutiple_line.render.DayTextView
 import java.time.LocalDate
 
 data class DayBoxView(

@@ -2,30 +2,31 @@ package com.example.kesi.holder
 
 import android.util.Log
 import android.view.View
-import android.view.View.OnClickListener
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.example.kesi.R
-import com.example.kesi.api.ScheduleApi
-import com.example.kesi.calendar.domain.DayLine
-import com.example.kesi.calendar.domain.ScheduleViewMap
-import com.example.kesi.calendar.service.CalendarRenderService
-import com.example.kesi.calendar.service.CalendarService
-import com.example.kesi.calendar.render.DayTextView
-import com.example.kesi.calendar.view.DayBoxView
-import com.example.kesi.calendar.view.DayLineView
+import com.example.kesi.api.GroupScheduleApi
+import com.example.kesi.api.PersonalScheduleApi
+import com.example.kesi.calendar.mutiple_line.domain.DayLine
+import com.example.kesi.calendar.mutiple_line.domain.ScheduleViewMap
+import com.example.kesi.calendar.mutiple_line.service.CalendarRenderService
+import com.example.kesi.calendar.mutiple_line.service.CalendarService
+import com.example.kesi.calendar.mutiple_line.render.DayTextView
+import com.example.kesi.calendar.mutiple_line.view.DayBoxView
+import com.example.kesi.calendar.mutiple_line.view.DayLineView
 import com.example.kesi.domain.Schedule
 import com.example.kesi.data.MonthData
-import com.example.kesi.fragment.ScheduleBottomSheet
+import com.example.kesi.model.GroupScheduleDto
 import com.example.kesi.model.ScheduleDto
 import com.example.kesi.setting.RetrofitSetting
-import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class FullCalendarHolder (
     itemView: View,
@@ -55,9 +56,12 @@ class FullCalendarHolder (
     private val calendarService = CalendarService(calendarRender)
 
     private val retrofit = RetrofitSetting.getRetrofit()
-    private val scheduleApi = retrofit.create(ScheduleApi::class.java)
+    private val scheduleApi = retrofit.create(PersonalScheduleApi::class.java)
+    private val groupsScheduleApi = retrofit.create(GroupScheduleApi::class.java)
+
     private var bindCompleted = CompletableDeferred<Unit>()
 
+    private val scope = CoroutineScope(Dispatchers.IO)
 
 
     init {
@@ -90,13 +94,18 @@ class FullCalendarHolder (
         for (i in 0..<guides.second.size - 1) { //가로줄 만큼 반복
             dayLines.add(DayLine(LocalDate.ofEpochDay(startEpochDay + (guides.first.size - 1) * i)))
 
-            dayViewLines.add(DayLineView(
+            dayViewLines.add(
+                DayLineView(
                 monthDate = date,
                 dayLine = dayLines[i],
                 backgroundView = backgroundViewList.subList(i * DayLine.LINE_SIZE, (i + 1) * DayLine.LINE_SIZE),
-                dayTvList = dayTvList.subList(i * DayLine.LINE_SIZE, (i + 1) * DayLine.LINE_SIZE)
-            ))
+                dayTvList = dayTvList.subList(i * DayLine.LINE_SIZE, (i + 1) * DayLine.LINE_SIZE))
+            )
         }
+    }
+
+    fun getSelectDate(): LocalDate {
+        return selectedBox?.dayBox?.date ?: date //선택한 박스가 없으면 캘린더 date 전달
     }
 
     override fun select(selectDate: LocalDate) {
@@ -110,15 +119,44 @@ class FullCalendarHolder (
         selectedBox = dayViewLines[dayBoxViewIndex / DayLine.LINE_SIZE]
             .backBoxViewList[dayBoxViewIndex % DayLine.LINE_SIZE]
 
-//        scheduleBottomSheet.showSchedules(
-//            selectedBox!!.dayBox.date, //클릭한 스케줄 정보 보여주기
-//            selectedBox!!.dayBox.getAllScheduleOrderByHeight().toList()
-//        )
-
         dayBoxOnClickListener(selectedBox!!) //외부 시스템과 연결하기 위해서 위 설정이 좋은 것 같다.
 
         selectedBox!!.select()
     }
+
+    private suspend fun geGroupScheduleInMonth(date: LocalDate): List<GroupScheduleDto> {
+        return suspendCoroutine { continuation ->
+            groupsScheduleApi.findInMonth(date.toString()).enqueue(object: Callback<List<GroupScheduleDto>> {
+                override fun onResponse(p0: Call<List<GroupScheduleDto>>, p1: Response<List<GroupScheduleDto>>) {
+                    Log.d("FullCalendarHolder", "groups schedule size : ${p1.body()?.size}")
+
+                    continuation.resume(p1.body() ?: emptyList())
+                }
+
+                override fun onFailure(p0: Call<List<GroupScheduleDto>>, p1: Throwable) {
+                    continuation.resume(emptyList())
+                }
+            })
+        }
+    }
+
+
+    private suspend fun getPersonalScheduleInMonth(date: LocalDate): List<ScheduleDto> {
+        return suspendCoroutine { continuation ->
+            scheduleApi.findByMonth(date.toString()).enqueue(object: Callback<List<ScheduleDto>> {
+                override fun onResponse(p0: Call<List<ScheduleDto>>, p1: Response<List<ScheduleDto>>) {
+                    Log.d("FullCalendarHolder", "personal schedule : ${p1.body()?.size}")
+
+                    continuation.resume(p1.body() ?: emptyList())
+                }
+
+                override fun onFailure(p0: Call<List<ScheduleDto>>, p1: Throwable) {
+                    continuation.resume(emptyList())
+                }
+            })
+        }
+    }
+
 
 
     override fun bind(monthData: MonthData) {
@@ -127,24 +165,33 @@ class FullCalendarHolder (
         scheduleMap.clear()
 
         initDate(monthData.date)
-        scheduleApi.findByMonth(monthData.date.toString()).enqueue(object: Callback<List<ScheduleDto>> {
-            override fun onResponse(p0: Call<List<ScheduleDto>>, p1: Response<List<ScheduleDto>>) {
-                Log.d("FullCalendarHolder", "size : ${p1.body()?.size}")
+        scope.launch {
+            val personalScheduleDtoListDeferred: Deferred<List<ScheduleDto>> = async {
+                getPersonalScheduleInMonth(monthData.date)
+            }
 
-                if(p1.body() == null) return
-                p1.body()!!.forEach {
-                    scheduleMap[it.id] = it.toDomain()
-                }
+            val groupScheduleDtoListDeferred: Deferred<List<GroupScheduleDto>> = async {
+                geGroupScheduleInMonth(monthData.date)
+            }
 
+            val personalScheduleDtoList = personalScheduleDtoListDeferred.await()
+            val groupScheduleDtoList = groupScheduleDtoListDeferred.await()
+
+            personalScheduleDtoList.forEach {
+                scheduleMap[it.id] = it.toDomain()
+            }
+
+            groupScheduleDtoList.forEach {
+                scheduleMap[it.id] = it.toDomain()
+            }
+
+            withContext(Dispatchers.Main) {
                 calendarService.addSchedules(scheduleMap.values.toList(), dayLines)
                 calendarService.render(dayLines)
-                bindCompleted.complete(Unit)
             }
 
-            override fun onFailure(p0: Call<List<ScheduleDto>>, p1: Throwable) {
-                bindCompleted.complete(Unit)
-            }
-        })
+            bindCompleted.complete(Unit)
+        }
     }
 
     override suspend fun addSchedule(schedule: Schedule) { //데이터를 이 함수가 더 빨리 받아올 수도 있음

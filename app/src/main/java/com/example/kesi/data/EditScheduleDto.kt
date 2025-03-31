@@ -2,6 +2,7 @@ package com.example.kesi.data
 
 import android.os.Parcelable
 import androidx.core.graphics.toColor
+import com.example.kesi.domain.PersonalSchedule
 import com.example.kesi.domain.Schedule
 import com.example.kesi.domain.SecurityLevel
 import com.example.kesi.model.GroupMemberDto
@@ -40,7 +41,7 @@ data class EditScheduleDto(
         )
     }
 
-    fun toDomain() = Schedule(
+    fun toDomain() = PersonalSchedule(
         id = id,
         color = colorValue.toColor(),
         title = title,

@@ -1,8 +1,8 @@
-package com.example.kesi.calendar.view
+package com.example.kesi.calendar.mutiple_line.view
 
 import android.view.View
-import com.example.kesi.calendar.domain.DayLine
-import com.example.kesi.calendar.render.DayTextView
+import com.example.kesi.calendar.mutiple_line.domain.DayLine
+import com.example.kesi.calendar.mutiple_line.render.DayTextView
 import java.time.LocalDate
 
 data class DayLineView(

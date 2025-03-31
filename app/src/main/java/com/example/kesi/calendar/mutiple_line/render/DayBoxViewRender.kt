@@ -1,57 +1,58 @@
-package com.example.kesi.calendar.render
+package com.example.kesi.calendar.mutiple_line.render
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.kesi.R
+import com.example.kesi.domain.Schedule
+import com.example.kesi.domain.ScheduleType
 import java.time.LocalDate
 
 class DayBoxViewRender (
     private val container: ConstraintLayout,
 ){
-    private fun getDayColor(date: LocalDate) =
-        when (date.dayOfWeek.value) {
-            6 -> Color.BLUE // 토요일
-            7 -> Color.RED  // 일요일
-            else -> Color.BLACK
-        }
-
-    private fun createStarView(context: Context) = ImageView(context).apply {
-        id = ImageView.generateViewId()
-        setImageResource(R.drawable.star)
+    companion object {
+        const val STAR_SIZE = 35
     }
 
-    fun createSingleStar(topReferenceViewId: Int, backgroundViewId: Int) = ImageView(container.context).apply {
+    private fun getInitSettingImageView(schedule: Schedule) = ImageView(container.context).apply {
         id = ImageView.generateViewId()
-        setImageResource(R.drawable.star)
-        layoutParams = ConstraintLayout.LayoutParams(40, 40).apply {
+
+        if(schedule.getType() == ScheduleType.PERSONAL)setImageResource(R.drawable.star)
+        if(schedule.getType() == ScheduleType.GROUP) setImageResource(R.drawable.ic_group_schedule_tmp)
+
+        adjustViewBounds = true //비율 유지
+        scaleType = ImageView.ScaleType.FIT_CENTER
+        imageTintList = ColorStateList.valueOf(schedule.color.toArgb())
+    }
+
+
+    fun createSingleStar(topReferenceViewId: Int, backgroundViewId: Int, schedule: Schedule)
+    = getInitSettingImageView(schedule).apply {
+        layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, STAR_SIZE).apply {
             topMargin = 10
 
             topToBottom = topReferenceViewId
             leftToLeft = backgroundViewId
             rightToRight = backgroundViewId
         }
+
     }
 
-    fun createDoubleStar(topReferenceViewId: Int, backgroundViewId: Int): List<ImageView> {
-        val leftStar = ImageView(container.context).apply {
-            id = ImageView.generateViewId()
-            setImageResource(R.drawable.star)
-        }
-        val rightStar = ImageView(container.context).apply {
-            id = ImageView.generateViewId()
-            setImageResource(R.drawable.star)
-        }
+    fun createDoubleStar(topReferenceViewId: Int, backgroundViewId: Int, schedules: List<Schedule>): List<ImageView> {
+        val leftStar = getInitSettingImageView(schedules.first())
+        val rightStar = getInitSettingImageView(schedules.last())
 
-        leftStar.layoutParams = ConstraintLayout.LayoutParams(40, 40).apply {
+        leftStar.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, STAR_SIZE).apply {
             topToBottom = topReferenceViewId
             leftToLeft = backgroundViewId
             rightToLeft = rightStar.id
         }
         
-        rightStar.layoutParams = ConstraintLayout.LayoutParams(40, 40).apply {
+        rightStar.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, STAR_SIZE).apply {
             topToBottom = topReferenceViewId
             leftToRight = leftStar.id
             rightToRight = backgroundViewId

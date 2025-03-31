@@ -1,11 +1,10 @@
-package com.example.kesi.calendar.domain
+package com.example.kesi.calendar.mutiple_line.domain
 import android.util.Log
 import com.example.kesi.domain.Schedule
 import java.time.LocalDate
-import kotlin.math.log
 
 class DayLine(
-    val startDate: LocalDate,
+    val startDate: LocalDate
 ) {
     val endDate: LocalDate = startDate.plusDays(LINE_SIZE.toLong() - 1) //Todo. 검즘필요
     val dayBoxes: Array<DayBox> = Array(LINE_SIZE) { DayBox(startDate.plusDays(it.toLong())) }
@@ -14,14 +13,13 @@ class DayLine(
         const val LINE_SIZE = 7
     }
 
-    private fun isWithinRangeSchedule(schedule: Schedule): Boolean {
+    private fun isWithInRangeSchedule(schedule: Schedule): Boolean {
         return !(endDate.toEpochDay() < schedule.start.toEpochDay() ||
                 schedule.end.toEpochDay() < startDate.toEpochDay()) //삽입 못하는 스케줄 이라면
     }
 
-    //todo. edit
     fun addSchedule(schedule: Schedule) {
-        if (!isWithinRangeSchedule(schedule)) return
+        if (!isWithInRangeSchedule(schedule)) return
 
         if (schedule.isStar()) addStarSchedule(schedule)
         if (schedule.isLine()) addLineSchedule(schedule)

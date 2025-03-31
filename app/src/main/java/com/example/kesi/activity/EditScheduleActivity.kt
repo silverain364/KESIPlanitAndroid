@@ -42,23 +42,22 @@ class EditScheduleActivity: AppCompatActivity() {
         val removeScheduleBtn = binding.removeScheduleBtn
         val editScheduleBtn = binding.editScheduleBtn
         val textMemoEt = binding.textMemoEdit
-        val securityRatioGroup = binding.securityRadioGroup
+        val securityRatioGroup = binding.securityLayout.securityRadioGroup
 
         when(schedule.securityLevel) {
-            SecurityLevel.HIGH -> binding.highRadioBtn.isChecked = true
-            SecurityLevel.MEDIUM -> binding.mediumRadioBtn.isChecked = true
-            SecurityLevel.LOW -> binding.lowRadioBtn.isChecked = true
+            SecurityLevel.HIGH -> binding.securityLayout.highRadioBtn.isChecked = true
+            SecurityLevel.MEDIUM -> binding.securityLayout.mediumRadioBtn.isChecked = true
+            SecurityLevel.LOW -> binding.securityLayout.lowRadioBtn.isChecked = true
         }
 
         titleEt.setText(schedule.title)
         textMemoEt.setText(schedule.description)
-        //Todo. 나머지 요소들도 초기화 코드 필요
 
-        val startDateTv = binding.startDateTv
-        val startTimeTv = binding.startTimeTv
+        val startDateTv = binding.dateSetLayout.startDateTv
+        val startTimeTv = binding.dateSetLayout.startTimeTv
 
-        val endDateTv = binding.endDateTv
-        val endTimeTv = binding.endTimeTv
+        val endDateTv = binding.dateSetLayout.endDateTv
+        val endTimeTv = binding.dateSetLayout.endTimeTv
 
         dateRangeSelectorView = DateRangeSelectorView(
             startDateTv = startDateTv,
@@ -103,9 +102,9 @@ class EditScheduleActivity: AppCompatActivity() {
                 endDate = dateRangeSelectorView.getEndDate().toString(),
                 endTime = dateRangeSelectorView.getEndTime().withNano(0).toString(),
                 securityLevel = when(securityRatioGroup.checkedRadioButtonId) {
-                    binding.highRadioBtn.id -> SecurityLevel.HIGH
-                    binding.mediumRadioBtn.id -> SecurityLevel.MEDIUM
-                    binding.lowRadioBtn.id -> SecurityLevel.LOW
+                    binding.securityLayout.highRadioBtn.id -> SecurityLevel.HIGH
+                    binding.securityLayout.mediumRadioBtn.id -> SecurityLevel.MEDIUM
+                    binding.securityLayout.lowRadioBtn.id -> SecurityLevel.LOW
                     else -> throw RuntimeException("no selected security level!")
                 }
             ))

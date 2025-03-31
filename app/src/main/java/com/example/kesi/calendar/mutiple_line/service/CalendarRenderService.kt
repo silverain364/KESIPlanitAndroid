@@ -1,15 +1,14 @@
-package com.example.kesi.calendar.service
+package com.example.kesi.calendar.mutiple_line.service
 
-import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.kesi.calendar.domain.DayBox
-import com.example.kesi.calendar.domain.ScheduleViewMap
-import com.example.kesi.calendar.render.DayBoxViewRender
+import com.example.kesi.calendar.mutiple_line.domain.DayBox
+import com.example.kesi.calendar.mutiple_line.domain.ScheduleViewMap
+import com.example.kesi.calendar.mutiple_line.render.DayBoxViewRender
 import com.example.custormcalendardeom.view.DayLineViewRender
-import com.example.kesi.calendar.render.DayTextView
-import com.example.kesi.calendar.domain.DayLine
+import com.example.kesi.calendar.mutiple_line.render.DayTextView
+import com.example.kesi.calendar.mutiple_line.domain.DayLine
 import java.time.LocalDate
 
 //view + dayBox를 묶는 일은 필요하겠지
@@ -37,7 +36,7 @@ class CalendarRenderService(
         val views = scheduleViewMap[schedules.first()]
     }
 
-    fun unSelect(dayBox:DayBox) {
+    fun unSelect(dayBox: DayBox) {
         val schedules = dayBox.getLastHeightSchedules()
         if(schedules.isEmpty()) return
 
@@ -49,7 +48,7 @@ class CalendarRenderService(
         viewClear(dayLine)
 
         val views = ArrayList<View>()
-        val validMaxEnd = (dayLine.dayBoxes.last().date.toEpochDay() - startDate.toEpochDay()).toInt() // 0 ~ 31
+        val validMaxEnd = (dayLine.endDate.toEpochDay() - startDate.toEpochDay()).toInt() // 0 ~ 31
         val lastOccupyList = BooleanArray(DayLine.LINE_SIZE)
 
 
@@ -115,7 +114,7 @@ class CalendarRenderService(
                     .allMatch { it.isStar() }
             ) { //star로 출력할 수 잇는지
                 if (schedules.size == 1) { //star가 1개인 경우 경우
-                    val starView = boxViewRender.createSingleStar(topView.id, backgroundView.id)
+                    val starView = boxViewRender.createSingleStar(topView.id, backgroundView.id, schedules.first())
                     views.add(starView)
                     container.addView(starView)
                     scheduleViewMap.add(schedules.first(), starView)
@@ -123,7 +122,7 @@ class CalendarRenderService(
                 }
 
                 if (schedules.size == 2) { //star가 2개인 경우
-                    val starViewList = boxViewRender.createDoubleStar(topView.id, backgroundView.id)
+                    val starViewList = boxViewRender.createDoubleStar(topView.id, backgroundView.id, schedules)
                     for (j in starViewList.indices) {
                         container.addView(starViewList[j])
                         scheduleViewMap.add(schedules[j], starViewList[j])

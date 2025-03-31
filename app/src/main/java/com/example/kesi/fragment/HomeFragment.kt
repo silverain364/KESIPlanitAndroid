@@ -15,36 +15,20 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 import com.example.kesi.activity.AddScheduleActivity
-import com.example.kesi.activity.EditScheduleActivity
 import com.example.kesi.adapter.BottomSheetAdapter
-import com.example.kesi.adapter.FullCalendarAdapter
-import com.example.kesi.api.ScheduleApi
 import com.example.kesi.data.AddScheduleDto
 import com.example.kesi.data.EditScheduleDto
 import com.example.kesi.model.BottomSheetScheduleDto
-import com.example.kesi.data.MonthData
 import com.example.kesi.domain.Schedule
-import com.example.kesi.holder.FullCalendarHolder
-import com.example.kesi.model.RequestPersonalScheduleDto
-import com.example.kesi.model.RequestPersonalUpdateScheduleDto
-import com.example.kesi.model.ScheduleDto
-import com.example.kesi.setting.RetrofitSetting
 import com.example.kesi.util.ActivityResultKeys
 import com.example.kesi.util.view.SpaceCalendar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
-import java.time.temporal.ChronoUnit
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -80,7 +64,9 @@ class HomeFragment : Fragment() {
 
         val fabAddBtn = fabAddConstraintLayout.findViewById<ExtendedFloatingActionButton>(R.id.fabAdd);
         fabAddBtn.setOnClickListener {
+
             val intent = Intent(activity, AddScheduleActivity::class.java)
+            intent.putExtra("date", spaceCalendar.getSelectDate())
             addScheduleLauncher.launch(intent)
         }
 

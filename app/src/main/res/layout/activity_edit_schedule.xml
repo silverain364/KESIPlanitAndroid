@@ -52,76 +52,9 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleEt" />
 
-            <LinearLayout
-                android:id="@+id/dateSetContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="30dp"
-                android:layout_gravity="center"
-
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleEt">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/startDateTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:textSize="20sp"
-                        android:text="2025.02.16(화)"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:id="@+id/startTimeTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:textSize="24sp"
-                        android:text="오후 02:00"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-
-                    android:src="@drawable/ic_date_arrow"
-                    android:layout_marginHorizontal="40dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/endDateTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:textSize="20sp"
-                        android:text="2025.02.16(화)"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:id="@+id/endTimeTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:textSize="24sp"
-                        android:text="오후 02:00"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-            </LinearLayout>
+           <include
+               android:id="@+id/dateSetLayout"
+               layout="@layout/date_set_layout" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/allDayBtn"
@@ -196,93 +129,9 @@
                     android:background="@color/gray"
                     android:layout_marginTop="10dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="30dp"
-                    android:orientation="vertical"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginVertical="10dp"
-                        >
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_lock" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:text="해당 스케줄 공유 보안감도"
-                            android:textColor="@color/white"
-                            android:layout_marginHorizontal="20dp" />
-
-                    </LinearLayout>
-
-                    <RadioGroup
-                        android:id="@+id/securityRadioGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:background="@drawable/shape_radio_group_background"
-                        android:backgroundTint="@color/radio_group_black"
-                        android:layout_marginBottom="10dp"
-                        >
-
-                        <RadioButton
-                            android:id="@+id/highRadioBtn"
-                            android:layout_width="0dp"
-                            android:layout_height="32dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="High"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@drawable/selector_radio_text_security"
-                            android:background="@drawable/selector_radio_button_security"
-                            android:button="@null"
-                            android:checked="true"
-                            android:layout_marginHorizontal="7dp"
-                            />
-
-                        <RadioButton
-                            android:id="@+id/mediumRadioBtn"
-                            android:layout_width="0dp"
-                            android:layout_height="32dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Medium"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@drawable/selector_radio_text_security"
-                            android:background="@drawable/selector_radio_button_security"
-                            android:button="@null"
-                            android:layout_marginHorizontal="7dp"
-                            />
-
-                        <RadioButton
-                            android:id="@+id/lowRadioBtn"
-                            android:layout_width="0dp"
-                            android:layout_height="32dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Low"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@drawable/selector_radio_text_security"
-                            android:background="@drawable/selector_radio_button_security"
-                            android:button="@null"
-                            android:layout_marginHorizontal="7dp"
-                            />
-                    </RadioGroup>
-                </LinearLayout>
+                <include
+                    android:id="@+id/securityLayout"
+                    layout="@layout/radio_group_security_level"/>
 
 
                 <View

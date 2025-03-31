@@ -1,0 +1,40 @@
+package com.example.kesi.calendar.single_line.render
+
+import android.content.res.ColorStateList
+import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.kesi.R
+import com.example.kesi.domain.Schedule
+import com.example.kesi.domain.ScheduleType
+
+class DayLineViewRender(
+    private val container: ConstraintLayout
+) {
+    fun createLine(leftReferenceViewId: Int, rightReferenceViewId: Int, schedule:Schedule)
+        = View(container.context).apply {
+        id = View.generateViewId()
+
+        layoutParams = ConstraintLayout.LayoutParams(0, 0).apply {
+            leftMargin = 20
+            rightMargin = 20
+            topMargin = 10
+            bottomMargin = 10
+
+            leftToLeft = leftReferenceViewId
+            rightToRight = rightReferenceViewId
+            topToTop = leftReferenceViewId
+            bottomToBottom = leftReferenceViewId
+
+            elevation = when(schedule.getType()) {
+                ScheduleType.GROUP -> 3f
+                ScheduleType.PERSONAL -> 2f
+                else -> 1f
+            }
+        }
+
+        setBackgroundResource(R.drawable.view_line_round)
+        backgroundTintList = ColorStateList.valueOf(
+            schedule.getSingleLineColor(context)
+        )
+    }
+}

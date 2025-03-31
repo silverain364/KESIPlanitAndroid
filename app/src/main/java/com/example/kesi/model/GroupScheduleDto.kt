@@ -1,14 +1,13 @@
 package com.example.kesi.model
 
 import android.graphics.Color
-import androidx.core.graphics.toColor
+import com.example.kesi.domain.GroupSchedule
 import com.example.kesi.domain.PersonalSchedule
-import com.example.kesi.domain.Schedule
 import com.example.kesi.domain.SecurityLevel
 import java.time.LocalDate
 import java.time.LocalTime
 
-data class ScheduleDto(
+data class GroupScheduleDto(
     val id: Long,
     val makerName: GroupMemberDto,
     val colorValue: Int,
@@ -20,9 +19,25 @@ data class ScheduleDto(
     val endDate: String,
     val startTime: String,
     val endTime: String,
-    val securityLevel: SecurityLevel
+    val securityLevel: SecurityLevel,
+    val sourceCalendarId: Long
 ) {
-    fun toDomain() = PersonalSchedule(
+    fun toDomain() = GroupSchedule(
+        id = id,
+        start = LocalDate.parse(startDate),
+        end = LocalDate.parse(endDate),
+        startTime = LocalTime.parse(startTime),
+        endTime = LocalTime.parse(endTime),
+        color = Color.valueOf(colorValue),
+        title = title,
+        description = description,
+        link = link ?: " ",
+        place = place ?: " ",
+        securityLevel = securityLevel,
+        sourceCalendarId = sourceCalendarId
+    )
+
+    fun toPersonalSchedule() = PersonalSchedule(
         id = id,
         start = LocalDate.parse(startDate),
         end = LocalDate.parse(endDate),

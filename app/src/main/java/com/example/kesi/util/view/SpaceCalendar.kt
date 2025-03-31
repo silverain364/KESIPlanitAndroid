@@ -1,21 +1,18 @@
 package com.example.kesi.util.view
 
-import android.app.Activity
-import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.Guideline
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.adapter.CalendarHolderFactory
 import com.example.kesi.adapter.FullCalendarAdapter
-import com.example.kesi.api.ScheduleApi
-import com.example.kesi.calendar.domain.DayBox
-import com.example.kesi.calendar.render.DayTextView
-import com.example.kesi.calendar.view.DayBoxView
+import com.example.kesi.api.GroupScheduleApi
+import com.example.kesi.api.PersonalScheduleApi
+import com.example.kesi.calendar.mutiple_line.render.DayTextView
+import com.example.kesi.calendar.mutiple_line.view.DayBoxView
 import com.example.kesi.data.AddScheduleDto
 import com.example.kesi.data.EditScheduleDto
 import com.example.kesi.data.MonthData
@@ -27,7 +24,6 @@ import com.example.kesi.model.RequestPersonalScheduleDto
 import com.example.kesi.model.RequestPersonalUpdateScheduleDto
 import com.example.kesi.model.ScheduleDto
 import com.example.kesi.setting.RetrofitSetting
-import com.example.kesi.util.ActivityResultKeys
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -45,7 +41,7 @@ class SpaceCalendar(
     private val scheduleBottomSheet: ScheduleBottomSheet
 ) {
     private val retrofit = RetrofitSetting.getRetrofit()
-    private val scheduleApi = retrofit.create(ScheduleApi::class.java)
+    private val scheduleApi = retrofit.create(PersonalScheduleApi::class.java)
     private val holderFactory = object: CalendarHolderFactory {
         override fun create(
             view: View, guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
@@ -57,6 +53,7 @@ class SpaceCalendar(
 
     private val calendarAdapter: FullCalendarAdapter = FullCalendarAdapter(
         ArrayList(), holderFactory) { //dayBoxView를 클릭했을 때 이벤트
+
         scheduleBottomSheet.showSchedules(
             it.dayBox.date, //클릭한 스케줄 정보 보여주기
             it.dayBox.getAllScheduleOrderByHeight().toList()
@@ -73,9 +70,12 @@ class SpaceCalendar(
         yearTv.text = LocalDate.now().year.toString()
 
 
-        for (i in -2..2) {
-            calendarAdapter.addItem(MonthData(LocalDate.now().withDayOfMonth(1).plusMonths(i.toLong()), arrayListOf()))
-        }
+        for (i in -2..<0) calendarAdapter.addItem(MonthData(LocalDate.now().withDayOfMonth(1).plusMonths(i.toLong()), emptyList()))
+        calendarAdapter.addItem(MonthData(LocalDate.now(), emptyList()))
+        for (i in 1..<2) calendarAdapter.addItem(MonthData(LocalDate.now().withDayOfMonth(1).plusMonths(i.toLong()), emptyList()))
+
+
+
 
         calendarRv.apply {
             layoutManager = LinearLayoutManager(calendarRv.context, LinearLayoutManager.HORIZONTAL, false)
@@ -87,6 +87,7 @@ class SpaceCalendar(
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
+                    Log.d("HomeFragment", "onScrollStateChanged: " + newState)
 
 
                     if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -118,8 +119,14 @@ class SpaceCalendar(
                 }
             })
 
-            scrollToPosition(calendarAdapter.itemCount / 2)
+            smoothScrollToPosition(calendarAdapter.itemCount / 2)
         }
+    }
+
+    fun getSelectDate(): LocalDate {
+        val position = (calendarRv.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        val holder = calendarRv.findViewHolderForAdapterPosition(position) as FullCalendarHolder
+        return holder.getSelectDate()
     }
 
 
