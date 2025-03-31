@@ -53,9 +53,11 @@ class MessageAdapter(private val context: Context, private val messageList: Arra
             //이전 메시지
             val previousMessage = messageList[position-1]
 
-            if(currentMessage.sendUserEmail.equals(previousMessage.sendUserEmail)) {
+            if(currentMessage.sendUserEmail == previousMessage.sendUserEmail) {
                 viewHolder.sender.visibility = View.GONE
             } else {
+                viewHolder.sender.visibility = View.VISIBLE
+
                 val target = groupDto.members.find {
                     currentMessage.sendUserEmail == it.email
                 }
