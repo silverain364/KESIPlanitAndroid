@@ -16,6 +16,7 @@
     <color name="edit_text_background">#F8F8F8</color>
     <color name="edit_text_background_dark">#191919</color>
     <color name="cancel">#FFFF0000</color>
+    <color name="bottom_sheet_birth_background">#232323</color>
 
 
     <color name="schedule_red">#FFFF0000</color>

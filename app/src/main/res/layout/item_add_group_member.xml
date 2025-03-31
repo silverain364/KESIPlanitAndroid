@@ -6,6 +6,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -13,11 +14,11 @@
             android:background="@drawable/add_friend_list_background">
         <ImageView
                 android:id="@+id/ivProfilePicture"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_margin="20dp"
                 android:contentDescription="userProfileImage"
-                android:src="@drawable/ic_user"
+                android:src="@drawable/ic_profile_normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -29,9 +30,10 @@
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+            android:text="손은비"
+                android:textSize="25sp"
                 android:textStyle="bold"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/ivProfilePicture"
                 app:layout_constraintTop_toTopOf="@+id/ivProfilePicture"
                 app:layout_constraintStart_toEndOf="@+id/ivProfilePicture"/>
