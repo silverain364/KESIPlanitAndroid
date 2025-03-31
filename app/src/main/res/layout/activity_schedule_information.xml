@@ -112,52 +112,58 @@
             app:layout_constraintStart_toEndOf="@+id/ivPlace"
             app:layout_constraintBottom_toBottomOf="@+id/ivPlace"
             android:layout_marginStart="10dp"/>
-    <View
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:id="@+id/view"
-            app:layout_constraintTop_toBottomOf="@+id/tvPlace"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:background="@color/white"/>
+
+    <ImageView
+        android:id="@+id/ivMemo"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_memo"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/ivPlace"
+        app:layout_constraintStart_toStartOf="@+id/ivPlace"
+        android:layout_marginTop="15dp"/>
+    <TextView
+        android:id="@+id/tvMemo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="메모"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@+id/ivMemo"
+        app:layout_constraintStart_toEndOf="@+id/ivMemo"
+        app:layout_constraintBottom_toBottomOf="@+id/ivMemo"
+        android:layout_marginStart="10dp"/>
+
 
     <TextView
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:padding="10dp"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:text="여름방학 프로젝트 7차 회의\n일정 잡아놨습니다.\n\n간단하게 자신이 한 것 + 일정 조정\n진행할 것 같습니다!\n\n만약 해당 시간이 안 되면 다른 가능한 시간대 메세지 남겨주세요 :) "
-            app:layout_constraintTop_toBottomOf="@+id/view"
-            app:layout_constraintEnd_toEndOf="@+id/view"
-            app:layout_constraintStart_toStartOf="@+id/view"
-            android:layout_marginTop="20dp"
-            android:scrollbars="vertical"
-            android:background="@drawable/description_background"
-            android:id="@+id/tvDescription"/>
-    <Button
+        android:id="@+id/tvDescription"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:background="@drawable/edit_text_background_chat"
+        android:padding="10dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical"
+        android:text="여름방학 프로젝트 7차 회의\n일정 잡아놨습니다.\n\n간단하게 자신이 한 것 + 일정 조정\n진행할 것 같습니다!\n\n만약 해당 시간이 안 되면 다른 가능한 시간대 메세지 남겨주세요 :) "
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/ivMemo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="387dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnAgree"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="찬성"
+            android:text="수락"
             android:textColor="@color/mainColor"
             android:textStyle="bold"
-            android:backgroundTint="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescription"
-            app:layout_constraintStart_toStartOf="@+id/tvDescription"
-            app:layout_constraintEnd_toStartOf="@+id/btnDisagree" android:layout_marginTop="20dp"/>
-    <Button
-            android:id="@+id/btnDisagree"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="반대"
-            android:textColor="@color/mainColor"
-            android:textStyle="bold"
-            android:backgroundTint="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescription"
-            app:layout_constraintEnd_toEndOf="@+id/tvDescription"
-            app:layout_constraintStart_toEndOf="@+id/btnAgree" android:layout_marginTop="20dp"/>
+            android:background="@drawable/button_background_white"
+        android:layout_margin="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
