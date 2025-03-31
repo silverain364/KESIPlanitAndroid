@@ -224,37 +224,66 @@
                 tools:listitem="@layout/receive_person" />
 
             <LinearLayout
+                android:animateLayoutChanges="true"
                 android:id="@+id/bottomBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/mainColor"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="@+id/bottomGuide"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvChat">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnPlus"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/ic_add_file" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnPlus"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/ic_add_file" />
 
-                <EditText
-                    android:id="@+id/etMessage"
-                    android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/etMessage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:textColor="@color/white"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/edit_text_background_chat" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnSend"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/ic_btn_calendar" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/extendedBottomBar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/edit_text_background_chat" />
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    >
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnSend"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/ic_btn_calendar" />
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/star"
+                        />
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/star"
+                        />
+                </LinearLayout>
+
             </LinearLayout>
 
             <androidx.constraintlayout.widget.Guideline

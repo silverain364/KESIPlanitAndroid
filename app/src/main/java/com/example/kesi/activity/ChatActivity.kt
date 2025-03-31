@@ -4,16 +4,21 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.GONE
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.view.GestureDetectorCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,6 +59,7 @@ class ChatActivity : AppCompatActivity() {
 
     private lateinit var mDetector: GestureDetectorCompat
     private var prevFocus: View? = null
+    private var isSendBtn = false
 
     @SuppressLint("NotifyDataSetChanged", "UseCompatLoadingForDrawables", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -166,40 +172,67 @@ class ChatActivity : AppCompatActivity() {
         // 메시지 리스너 설정
         setupMessageListener(messageAdapter)
 
-        binding.etMessage.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                binding.btnSend.background = getDrawable(R.drawable.ic_send)
-            } else {
-                binding.btnSend.background = getDrawable(R.drawable.ic_btn_calendar)
+
+        binding.etMessage.addTextChangedListener (object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                if (s != null && (s.isNotEmpty() || s.isNotBlank())) {
+                    binding.btnSend.background = getDrawable(R.drawable.ic_send)
+                    isSendBtn = true
+                } else {
+                    binding.btnSend.background = getDrawable(R.drawable.ic_btn_calendar)
+                    isSendBtn = false
+                }
             }
-        }
+
+            override fun afterTextChanged(s: Editable?) {}
+
+        })
 
         // 메시지 전송 버튼 이벤트
         binding.btnSend.setOnClickListener {
-            // TODO 이미지 비교로 바꿔야함.
-            if (binding.btnSend.text.equals("캘린더")) { // 버튼이 캘린더인 경우
-                /*TransitionManager.beginDelayedTransition(binding.constraintLayout)
-                if (binding.calendarLayout.height != 0) {
-                    constraintSet.setGuidelinePercent(binding.guideline.id, 0.0F)
-                } else {
-                    constraintSet.setGuidelinePercent(binding.guideline.id, 0.3F)
-                }
-                constraintSet.applyTo(binding.constraintLayout)*/
+            Log.d("ChatActivity", "btnSend : $isSendBtn")
+            if (!isSendBtn) { // 버튼이 캘린더인 경우
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 // 가장 아래로 스크롤
                 binding.rvChat.scrollToPosition(messageList.size-1)
-            } else {
-                val messageText = binding.etMessage.text.toString()
-                if (!messageText.isBlank()) {
-                    val message = Message(messageText, auth.currentUser?.email.toString())
-                    // 데이터 저장
-                    database.child("messages").child(gid.toString()).child(System.currentTimeMillis().toString()).setValue(message)
-                    // 입력값 초기화
-                    binding.etMessage.setText("")
-                    // 포커스 해제
-                    binding.etMessage.clearFocus()
-                }
+                return@setOnClickListener
             }
+
+            val messageText = binding.etMessage.text.toString()
+            if (messageText.isNotBlank()) {
+                val message = Message(messageText, auth.currentUser?.email.toString())
+                // 데이터 저장
+                database.child("messages").child(gid.toString()).child(System.currentTimeMillis().toString()).setValue(message)
+                // 입력값 초기화
+                binding.etMessage.setText("")
+                binding.etMessage.requestFocus() // 포커스 유지
+                /*// 포커스 해제
+                binding.etMessage.clearFocus()*/
+            }
+
         }
+
+        binding.btnPlus.setOnClickListener{
+            if (binding.extendedBottomBar.visibility == View.GONE) {
+                binding.extendedBottomBar.visibility = View.VISIBLE
+            } else {
+                binding.extendedBottomBar.visibility = View.GONE
+            }
+
+            binding.bottomGuide.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    binding.bottomGuide.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    binding.bottomSheet.post {
+                        bottomSheetBehavior.peekHeight += 1
+                        bottomSheetBehavior.peekHeight -= 1
+                    }
+                }
+            })
+        }
+
     }
 
     private fun setupMessageListener(messageAdapter: MessageAdapter) {
