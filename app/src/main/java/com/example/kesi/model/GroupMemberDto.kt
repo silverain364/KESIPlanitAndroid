@@ -5,4 +5,16 @@ data class GroupMemberDto(
     val nickname:String,
     val imgPath:String,
     val gender:String
-)
+
+){
+    fun toFriendsDto(): FriendsDto{
+        return FriendsDto(
+            email = email,
+            nickname = nickname,
+            imgPath =  imgPath,
+            gender = gender,
+            alias = nickname
+        );
+    }
+
+}

@@ -4,12 +4,14 @@ import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.kesi.R
 import com.example.kesi.data.User
 import com.example.kesi.databinding.ItemAddGroupMemberBinding
 import com.example.kesi.holder.AddGroupMemberHolder
 import com.example.kesi.model.FriendsDto
 import com.example.kesi.model.GroupMemberDto
+import com.example.kesi.setting.RetrofitSetting
 
 class AddGroupMemberAdapter(val friendsList: ArrayList<FriendsDto>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items = SparseBooleanArray()
@@ -26,7 +28,14 @@ class AddGroupMemberAdapter(val friendsList: ArrayList<FriendsDto>): RecyclerVie
     //뷰 홀더의 뷰에 데이터를 출력하려고 자동으로 호출되는 함수
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as AddGroupMemberHolder).binding
-        binding.ivProfilePicture.setImageResource(R.drawable.ic_user)
+//        binding.ivProfilePicture.setImageResource(R.drawable.ic_user)
+        Glide.with(binding.root)
+            .load(RetrofitSetting.IMAGE_URL + friendsList[position].email + friendsList[position].imgPath)
+            .placeholder(R.drawable.ic_user)
+            .fallback(R.drawable.ic_user)
+            .error(R.drawable.ic_user)
+            .into(binding.ivProfilePicture)
+
         binding.tvName.text = friendsList[position].nickname
 
         // 체크박스 상태를 SparseBooleanArray에서 가져와 설정
