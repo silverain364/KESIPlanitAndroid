@@ -84,6 +84,15 @@ class ChatActivity : AppCompatActivity() {
                 binding.tvTitle.setText(response.body()?.groupName) // 액션바에 그룹 이름 보여주기
                 initCalendar(response.body()!!)
 
+                val messageAdapter = MessageAdapter(this@ChatActivity, messageList, response.body()!!)
+
+                // RecyclerView
+                binding.rvChat.layoutManager = LinearLayoutManager(this@ChatActivity)
+                binding.rvChat.adapter = messageAdapter
+
+                // 메시지 리스너 설정
+                setupMessageListener(messageAdapter)
+
             }
 
             override fun onFailure(p0: Call<GroupDto>, p1: Throwable) {
@@ -165,14 +174,7 @@ class ChatActivity : AppCompatActivity() {
 
         })
 
-        val messageAdapter = MessageAdapter(this@ChatActivity, messageList)
 
-        // RecyclerView
-        binding.rvChat.layoutManager = LinearLayoutManager(this)
-        binding.rvChat.adapter = messageAdapter
-
-        // 메시지 리스너 설정
-        setupMessageListener(messageAdapter)
 
 
         binding.etMessage.addTextChangedListener (object: TextWatcher {
