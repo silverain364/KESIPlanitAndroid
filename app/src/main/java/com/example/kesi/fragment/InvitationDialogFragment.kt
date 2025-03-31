@@ -9,13 +9,16 @@ import com.example.kesi.databinding.DialogInvitationBinding
 
 class InvitationDialogFragment(private val inviter: String, private val groupName: String) : DialogFragment() {
 
-    private var _binding: DialogInvitationBinding? = null
-    private val binding get()= _binding!!
+//    private var _binding: DialogInvitationBinding? = null
+//    private val binding get()= _binding!!
+//
+
+    private lateinit var binding: DialogInvitationBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = DialogInvitationBinding.inflate(inflater, container, false)
+        binding = DialogInvitationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -37,6 +40,6 @@ class InvitationDialogFragment(private val inviter: String, private val groupNam
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 }

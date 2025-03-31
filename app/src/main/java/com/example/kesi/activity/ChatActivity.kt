@@ -2,6 +2,7 @@ package com.example.kesi.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -195,9 +196,11 @@ class ChatActivity : AppCompatActivity() {
         binding.btnSend.setOnClickListener {
             Log.d("ChatActivity", "btnSend : $isSendBtn")
             if (!isSendBtn) { // 버튼이 캘린더인 경우
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                val intent = Intent(this, AddGroupScheduleActivity::class.java)
+                startActivity(intent)
+                /*bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 // 가장 아래로 스크롤
-                binding.rvChat.scrollToPosition(messageList.size-1)
+                binding.rvChat.scrollToPosition(messageList.size-1)*/
                 return@setOnClickListener
             }
 
