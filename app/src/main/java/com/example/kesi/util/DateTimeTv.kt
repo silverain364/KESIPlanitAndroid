@@ -14,8 +14,8 @@ class DateTimeTv(
     private val dateTv: TextView,
     private val timeTv: TextView
 ){
-    val dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd(E)", Locale.KOREAN)
-    val timeFormat = DateTimeFormatter.ofPattern("a hh:mm", Locale.KOREAN)
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd(E)", Locale.KOREAN)
+    private val timeFormatter = DateTimeFormatter.ofPattern("a hh:mm", Locale.KOREAN)
 
     init {
         setDate(date)
@@ -29,12 +29,12 @@ class DateTimeTv(
 
     fun setDate(date: LocalDate) {
         this.date = date
-        dateTv.text = dateFormat.format(date)
+        dateTv.text = dateFormatter.format(date)
     }
 
     fun setTime(time: LocalTime) {
         this.time = time
-        timeTv.text = timeFormat.format(time)
+        timeTv.text = timeFormatter.format(time)
     }
 
     fun getDate() = date

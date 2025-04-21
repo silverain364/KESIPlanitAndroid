@@ -36,6 +36,7 @@ class AllSchedulesRecyclerViewAdapter (
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_all_schedules_date, parent, false)
         return ItemViewHolder(view)

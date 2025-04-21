@@ -46,7 +46,7 @@ import retrofit2.Response
 class ChatActivity : AppCompatActivity() {
     lateinit var binding: ActivityChatBinding
 
-    private var messageList: ArrayList<Message> = ArrayList<Message>()
+    private var messageList: ArrayList<Message> = ArrayList()
     private lateinit var auth: FirebaseAuth // 인증 객체
     private lateinit var database: DatabaseReference // DB 객체
 

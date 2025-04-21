@@ -74,7 +74,7 @@ class MiniCalendarHolder (
         return suspendCoroutine { continuation ->
             groupsScheduleApi.findOthersInMonth(date.toString(), groupDto.gid).enqueue(object: Callback<List<OtherScheduleDto>> {
                 override fun onResponse(p0: Call<List<OtherScheduleDto>>, p1: Response<List<OtherScheduleDto>>) {
-                    Log.d("FullCalendarHolder", "groups schedule size : ${p1.body()?.size}")
+                    Log.d("FullCalendarHolder", "others schedule size : ${p1.body()?.size}")
 
                     continuation.resume(p1.body() ?: emptyList())
                 }
