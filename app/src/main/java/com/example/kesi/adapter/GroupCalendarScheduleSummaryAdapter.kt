@@ -1,5 +1,6 @@
 package com.example.kesi.adapter
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +44,14 @@ class GroupCalendarScheduleSummaryAdapter(
 
     override fun onBindViewHolder(holder: BindViewHolder<GroupCalendarScheduleSummaryItem>, position: Int) {
         holder.bind(items[position])
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when(items[position]) {
+            is GroupCalendarScheduleSummaryItem.Day -> VIEW_TYPE_DAY
+            is GroupCalendarScheduleSummaryItem.Kind -> VIEW_TYPE_TYPE
+            is GroupCalendarScheduleSummaryItem.Item -> VIEW_TYPE_ITEM
+        }
     }
 
     class DayViewHolder(itemView: View) : BindViewHolder<GroupCalendarScheduleSummaryItem>(itemView) {
@@ -91,7 +100,7 @@ class GroupCalendarScheduleSummaryAdapter(
             val itm = item as GroupCalendarScheduleSummaryItem.Item
             val schedule = itm.schedule
 
-            markView.setBackgroundColor(schedule.color.toArgb())
+            markView.backgroundTintList = ColorStateList.valueOf(schedule.color.toArgb())
             titleTv.text = schedule.title
         }
     }

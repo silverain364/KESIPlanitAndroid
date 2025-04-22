@@ -11,7 +11,7 @@
 
     <View
         android:id="@+id/markView"
-        android:background="@drawable/view_line_round"
+        android:background="@drawable/view_circle"
         android:backgroundTint="@color/schedule_red"
         android:layout_width="10dp"
         android:layout_height="10dp" />
