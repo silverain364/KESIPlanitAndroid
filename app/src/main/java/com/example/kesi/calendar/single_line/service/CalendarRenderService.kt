@@ -77,11 +77,13 @@ class CalendarRenderService(
         }
 
         if(priorityScheduleByType.isEmpty()) return emptyList()
+
         dayTv.inverse() //color(inverse)
 
         priorityScheduleByType.forEach { schedule ->
-            //시작하는 인덱스에 있는 경우만 출력
+            //해당 라인에 시작하는 위치에 있는 경우만 출력
             if (!(boxIndex == 0 || schedule.start == dayBox.date)) return@forEach
+
 
             //끝나는 background를 구한다.
             val endBackgroundViewIndex = schedule.end.toEpochDay() - startDate.toEpochDay()

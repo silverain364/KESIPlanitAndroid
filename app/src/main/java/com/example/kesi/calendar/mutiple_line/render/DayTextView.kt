@@ -30,11 +30,12 @@ class DayTextView(context: Context): AppCompatTextView(context) {
 
         //Todo. 공유일에 경우 다른 색으로 변경할 수도 있음
         secondaryColor = ContextCompat.getColor(context, R.color.black)
-
         setTextColor(primaryColor)
     }
 
     private fun setPrimaryColor() {
+        if(primaryColor != Color.WHITE) return
+
         setTextColor(if(!inverse) primaryColor else ColorManager.invertColor(primaryColor))
     }
 

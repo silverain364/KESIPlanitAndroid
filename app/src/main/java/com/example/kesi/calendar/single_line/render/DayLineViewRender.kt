@@ -15,8 +15,8 @@ class DayLineViewRender(
         id = View.generateViewId()
 
         layoutParams = ConstraintLayout.LayoutParams(0, 0).apply {
-            leftMargin = 20
-            rightMargin = 20
+            leftMargin = 10
+            rightMargin = 10
             topMargin = 10
             bottomMargin = 10
 
