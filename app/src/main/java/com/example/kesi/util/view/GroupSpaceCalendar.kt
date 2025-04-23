@@ -29,9 +29,9 @@ class GroupSpaceCalendar(
     private val holderFactory = object: CalendarHolderFactory {
         override fun create(
             view: View, guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
-            backgroundViewList: List<View>, dayTvList: List<DayTextView>, dayBoxOnClickListener: (DayBoxView) -> Unit
+            backgroundViewList: List<View>, dayTvList: List<DayTextView>
         ): CalendarHolder {
-            return MiniCalendarHolder(view, guides, backgroundViewList, dayTvList, dayBoxOnClickListener, groupDto)
+            return MiniCalendarHolder(view, guides, backgroundViewList, dayTvList, groupDto)
         }
     }
 

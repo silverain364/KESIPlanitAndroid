@@ -34,14 +34,12 @@ class MiniCalendarHolder (
     guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
     backgroundViewList: List<View>, //Todo. 추후 터치 인식을 위해서 forwardViewList를 만들면 괜찮을듯
     dayTvList: List<DayTextView>,
-    dayBoxOnClickListener: (DayBoxView) -> (Unit) = { },
     private val groupDto: GroupDto
 ): CalendarHolder(
     itemView,
     guides,
     backgroundViewList,
     dayTvList,
-    dayBoxOnClickListener
 ) {
     private val container = itemView.findViewById<ConstraintLayout>(R.id.main)
     lateinit var date: LocalDate
@@ -60,6 +58,7 @@ class MiniCalendarHolder (
 
     private val dayLines = ArrayList<DayLine>()
 
+
     init {
         var cnt = 0
         dayTvList.forEach {
@@ -70,7 +69,7 @@ class MiniCalendarHolder (
         }
     }
 
-    private suspend fun getOthersScheduleInMonth(data: LocalDate): List<OtherScheduleDto> {
+    private suspend fun getOthersScheduleInMonth(date: LocalDate): List<OtherScheduleDto> {
         return suspendCoroutine { continuation ->
             groupsScheduleApi.findOthersInMonth(date.toString(), groupDto.gid).enqueue(object: Callback<List<OtherScheduleDto>> {
                 override fun onResponse(p0: Call<List<OtherScheduleDto>>, p1: Response<List<OtherScheduleDto>>) {
@@ -180,7 +179,7 @@ class MiniCalendarHolder (
 
             groupScheduleDtoList.forEach {
                 Log.d("MiniCalendar", "group calendar id $it")
-                if(it.sourceCalendarId == groupDto.calendarId) {
+                if(it.sourceCalendarId == groupDto.calendarId) { //지금 있는 그룹만 그룹일정(상대적임)
                     scheduleMap[it.id] = it.toDomain()
                 }else {
                     scheduleMap[it.id] = it.toPersonalSchedule()
@@ -199,6 +198,7 @@ class MiniCalendarHolder (
     }
 
     override suspend fun addSchedule(schedule: Schedule) {
+
     }
 
     override fun removeSchedule(scheduleId: Long) {

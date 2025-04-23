@@ -15,20 +15,21 @@ import com.example.kesi.R
 import com.example.kesi.calendar.mutiple_line.render.DayTextView
 import com.example.kesi.calendar.mutiple_line.view.DayBoxView
 import com.example.kesi.data.MonthData
+import com.example.kesi.domain.Schedule
 import com.example.kesi.holder.CalendarHolder
 import com.example.kesi.util.view.GuideRender
 import java.time.LocalDate
 
-interface CalendarHolderFactory { //여기부터
+interface CalendarHolderFactory {
     fun create(view: View, guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
-               backgroundViewList: List<View>, dayTvList: List<DayTextView>,
-               dayBoxOnClickListener: (DayBoxView) -> (Unit)): CalendarHolder  //Todo. 여기부터
+               backgroundViewList: List<View>, dayTvList: List<DayTextView>): CalendarHolder  //Todo. 여기부터
 }
 
 class FullCalendarAdapter (
     private val monthData: MutableList<MonthData>,
     private val holderFactory: CalendarHolderFactory,
-    private val dayBoxOnClickListener: (DayBoxView) -> (Unit) = { }
+    private val dayBoxOnClickListener: (DayBoxView) -> (Unit) = { },
+    private val initScheduleLoadedListener: (List<Schedule>) -> Unit = { }
 ) : RecyclerView.Adapter<CalendarHolder>() {
     private val guideRender = GuideRender()
     private val holders = ArrayList<CalendarHolder>()
@@ -62,9 +63,10 @@ class FullCalendarAdapter (
             holderFactory.create(view,
                 guides,
                 createBackgroundView(view, guides),
-                createTextView(view, guides),
-                dayBoxOnClickListener)
+                createTextView(view, guides))
         )
+        holders.last().setOnDayBoxOnClickListener(dayBoxOnClickListener)
+        holders.last().setOnInitScheduleLoadedListener(initScheduleLoadedListener)
 
         return holders.last()
     }

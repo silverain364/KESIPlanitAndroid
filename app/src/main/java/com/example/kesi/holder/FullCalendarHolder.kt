@@ -33,13 +33,11 @@ class FullCalendarHolder (
     guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
     backgroundViewList: List<View>, //Todo. 추후 터치 인식을 위해서 forwardViewList를 만들면 괜찮을듯
     dayTvList: List<DayTextView>,
-    dayBoxOnClickListener: (DayBoxView) -> (Unit) = { }
 ) : CalendarHolder(
     itemView,
     guides,
     backgroundViewList,
     dayTvList,
-    dayBoxOnClickListener
 ) {
     lateinit var date: LocalDate
     private val dayLines = ArrayList<DayLine>()
