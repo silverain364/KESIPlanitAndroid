@@ -22,53 +22,53 @@
             android:theme="@style/Theme.KESI"
             tools:targetApi="34">
         <activity
-                android:name=".activity.ChatActivity"
+                android:name=".ui.community.chat.ChatActivity"
                 android:exported="true"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-                android:name=".activity.AddGroupActivity"
+                android:name=".ui.community.AddGroupActivity"
                 android:exported="true">
         </activity>
         <activity
-                android:name=".activity.AddFriendsActivity"
+                android:name=".ui.community.AddFriendsActivity"
                 android:exported="true">
         </activity>
         <activity
-                android:name=".activity.LocationSharingActivity"
+                android:name=".ui.community.location.LocationSharingActivity"
                 android:exported="true">
         </activity>
         <activity
-                android:name=".activity.ScheduleInformationActivity"
+                android:name=".ui.home.ScheduleInformationActivity"
                 android:exported="true">
         </activity>
         <activity
-                android:name=".activity.AddGroupScheduleActivity"
+                android:name=".ui.community.chat.AddGroupScheduleActivity"
                 android:exported="true">
         </activity>
         <activity
-                android:name=".activity.AddScheduleActivity"
+                android:name=".ui.home.AddScheduleActivity"
                 android:exported="true">
         </activity>
         <activity
-                android:name=".activity.ProfileSettingsActivity"
+                android:name=".ui.login.ProfileSettingsActivity"
                 android:exported="true">
         </activity>
         <activity
-                android:name=".activity.SignUpActivity"
+                android:name=".ui.login.SignUpActivity"
                 android:exported="true">
         </activity>
         <activity
-                android:name=".activity.LoginActivity"
+                android:name=".ui.login.LoginActivity"
                 android:exported="true">
         </activity>
         <activity
-            android:name=".activity.EditScheduleActivity"
+            android:name=".ui.home.EditScheduleActivity"
             android:exported="true">
         </activity>
 
         <activity
-                android:name=".activity.SplashActivity"
+                android:name=".ui.login.SplashActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -77,11 +77,11 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".activity.MainActivity"
+                android:name=".ui.main.MainActivity"
                 android:exported="true"
                 android:windowSoftInputMode="adjustPan">
         </activity>
-        <service android:name=".service.MessagingService"
+        <service android:name=".application.MessagingService"
                  android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MESSAGING_EVENT"/>

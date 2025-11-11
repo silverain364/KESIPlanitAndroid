@@ -5,7 +5,6 @@ import androidx.core.graphics.toColor
 import com.example.kesi.domain.PersonalSchedule
 import com.example.kesi.domain.Schedule
 import com.example.kesi.domain.SecurityLevel
-import com.example.kesi.model.GroupMemberDto
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.LocalTime

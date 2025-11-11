@@ -7,14 +7,13 @@ import androidx.constraintlayout.widget.Guideline
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kesi.adapter.CalendarHolderFactory
-import com.example.kesi.adapter.FullCalendarAdapter
+import com.example.kesi.ui.common.calendar.CalendarHolderFactory
+import com.example.kesi.ui.common.calendar.FullCalendarAdapter
 import com.example.kesi.calendar.mutiple_line.render.DayTextView
 import com.example.kesi.data.MonthData
 import com.example.kesi.domain.Schedule
-import com.example.kesi.holder.CalendarHolder
-import com.example.kesi.holder.MiniCalendarHolder
-import com.example.kesi.model.GroupDto
+import com.example.kesi.ui.common.calendar.CalendarHolder
+import com.example.kesi.ui.common.calendar.MiniCalendarHolder
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.*
@@ -24,7 +23,7 @@ class GroupSpaceCalendar(
     private val monthTv: TextView,
     private val yearTv: TextView,
     private val calendarRv: RecyclerView,
-    private val groupDto: GroupDto
+    private val groupDto: com.example.kesi.data.model.GroupDto
 ) {
     private val holderFactory = object: CalendarHolderFactory {
         override fun create(

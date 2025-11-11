@@ -1,7 +1,6 @@
 package com.example.kesi.setting
 
-import com.example.kesi.activity.MainActivity
-import com.example.kesi.activity.SplashActivity
+import com.example.kesi.ui.login.SplashActivity
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

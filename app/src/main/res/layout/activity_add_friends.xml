@@ -6,7 +6,7 @@
         android:background="@color/subColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activity.AddFriendsActivity" >
+        tools:context=".ui.community.AddFriendsActivity" >
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"

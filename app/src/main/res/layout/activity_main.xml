@@ -6,7 +6,7 @@
                                            android:background="@color/subColor"
                                            android:layout_width="match_parent"
                                            android:layout_height="match_parent"
-                                           tools:context=".activity.MainActivity"
+                                           tools:context=".ui.main.MainActivity"
                                            android:fitsSystemWindows="true">
 
     <LinearLayout
