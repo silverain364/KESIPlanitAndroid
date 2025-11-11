@@ -9,7 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.R
 import com.example.kesi.data.GroupCalendarScheduleSummaryItem
-import com.example.kesi.domain.ScheduleType
+import com.example.kesi.domain.GroupSchedule
+import com.example.kesi.domain.OtherSchedule
+import com.example.kesi.domain.PersonalSchedule
+import com.example.kesi.domain.Schedule
 import com.example.kesi.holder.BindViewHolder
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -72,17 +75,17 @@ class GroupCalendarScheduleSummaryAdapter(
             val kind = item as GroupCalendarScheduleSummaryItem.Kind
 
             when (kind.type) {
-                ScheduleType.GROUP -> {
+                GroupSchedule::class -> {
                     titleTv.text = "그룹 일정"
                     listIv.setImageResource(R.drawable.ic_group_list_cloud)
                 }
 
-                ScheduleType.OTHER -> {
+                OtherSchedule::class -> {
                     titleTv.text = "팀원 일정"
                     listIv.setImageResource(R.drawable.ic_group_list_other)
                 }
 
-                ScheduleType.PERSONAL -> {
+                PersonalSchedule::class -> {
                     titleTv.text = "개인 일정"
                     listIv.setImageResource(R.drawable.ic_group_list_personal)
                 }

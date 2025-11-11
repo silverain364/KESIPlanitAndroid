@@ -5,8 +5,9 @@ import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.kesi.R
+import com.example.kesi.domain.GroupSchedule
+import com.example.kesi.domain.PersonalSchedule
 import com.example.kesi.domain.Schedule
-import com.example.kesi.domain.ScheduleType
 import com.example.kesi.util.ColorManager
 
 class DayLineViewRender(private val container: ConstraintLayout) {
@@ -63,8 +64,8 @@ class DayLineViewRender(private val container: ConstraintLayout) {
             val starView = ImageView(container.context).apply {
                 id = ImageView.generateViewId()
 
-                if(schedule.getType() == ScheduleType.PERSONAL)setImageResource(R.drawable.star)
-                if(schedule.getType() == ScheduleType.GROUP) setImageResource(R.drawable.ic_group_schedule_tmp)
+                if(schedule is PersonalSchedule)setImageResource(R.drawable.star)
+                if(schedule is GroupSchedule) setImageResource(R.drawable.ic_group_schedule_tmp)
 
                 adjustViewBounds = true //비율 유지
                 scaleType = ImageView.ScaleType.FIT_CENTER

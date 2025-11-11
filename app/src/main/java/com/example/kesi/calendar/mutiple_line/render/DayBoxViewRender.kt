@@ -6,9 +6,9 @@ import android.graphics.Color
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.Group
 import com.example.kesi.R
-import com.example.kesi.domain.Schedule
-import com.example.kesi.domain.ScheduleType
+import com.example.kesi.domain.*
 import java.time.LocalDate
 
 class DayBoxViewRender (
@@ -21,8 +21,8 @@ class DayBoxViewRender (
     private fun getInitSettingImageView(schedule: Schedule) = ImageView(container.context).apply {
         id = ImageView.generateViewId()
 
-        if(schedule.getType() == ScheduleType.PERSONAL)setImageResource(R.drawable.star)
-        if(schedule.getType() == ScheduleType.GROUP) setImageResource(R.drawable.ic_group_schedule_tmp)
+        if(schedule is PersonalSchedule)setImageResource(R.drawable.star)
+        if(schedule is GroupSchedule) setImageResource(R.drawable.ic_group_schedule_tmp)
 
         adjustViewBounds = true //비율 유지
         scaleType = ImageView.ScaleType.FIT_CENTER

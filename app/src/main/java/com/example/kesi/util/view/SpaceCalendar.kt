@@ -45,20 +45,22 @@ class SpaceCalendar(
     private val holderFactory = object: CalendarHolderFactory {
         override fun create(
             view: View, guides: Pair<ArrayList<Guideline>, ArrayList<Guideline>>,
-            backgroundViewList: List<View>, dayTvList: List<DayTextView>, dayBoxOnClickListener: (DayBoxView) -> Unit
+            backgroundViewList: List<View>, dayTvList: List<DayTextView>
         ): CalendarHolder {
-            return FullCalendarHolder(view, guides, backgroundViewList, dayTvList, dayBoxOnClickListener)
+            return FullCalendarHolder(view, guides, backgroundViewList, dayTvList)
         }
     }
 
-    private val calendarAdapter: FullCalendarAdapter = FullCalendarAdapter(
-        ArrayList(), holderFactory) { //dayBoxView를 클릭했을 때 이벤트
-
+    private val boxClickListener: (DayBoxView) -> Unit = { //dayBoxView를 클릭했을 때 이벤트
         scheduleBottomSheet.showSchedules(
             it.dayBox.date, //클릭한 스케줄 정보 보여주기
             it.dayBox.getAllScheduleOrderByHeight().toList()
         )
     }
+
+    private val calendarAdapter: FullCalendarAdapter = FullCalendarAdapter(
+        ArrayList(), holderFactory, boxClickListener)
+
 
 
     ///Todo. 추후 Coroutine 학습필요

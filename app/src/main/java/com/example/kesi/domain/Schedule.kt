@@ -2,10 +2,13 @@ package com.example.kesi.domain
 
 import android.content.Context
 import android.graphics.Color
+import androidx.core.content.ContextCompat
+import com.example.kesi.R
 import java.time.LocalDate
 import java.time.LocalTime
 
-abstract class Schedule (
+
+sealed class Schedule (
     val id: Long,
     val start: LocalDate,
     val end: LocalDate,
@@ -18,6 +21,9 @@ abstract class Schedule (
     val place: String,
     val securityLevel: SecurityLevel
 ) {
+    companion object {
+        val SCHEDULE_TYPES = Schedule::class.sealedSubclasses
+    }
     fun isStar() = start == end
     fun isLine() = start != end
 
@@ -33,8 +39,6 @@ abstract class Schedule (
     override fun hashCode(): Int {
         return id.hashCode()
     }
-
-    abstract fun getType(): ScheduleType
 
     abstract fun getSingleLineColor(context: Context): Int
 }

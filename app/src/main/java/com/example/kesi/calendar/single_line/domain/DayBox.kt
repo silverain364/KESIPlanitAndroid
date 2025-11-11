@@ -1,9 +1,8 @@
 package com.example.kesi.calendar.single_line.domain
 
 import com.example.kesi.domain.Schedule
-import com.example.kesi.domain.ScheduleType
 import java.time.LocalDate
-import java.util.PriorityQueue
+import kotlin.reflect.KClass
 
 class DayBox (
     val date: LocalDate
@@ -14,11 +13,11 @@ class DayBox (
         schedulesTypeMap.addSchedule(schedule)
     }
 
-    fun getScheduleByType(scheduleType: ScheduleType): List<Schedule> {
+    fun getScheduleByType(scheduleType: KClass<out Schedule>): List<Schedule> {
         return schedulesTypeMap.getSchedulesByType(scheduleType)
     }
 
-    fun getFirstPriorityScheduleByType(scheduleType: ScheduleType): Schedule? {
+    fun getFirstPriorityScheduleByType(scheduleType: KClass<out Schedule>): Schedule? {
         return schedulesTypeMap.getFirstPrioryScheduleByType(scheduleType)
     }
 

@@ -8,8 +8,7 @@ import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
 import androidx.core.view.setMargins
 import com.example.kesi.R
-import com.example.kesi.domain.Schedule
-import com.example.kesi.domain.ScheduleType
+import com.example.kesi.domain.*
 
 class DayBoxViewRender(
     private val container: ConstraintLayout
@@ -29,10 +28,10 @@ class DayBoxViewRender(
 
             dimensionRatio = "1:1"
 
-            elevation = when(schedule.getType()) {
-                ScheduleType.GROUP -> 3f
-                ScheduleType.PERSONAL -> 2f
-                else -> 1f
+            elevation = when(schedule) {
+                is GroupSchedule -> 3f
+                is PersonalSchedule -> 2f
+                is OtherSchedule -> 1f
             }
         }
 

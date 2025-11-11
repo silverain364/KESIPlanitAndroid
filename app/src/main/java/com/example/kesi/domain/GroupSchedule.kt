@@ -22,10 +22,6 @@ class GroupSchedule(
     securityLevel: SecurityLevel,
     private val sourceCalendarId: Long
     ) : Schedule(id, start, end, startTime, endTime, color, title, description, link, place, securityLevel) {
-    override fun getType(): ScheduleType {
-        return ScheduleType.GROUP
-    }
-
     override fun getSingleLineColor(context: Context): Int {
         return this.color.toArgb()
     }

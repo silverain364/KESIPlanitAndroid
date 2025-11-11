@@ -335,7 +335,7 @@ class ChatActivity : AppCompatActivity() {
 
     private fun getGroupCalendarScheduleSummaryItem() = arrayListOf(
         GroupCalendarScheduleSummaryItem.Day(LocalDate.of(2025, 4, 1)),
-        GroupCalendarScheduleSummaryItem.Kind(ScheduleType.GROUP),
+        GroupCalendarScheduleSummaryItem.Kind(GroupSchedule::class),
         GroupCalendarScheduleSummaryItem.Item(GroupSchedule(
             id = 1L,
             start = LocalDate.of(2025, 4, 24),
@@ -364,7 +364,7 @@ class ChatActivity : AppCompatActivity() {
             securityLevel = SecurityLevel.HIGH,
             sourceCalendarId = 1L
         )),
-        GroupCalendarScheduleSummaryItem.Kind(ScheduleType.PERSONAL),
+        GroupCalendarScheduleSummaryItem.Kind(PersonalSchedule::class),
         GroupCalendarScheduleSummaryItem.Item(PersonalSchedule(
             id = 3L,
             start = LocalDate.of(2025, 4, 26),
@@ -378,7 +378,7 @@ class ChatActivity : AppCompatActivity() {
             place = "스터디룸 2",
             securityLevel = SecurityLevel.LOW
         )),
-        GroupCalendarScheduleSummaryItem.Kind(ScheduleType.OTHER),
+        GroupCalendarScheduleSummaryItem.Kind(OtherSchedule::class),
         GroupCalendarScheduleSummaryItem.Item(
             OtherSchedule(
                 id = 4L,
@@ -410,7 +410,7 @@ class ChatActivity : AppCompatActivity() {
             )
         ),
         GroupCalendarScheduleSummaryItem.Day(LocalDate.of(2025, 5, 1)),
-        GroupCalendarScheduleSummaryItem.Kind(ScheduleType.GROUP),
+        GroupCalendarScheduleSummaryItem.Kind(GroupSchedule::class),
         GroupCalendarScheduleSummaryItem.Item(
             GroupSchedule(
                 id = 6L,
@@ -427,7 +427,7 @@ class ChatActivity : AppCompatActivity() {
                 sourceCalendarId = 1L
             )
         ),
-        GroupCalendarScheduleSummaryItem.Kind(ScheduleType.PERSONAL),
+        GroupCalendarScheduleSummaryItem.Kind(PersonalSchedule::class),
         GroupCalendarScheduleSummaryItem.Item(
             PersonalSchedule(
                 id = 7L,
@@ -445,7 +445,7 @@ class ChatActivity : AppCompatActivity() {
         ),
 
         GroupCalendarScheduleSummaryItem.Day(LocalDate.of(2025, 5, 2)),
-        GroupCalendarScheduleSummaryItem.Kind(ScheduleType.GROUP),
+        GroupCalendarScheduleSummaryItem.Kind(GroupSchedule::class),
         GroupCalendarScheduleSummaryItem.Item(
             GroupSchedule(
                 id = 8L,
@@ -462,7 +462,7 @@ class ChatActivity : AppCompatActivity() {
                 sourceCalendarId = 1L
             )
         ),
-        GroupCalendarScheduleSummaryItem.Kind(ScheduleType.OTHER),
+        GroupCalendarScheduleSummaryItem.Kind(OtherSchedule::class),
         GroupCalendarScheduleSummaryItem.Item(
             OtherSchedule(
                 id = 9L,
@@ -480,7 +480,7 @@ class ChatActivity : AppCompatActivity() {
         ),
 
         GroupCalendarScheduleSummaryItem.Day(LocalDate.of(2025, 5, 3)),
-        GroupCalendarScheduleSummaryItem.Kind(ScheduleType.GROUP),
+        GroupCalendarScheduleSummaryItem.Kind(GroupSchedule::class),
         GroupCalendarScheduleSummaryItem.Item(
             GroupSchedule(
                 id = 10L,

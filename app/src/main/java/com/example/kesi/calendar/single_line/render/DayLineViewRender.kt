@@ -1,11 +1,11 @@
 package com.example.kesi.calendar.single_line.render
 
+import android.app.Person
 import android.content.res.ColorStateList
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.kesi.R
-import com.example.kesi.domain.Schedule
-import com.example.kesi.domain.ScheduleType
+import com.example.kesi.domain.*
 
 class DayLineViewRender(
     private val container: ConstraintLayout
@@ -25,10 +25,10 @@ class DayLineViewRender(
             topToTop = leftReferenceViewId
             bottomToBottom = leftReferenceViewId
 
-            elevation = when(schedule.getType()) {
-                ScheduleType.GROUP -> 3f
-                ScheduleType.PERSONAL -> 2f
-                else -> 1f
+            elevation = when(schedule) {
+                is GroupSchedule -> 3f
+                is PersonalSchedule -> 2f
+                is OtherSchedule -> 1f
             }
         }
 

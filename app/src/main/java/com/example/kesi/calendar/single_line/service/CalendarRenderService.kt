@@ -8,7 +8,6 @@ import com.example.kesi.calendar.single_line.domain.DayLine
 import com.example.kesi.calendar.single_line.render.DayBoxViewRender
 import com.example.kesi.calendar.single_line.render.DayLineViewRender
 import com.example.kesi.domain.Schedule
-import com.example.kesi.domain.ScheduleType
 import java.time.LocalDate
 
 class CalendarRenderService(
@@ -19,6 +18,7 @@ class CalendarRenderService(
     private val dayBoxViewRender: DayBoxViewRender = DayBoxViewRender(container)
     private val dayLineViewRender: DayLineViewRender = DayLineViewRender(container)
     private val dayLineViews: HashMap<DayLine, List<View>> = HashMap()
+
 
     fun viewClear(dayLines: List<DayLine>, startDate: LocalDate) {
         dayLines.forEach { viewClear(it, startDate) }
@@ -67,11 +67,10 @@ class CalendarRenderService(
         val dayTv = dayTvList[componentIndex]
 
 
-        val types = ScheduleType.entries.toTypedArray()
         val priorityScheduleByType = ArrayList<Schedule>()
 
         //타입별 가장 일정이 빠른 일정을 가져온다.
-        types.forEach {
+        Schedule.SCHEDULE_TYPES.forEach {
             val schedule = dayBox.getFirstPriorityScheduleByType(it)
             if (schedule != null) priorityScheduleByType.add(schedule)
         }

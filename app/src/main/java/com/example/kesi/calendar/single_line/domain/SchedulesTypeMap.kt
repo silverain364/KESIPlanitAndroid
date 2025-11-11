@@ -1,13 +1,13 @@
 package com.example.kesi.calendar.single_line.domain
 
 import com.example.kesi.domain.Schedule
-import com.example.kesi.domain.ScheduleType
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.reflect.KClass
 
 class SchedulesTypeMap {
-    private val scheduleTypes = ScheduleType.entries.toTypedArray()
-    private val schedulesTypePriorityMap = HashMap<ScheduleType, PriorityQueue<Schedule>>()
+    private val scheduleTypes = Schedule::class.sealedSubclasses
+    private val schedulesTypePriorityMap = HashMap<KClass<out Schedule>, PriorityQueue<Schedule>>()
     private val scheduleMap = HashMap<Long, Schedule>()
 
     init {
@@ -20,14 +20,14 @@ class SchedulesTypeMap {
 
     fun addSchedule(schedule: Schedule) {
         scheduleMap[schedule.id] = schedule
-        schedulesTypePriorityMap[schedule.getType()]!!.add(schedule)
+        schedulesTypePriorityMap[schedule::class]!!.add(schedule)
     }
 
     fun removeSchedule(schedule: Schedule) {
         scheduleMap.remove(schedule.id)
     }
 
-    fun getFirstPrioryScheduleByType(scheduleType: ScheduleType): Schedule? {
+    fun getFirstPrioryScheduleByType(scheduleType: KClass<out Schedule>): Schedule? {
         val targetTypeSchedules = schedulesTypePriorityMap[scheduleType]!!
         while(targetTypeSchedules.isNotEmpty()) {
             val schedule = targetTypeSchedules.peek()!!
@@ -39,7 +39,7 @@ class SchedulesTypeMap {
         return null
     }
 
-    fun getSchedulesByType(scheduleType: ScheduleType): List<Schedule> {
+    fun getSchedulesByType(scheduleType: KClass<out Schedule>): List<Schedule> {
         return emptyList()  //Todo. 추후 구현
     }
 

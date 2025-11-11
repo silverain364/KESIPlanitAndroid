@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kesi.adapter.CalendarHolderFactory
 import com.example.kesi.adapter.FullCalendarAdapter
 import com.example.kesi.calendar.mutiple_line.render.DayTextView
-import com.example.kesi.calendar.mutiple_line.view.DayBoxView
 import com.example.kesi.data.MonthData
+import com.example.kesi.domain.Schedule
 import com.example.kesi.holder.CalendarHolder
 import com.example.kesi.holder.MiniCalendarHolder
 import com.example.kesi.model.GroupDto
@@ -35,9 +35,13 @@ class GroupSpaceCalendar(
         }
     }
 
+    private val initScheduleLoadedListener: (List<Schedule>) -> Unit = {
+
+    }
+
     private val calendarAdapter =  FullCalendarAdapter(
         ArrayList(), holderFactory
-    ) //Todo. 추후 선택시 발생시킬 이벤트 있음 설정해야 됨
+    )
 
     init {
         Log.d("GroupSpaceCalendar", "group calendar Id: ${groupDto.calendarId}")
