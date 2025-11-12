@@ -3,7 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
     id("kotlin-parcelize")
-
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt") // Hilt가 사용하는 annotation processor
 }
 
 android {
@@ -42,7 +43,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -79,4 +79,13 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
     //LiveModel
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.4")
+
+
+    // Hilt core
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-android-compiler:2.52")
+
+    // (선택) ViewModel, WorkManager 등 AndroidX 확장 기능 사용 시
+    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
 }

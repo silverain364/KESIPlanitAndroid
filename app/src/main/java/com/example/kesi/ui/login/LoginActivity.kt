@@ -21,8 +21,14 @@ import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.activity.viewModels
+
 
 class LoginActivity : AppCompatActivity() {
+    private val viewModel: LoginViewModel by viewModels()
+
+
+
     private lateinit var binding: ActivityLoginBinding
     private val auth = FirebaseAuth.getInstance()
     private lateinit var googleLoginLauncher : ActivityResultLauncher<Intent>
@@ -37,6 +43,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding.etId.setText("ksh@naver.com")
         binding.etPassword.setText("ksh1234")
+
         //로그인 버튼 클릭 시 메인 화면으로 이동
         binding.btnLogin.setOnClickListener {
             login(binding.etId.text.toString(), binding.etPassword.text.toString())
@@ -59,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
         val googleSignClient = GoogleSignIn.getClient(
             this,
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN) //로그인 옵션
-                .requestIdToken(this.getString(R.string.default_web_client_id)) //User Token
+                .requestIdToken(getString(R.string.default_web_client_id)) //User Token
                 .requestServerAuthCode(getString(R.string.default_web_client_id)) //AuthCode를 받기 위한 설정
                 .requestEmail()
                 .requestScopes(Scope("https://www.googleapis.com/auth/calendar")) //특정 권한(캘린더 권한) 추가 요청
