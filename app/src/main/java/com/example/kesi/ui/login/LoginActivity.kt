@@ -22,12 +22,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.activity.viewModels
+import com.example.kesi.data.model.LoginState
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private val viewModel: LoginViewModel by viewModels()
-
-
 
     private lateinit var binding: ActivityLoginBinding
     private val auth = FirebaseAuth.getInstance()
@@ -46,7 +47,8 @@ class LoginActivity : AppCompatActivity() {
 
         //로그인 버튼 클릭 시 메인 화면으로 이동
         binding.btnLogin.setOnClickListener {
-            login(binding.etId.text.toString(), binding.etPassword.text.toString())
+            if(viewModel.loginState.value == LoginState.Loading) return@setOnClickListener
+            viewModel.login(binding.etId.text.toString(), binding.etPassword.text.toString())
         }
 
         //회원가입 버튼 클릭 시 회원가입 화면으로 이동
@@ -111,35 +113,25 @@ class LoginActivity : AppCompatActivity() {
         binding.googleBtnLogint.setOnClickListener { //구글 버튼 클릭시
             googleLoginLauncher.launch(googleSignClient.signInIntent)
         }
-    }
 
-    private fun login(email: String, pw: String){
-        if(email.isEmpty()){
-            showToast("이메일을 입력해주세요")
-            return
-        }
-        if(pw.isEmpty()){
-            showToast("비밀번호를 입력해주세요")
-            return
-        }
+        viewModel.loginState.observe(this) { state ->
+            when(state) {
+                is LoginState.Idle -> {}
+                is LoginState.Loading -> {}
+                is LoginState.Success -> {
+                    showToast("로그인 성공") //추후 nickName님 환영합니다.로 변경하면 좋을듯?
 
-        auth.signInWithEmailAndPassword(email, pw).addOnCompleteListener {
-            if (it.isSuccessful) { //페이지 이동
-                showToast("로그인 성공") //추후 nickName님 환영합니다.로 변경하면 좋을듯?
-                auth.currentUser!!.getIdToken(true).addOnSuccessListener {
-                    SplashActivity.prefs.setString("token", it.token!!)
+                    state.user.getIdToken(true).addOnSuccessListener { getTokenResult -> SplashActivity.prefs.setString("token", getTokenResult.token!!) }
+                    sendFCMToken(); //FCM token를 전송한다.
+
                     val intent = Intent(this, MainActivity::class.java) //토큰을 저장하고 이동하도록 수정
                     startActivity(intent)
                 }
-
-                sendFCMToken(); //FCM token를 전송한다.
-
-            }else{
-                showToast("이메일 또는 비밀번호가 틀렸습니다.")
+                is LoginState.Error -> {
+                    showToast(state.message ?: "로그인 실패(알수 없는 에러)")
+                }
             }
         }
-
-
     }
 
 
