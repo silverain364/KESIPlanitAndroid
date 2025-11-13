@@ -54,8 +54,8 @@ class RetrofitSetting {
 
     class RequestInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
-            var requestBuilder = chain.request().newBuilder()
-            var auth = SplashActivity.prefs.getString("token")!!
+            val requestBuilder = chain.request().newBuilder()
+            val auth = SplashActivity.prefs.getString("token")!!
 
             if (auth.isNotEmpty()) requestBuilder.addHeader("Authorization", "Bearer $auth");
 
