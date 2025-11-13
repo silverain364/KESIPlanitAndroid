@@ -88,4 +88,7 @@ dependencies {
     // (선택) ViewModel, WorkManager 등 AndroidX 확장 기능 사용 시
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
     kapt("androidx.hilt:hilt-compiler:1.2.0")
+
+    //datastore
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 }

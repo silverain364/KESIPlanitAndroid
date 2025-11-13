@@ -172,13 +172,11 @@ class LoginActivity : AppCompatActivity() {
             //토큰을 정상적으로 가져왔다면
             val token = it.result
             fcmApi.addFCMToken(token).enqueue(object: Callback<String> { //토큰을 SpringBoot 서버로 전송한다.
-                override fun onResponse(p0: Call<String>, p1: Response<String>) {
-                }
+                override fun onResponse(p0: Call<String>, p1: Response<String>) {}
                 override fun onFailure(p0: Call<String>, p1: Throwable) {
                     p1.message
                 }
             })
         }
     }
-
 }
