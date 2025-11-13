@@ -1,6 +1,7 @@
 package com.example.kesi.application
 
 import com.example.kesi.data.User
+import com.example.kesi.data.local.AuthLocalDataSource
 import com.example.kesi.data.repository.login.BackendAuthRepository
 import com.example.kesi.data.repository.login.FirebaseAuthRepository
 import com.google.firebase.auth.AuthCredential
@@ -10,6 +11,7 @@ import javax.inject.Inject
 
 class LoginService @Inject constructor(
     private val firebaseAuthRepository: FirebaseAuthRepository,
+    private val authLocalDataSource: AuthLocalDataSource
 //    private val backendAuthRepository: BackendAuthRepository
 ) {
     suspend fun loginWithEmail(email: String, password: String): Result<FirebaseUser> {
@@ -17,7 +19,8 @@ class LoginService @Inject constructor(
         return firebaseResult.fold(
             onSuccess = { user ->
                 val token = user.getIdToken(true).await().token!!
-                return Result.success(user)
+                authLocalDataSource.saveToken(token)
+                Result.success(user)
 //                backendAuthRepository.
             },
             onFailure = { Result.failure(it) }
@@ -29,7 +32,8 @@ class LoginService @Inject constructor(
         return firebaseResult.fold(
             onSuccess = { user ->
                 val token = user.getIdToken(true).await().token!!
-                return Result.success(user)
+                authLocalDataSource.saveToken(token)
+                Result.success(user)
 //                backendAuthRepository.
             },
             onFailure = { Result.failure(it) }
