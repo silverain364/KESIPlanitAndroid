@@ -23,11 +23,18 @@ import retrofit2.Callback
 import retrofit2.Response
 import androidx.activity.viewModels
 import com.example.kesi.data.model.LoginState
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import javax.inject.Named
 
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
+class LoginActivity: AppCompatActivity() {
+    @Named("login")
+    @Inject
+    lateinit var googleSignClient: GoogleSignInClient
+
     private val viewModel: LoginViewModel by viewModels()
 
     private lateinit var binding: ActivityLoginBinding
@@ -64,51 +71,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-        //Google Login & Join
-        val googleSignClient = GoogleSignIn.getClient(
-            this,
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN) //로그인 옵션
-                .requestIdToken(getString(R.string.default_web_client_id)) //User Token
-                .requestServerAuthCode(getString(R.string.default_web_client_id)) //AuthCode를 받기 위한 설정
-                .requestEmail()
-                .requestScopes(Scope("https://www.googleapis.com/auth/calendar")) //특정 권한(캘린더 권한) 추가 요청
-                .build()
-        )
-
         //구글 로그인 버튼 클릭시 실행할 페이지를 위한 Launcher
         googleLoginLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            if(it.resultCode == RESULT_OK){
-                //결과 Intent(data 매개변수) 에서 구글로그인 결과 꺼내오기
-                val result = Auth.GoogleSignInApi.getSignInResultFromIntent(it.data!!)!!
-
-                //정상적으로 결과를 받았다면
-                if(result.isSuccess){
-                    val account = result.signInAccount
-
-                    //구글로부터 로그인된 사용자의 정보(Credentail)을 얻어온다.
-                    val credential = GoogleAuthProvider.getCredential(account?.idToken!!, null)
-
-                    //그 정보를 사용하여 Firebase의 auth를 실행한다.
-                    auth?.signInWithCredential(credential)?.addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            receiveGoogleCalendarPermission() //허락 받은 내용으로 AuthCode를 얻고 백엔드 서버로 넘김
-
-                            //페이지 이동
-                            startActivity(Intent(this, MainActivity::class.java))
-                        } else {
-                            // 오류가 난 경우!
-                            Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
-                        }
-                    }
-
-
-                }else
-                    Toast.makeText(this, "Login fail!", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this, " intent Fail!", Toast.LENGTH_SHORT).show()
-            }
+            viewModel.onGoogleLoginResult(it)
         }
-
 
         binding.googleBtnLogint.setOnClickListener { //구글 버튼 클릭시
             googleLoginLauncher.launch(googleSignClient.signInIntent)
@@ -136,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-    //캘린더 권한을 사용자에게 허락받았다는 가정하에 AuthCode를 받고 백엔드 서버로 넘긴다.
+    //캘린더 권한을 사용자에게 허락받았다는 가정하에 AuthCode를 받고 백엔드 서버로 넘긴다. 추후 구현
     private fun receiveGoogleCalendarPermission(){
         val googleSignClient = GoogleSignIn.getClient(
             this,

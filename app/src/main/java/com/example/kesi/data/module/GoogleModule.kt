@@ -11,6 +11,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -18,7 +19,8 @@ import javax.inject.Singleton
 object GoogleModule {
     @Provides
     @Singleton
-    fun provideGoogleSignInClient(@ApplicationContext context: Context): GoogleSignInClient =
+    @Named("login")
+    fun provideLoginAndJoinGoogleSignInClient(@ApplicationContext context: Context): GoogleSignInClient =
         GoogleSignIn.getClient(
             context,
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN) //로그인 옵션
@@ -28,4 +30,16 @@ object GoogleModule {
                 .requestScopes(Scope("https://www.googleapis.com/auth/calendar")) //특정 권한(캘린더 권한) 추가 요청
                 .build()
         )
+    @Provides
+    @Singleton
+    @Named("calendar")
+    fun provideCalendarGoogleSignInClient(@ApplicationContext context: Context): GoogleSignInClient =
+        GoogleSignIn.getClient(
+            context,
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(Scope("https://www.googleapis.com/auth/calendar")) //캘린더 권한을 요청
+                .build()
+        )
+
+
 }

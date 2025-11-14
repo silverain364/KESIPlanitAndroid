@@ -8,17 +8,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
+import javax.inject.Inject
+import javax.inject.Named
 
-class GoogleAuthRepository(private val googleSignClient: GoogleSignInClient) {
-//    private val googleSignClient = GoogleSignIn.getClient(
-//        context,
-//        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN) //로그인 옵션
-//            .requestIdToken(context.getString(R.string.default_web_client_id)) //User Token
-//            .requestServerAuthCode(context.getString(R.string.default_web_client_id)) //AuthCode를 받기 위한 설정
-//            .requestEmail()
-//            .requestScopes(Scope("https://www.googleapis.com/auth/calendar")) //특정 권한(캘린더 권한) 추가 요청
-//            .build()
-//    )
+class GoogleAuthRepository @Inject constructor(
+    @param:Named("login") private val googleSignClient: GoogleSignInClient) {
 
     fun getSignInIntent(): Intent = googleSignClient.signInIntent
 
