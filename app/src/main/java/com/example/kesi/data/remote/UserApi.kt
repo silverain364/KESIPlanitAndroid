@@ -12,10 +12,10 @@ import retrofit2.http.Part
 
 interface UserApi {
     @GET("user")
-    fun getByUid(): Call<com.example.kesi.data.model.UserInfoDto>
+    fun get(): Call<UserInfoDto>
 
     @POST("user")
-    fun join(@Body joinRequestDto: com.example.kesi.data.model.JoinRequestDto): Call<String>
+    fun join(@Body joinRequestDto: JoinRequestDto): Call<String>
 
     @Multipart
     @POST("user/profile")

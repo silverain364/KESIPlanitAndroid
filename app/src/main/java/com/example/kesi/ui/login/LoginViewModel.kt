@@ -8,13 +8,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kesi.application.LoginService
 import com.example.kesi.data.model.LoginState
+import com.example.kesi.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginService: LoginService
+    private val loginService: LoginService,
+    private val userRepository: UserRepository
 ):ViewModel() {
     private val _loginState = MutableLiveData<LoginState>()
     val loginState: LiveData<LoginState> get() = _loginState
@@ -34,7 +36,7 @@ class LoginViewModel @Inject constructor(
         val result = loginService.loginWithEmail(email, password)
 
         _loginState.value = if (result.isSuccess)
-            LoginState.Success(result.getOrNull()!!)
+            LoginState.FirebaseLoggedIn(result.getOrNull()!!)
         else {
             Log.d("Login fail", result.exceptionOrNull()?.message ?: "unknow login error")
             LoginState.Error("로그인 실패")
@@ -48,10 +50,41 @@ class LoginViewModel @Inject constructor(
         val result = loginService.onGoogleLogin(credential)
 
         _loginState.value =
-            if (result.isSuccess) LoginState.Success(result.getOrNull()!!)
+            if (result.isSuccess) LoginState.FirebaseLoggedIn(result.getOrNull()!!)
             else {
                 Log.d("Login fail", result.exceptionOrNull()?.message ?: "unknow login error")
                 LoginState.Error("로그인 실패")
             }
     }
+
+    fun checkProfile() = viewModelScope.launch {
+        if(_loginState.value !is LoginState.FirebaseLoggedIn) return@launch //firebase 로그인 된 상태에서만 확인
+
+        val result = userRepository.existsUser()
+
+        _loginState.value =
+            if(result.isSuccess) {
+                if (result.getOrNull() == true) LoginState.Success
+                else LoginState.RequireProfileInput
+            } else {
+                Log.d("Login fail", result.exceptionOrNull()?.message ?: "unknow login error")
+                LoginState.Error("유저 존재 확인 실패")
+            }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

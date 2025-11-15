@@ -26,6 +26,10 @@ class LoginActivity : AppCompatActivity() {
     @Inject
     lateinit var credentialManager:CredentialManager
 
+    companion object {
+        private val TAG = "LoginActivity"
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,13 +66,25 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-
         viewModel.loginState.observe(this) { state ->
             when (state) {
                 is LoginState.Idle -> {}
                 is LoginState.Loading -> {}
+                is LoginState.Error -> {
+                    showToast(state.message ?: "로그인 실패(알수 없는 에러)")
+                }
+
                 is LoginState.Success -> {
                     showToast("로그인 성공") //추후 nickName님 환영합니다.로 변경하면 좋을듯?
+
+
+                    val intent = Intent(this, MainActivity::class.java) //토큰을 저장하고 이동하도록 수정
+                    startActivity(intent)
+                }
+
+
+                is LoginState.FirebaseLoggedIn -> {
+                    Log.d(TAG, "로그인한 유저 EMAIL : ${state.user.email}")
 
                     //Todo. 추후 삭제
                     state.user.getIdToken(true).addOnSuccessListener { getTokenResult ->
@@ -77,12 +93,12 @@ class LoginActivity : AppCompatActivity() {
                             getTokenResult.token!!
                         )
                     }
-                    val intent = Intent(this, MainActivity::class.java) //토큰을 저장하고 이동하도록 수정
-                    startActivity(intent)
-                }
 
-                is LoginState.Error -> {
-                    showToast(state.message ?: "로그인 실패(알수 없는 에러)")
+                    viewModel.checkProfile()
+                }
+                is LoginState.RequireProfileInput -> { //회원가입이 안 된 상태
+                    val intent = Intent(this, ProfileSettingsActivity::class.java) //토큰을 저장하고 이동하도록 수정
+                    startActivity(intent)
                 }
             }
         }

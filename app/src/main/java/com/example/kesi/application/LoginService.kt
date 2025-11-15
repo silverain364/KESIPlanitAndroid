@@ -56,7 +56,4 @@ class LoginService @Inject constructor(
         return handleFirebaseLogin(firebaseResult)
     }
 
-
-
-
 }

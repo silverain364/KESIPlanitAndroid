@@ -36,7 +36,7 @@ class AddFriendsActivity : AppCompatActivity() {
         //database = Firebase.database.reference
 
         //db에서 email 읽어와서 보여주기
-        userApi.getByUid().enqueue(object : Callback<com.example.kesi.data.model.UserInfoDto> {
+        userApi.get().enqueue(object : Callback<com.example.kesi.data.model.UserInfoDto> {
             override fun onResponse(p0: Call<com.example.kesi.data.model.UserInfoDto>, response: Response<com.example.kesi.data.model.UserInfoDto>) {
                 if (response.code() == 200) {
                     binding.tvEmail.setText(response.body()?.email)

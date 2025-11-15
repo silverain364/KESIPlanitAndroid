@@ -57,10 +57,10 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toggle.syncState()
 
-        userApi.getByUid().enqueue(object : Callback<com.example.kesi.data.model.UserInfoDto> {
+        userApi.get().enqueue(object : Callback<com.example.kesi.data.model.UserInfoDto> {
             override fun onResponse(p0: Call<com.example.kesi.data.model.UserInfoDto>, response: Response<com.example.kesi.data.model.UserInfoDto>) {
                 Toast.makeText(this@MainActivity,response.code().toString(),Toast.LENGTH_SHORT).show()
-                if (response.code() == 500) {
+                if (response.code() != 200) {
                     val intent: Intent = Intent(this@MainActivity, ProfileSettingsActivity::class.java)
                     startActivity(intent)
                 }
