@@ -37,10 +37,8 @@ class MainActivity : AppCompatActivity() {
 
     //뷰 페이저 어댑터
     class FragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
-        val fragments: List<Fragment>
-        init {
-            fragments = listOf(HomeFragment(), ListFragment(), NotificationFragment(), AccountFragment())
-        }
+        val fragments: List<Fragment> =
+            listOf(HomeFragment(), ListFragment(), NotificationFragment(), AccountFragment())
 
         override fun getItemCount(): Int = fragments.size
         override fun createFragment(position: Int): Fragment = fragments[position]
@@ -56,22 +54,6 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toggle.syncState()
-
-        userApi.get().enqueue(object : Callback<com.example.kesi.data.model.UserInfoDto> {
-            override fun onResponse(p0: Call<com.example.kesi.data.model.UserInfoDto>, response: Response<com.example.kesi.data.model.UserInfoDto>) {
-                Toast.makeText(this@MainActivity,response.code().toString(),Toast.LENGTH_SHORT).show()
-                if (response.code() != 200) {
-                    val intent: Intent = Intent(this@MainActivity, ProfileSettingsActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-
-            override fun onFailure(p0: Call<com.example.kesi.data.model.UserInfoDto>, p1: Throwable) {
-                Toast.makeText(this@MainActivity,"통신실패",Toast.LENGTH_SHORT).show()
-            }
-
-        })
-
 
 
         // 뷰 페이저 스와이프 막기
