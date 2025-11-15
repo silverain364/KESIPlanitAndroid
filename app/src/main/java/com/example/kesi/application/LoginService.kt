@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.credentials.Credential
 import androidx.credentials.CustomCredential
 import com.example.kesi.data.local.AuthLocalDataSource
+import com.example.kesi.data.repository.login.FcmRepository
 import com.example.kesi.data.repository.login.FirebaseAuthRepository
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseUser
@@ -13,8 +14,8 @@ import javax.inject.Inject
 
 class LoginService @Inject constructor(
     private val firebaseAuthRepository: FirebaseAuthRepository,
-    private val authLocalDataSource: AuthLocalDataSource
-//    private val backendAuthRepository: BackendAuthRepository
+    private val authLocalDataSource: AuthLocalDataSource,
+    private val fcmRepository: FcmRepository
 ) {
 
     private suspend fun handleFirebaseLogin(
@@ -24,6 +25,7 @@ class LoginService @Inject constructor(
             onSuccess = { user ->
                 val token = user.getIdToken(true).await().token!!
                 authLocalDataSource.saveToken(token)
+                fcmRepository.sendFcmToken()
                 Result.success(user)
             },
             onFailure = { Result.failure(it) }

@@ -11,15 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import com.example.kesi.R
 import com.example.kesi.data.model.LoginState
 import com.example.kesi.databinding.ActivityLoginBinding
-import com.example.kesi.setting.RetrofitSetting
 import com.example.kesi.ui.main.MainActivity
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -27,8 +22,6 @@ import javax.inject.Inject
 class LoginActivity : AppCompatActivity() {
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var binding: ActivityLoginBinding
-    private val retrofit = RetrofitSetting.getRetrofit()
-    private val fcmApi = retrofit.create(com.example.kesi.data.remote.FCMApi::class.java)
 
     @Inject
     lateinit var credentialManager:CredentialManager
@@ -65,7 +58,6 @@ class LoginActivity : AppCompatActivity() {
 
         binding.googleBtnLogint.setOnClickListener { //구글 버튼 클릭시
             if (viewModel.loginState.value == LoginState.Loading) return@setOnClickListener
-//            awaitAll(viewModel.onClickGoogleLogin())
             launchCredentialManager()
         }
 
@@ -85,8 +77,6 @@ class LoginActivity : AppCompatActivity() {
                             getTokenResult.token!!
                         )
                     }
-                    sendFCMToken(); //FCM token를 전송한다.
-
                     val intent = Intent(this, MainActivity::class.java) //토큰을 저장하고 이동하도록 수정
                     startActivity(intent)
                 }
@@ -155,23 +145,5 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showToast(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    private fun sendFCMToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { //FCM 토큰을 가져온다.
-            if (!it.isSuccessful) {
-                Log.w("firebase", "Fetching FCM registration token failed", it.exception)
-                return@addOnCompleteListener
-            }
-
-            //토큰을 정상적으로 가져왔다면
-            val token = it.result
-            fcmApi.addFCMToken(token).enqueue(object : Callback<String> { //토큰을 SpringBoot 서버로 전송한다.
-                override fun onResponse(p0: Call<String>, p1: Response<String>) {}
-                override fun onFailure(p0: Call<String>, p1: Throwable) {
-                    p1.message
-                }
-            })
-        }
     }
 }

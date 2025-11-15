@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginService
+    private val loginService: LoginService
 ):ViewModel() {
     private val _loginState = MutableLiveData<LoginState>()
     val loginState: LiveData<LoginState> get() = _loginState
@@ -31,7 +31,7 @@ class LoginViewModel @Inject constructor(
 
         _loginState.value = LoginState.Loading
 
-        val result = loginUseCase.loginWithEmail(email, password)
+        val result = loginService.loginWithEmail(email, password)
 
         _loginState.value = if (result.isSuccess)
             LoginState.Success(result.getOrNull()!!)
@@ -45,7 +45,7 @@ class LoginViewModel @Inject constructor(
     fun onGoogleLogin(credential: Credential) = viewModelScope.launch {
         _loginState.value = LoginState.Loading
 
-        val result = loginUseCase.onGoogleLogin(credential)
+        val result = loginService.onGoogleLogin(credential)
 
         _loginState.value =
             if (result.isSuccess) LoginState.Success(result.getOrNull()!!)
@@ -53,9 +53,5 @@ class LoginViewModel @Inject constructor(
                 Log.d("Login fail", result.exceptionOrNull()?.message ?: "unknow login error")
                 LoginState.Error("로그인 실패")
             }
-    }
-
-    fun onClickGoogleLogin()  = viewModelScope.launch {
-        _loginState.value = LoginState.Loading
     }
 }
