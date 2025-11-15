@@ -14,10 +14,8 @@ import com.example.kesi.data.User
 import com.example.kesi.databinding.ActivityProfileSettingsBinding
 import com.example.kesi.setting.RetrofitSetting
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.FirebaseDatabase
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -66,10 +64,10 @@ class ProfileSettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //인증 초기화
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
 
         //db 초기화
-        database = Firebase.database.reference
+        database = FirebaseDatabase.getInstance().reference
 
         //인텐트로부터 email과 pw 받기
         val email = intent.getStringExtra("email")

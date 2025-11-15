@@ -50,15 +50,23 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
 
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1")) //firebase 자동 버전 관리
-    implementation("com.google.android.gms:play-services-base:18.3.0")
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0")) //firebase 자동 버전 관리
+    implementation("com.google.android.gms:play-services-base:18.9.0")
     implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-messaging:21.1.0") //FCM
+    implementation("com.google.firebase:firebase-messaging:25.0.1") //FCM
 
 
-    implementation("com.google.firebase:firebase-auth-ktx")//auth
     implementation("com.google.firebase:firebase-database-ktx:21.0.0")//realtime database
-    implementation("com.google.android.gms:play-services-auth:20.7.0") //구글 로그인
+
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth") //AUTH
+
+    // Also add the dependencies for the Credential Manager libraries and specify their versions
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
 
     implementation ("com.github.bumptech.glide:glide:4.11.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")

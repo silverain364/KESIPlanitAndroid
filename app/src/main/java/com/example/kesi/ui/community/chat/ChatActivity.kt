@@ -30,8 +30,6 @@ import com.example.kesi.util.view.GroupSpaceCalendar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -66,7 +64,7 @@ class ChatActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance() // 인증 초기화
-        database = Firebase.database.reference // DB 초기화
+        database = FirebaseDatabase.getInstance().reference // DB 초기화
         gid = intent.getLongExtra("gid",0);// 인텐트로 gid 받기
         mDetector = GestureDetectorCompat(this, SingleTapListener())
 

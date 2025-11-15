@@ -1,8 +1,9 @@
 {
   "project_info": {
     "project_number": "864097874741",
+    "firebase_url": "https://kesi-b027c-default-rtdb.firebaseio.com",
     "project_id": "kesi-b027c",
-    "storage_bucket": "kesi-b027c.appspot.com"
+    "storage_bucket": "kesi-b027c.firebasestorage.app"
   },
   "client": [
     {

@@ -8,8 +8,7 @@ import com.example.kesi.ui.community.chat.ChatActivity
 import com.example.kesi.databinding.ItemGroupListBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.FirebaseDatabase
 
 class GroupListAdapter(val group:ArrayList<com.example.kesi.data.model.GroupSimpleDto>):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var auth:FirebaseAuth
@@ -20,7 +19,7 @@ class GroupListAdapter(val group:ArrayList<com.example.kesi.data.model.GroupSimp
         //인증 초기화
         auth = FirebaseAuth.getInstance()
         //db 초기화
-        database = Firebase.database.reference
+        database = FirebaseDatabase.getInstance().reference
         return GroupListViewHolder(binding)
     }
 
