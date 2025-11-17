@@ -17,6 +17,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.kesi.ui.home.HomeFragment
 import com.example.kesi.ui.notification.NotificationFragment
 import com.example.kesi.R
+import com.example.kesi.data.model.MainTab
 import com.example.kesi.ui.login.ProfileSettingsActivity
 import com.example.kesi.ui.account.AccountFragment
 import com.example.kesi.databinding.ActivityMainBinding
@@ -31,9 +32,6 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var binding: ActivityMainBinding
-
-    private val retrofit = RetrofitSetting.getRetrofit();
-    private val userApi = retrofit.create(com.example.kesi.data.remote.UserApi::class.java)
 
     //뷰 페이저 어댑터
     class FragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
@@ -66,61 +64,20 @@ class MainActivity : AppCompatActivity() {
         //탭과 뷰 페이저 연동
         TabLayoutMediator(binding.tab, binding.viewPager) {
             tab, position ->
-            when (position) {
-                0 -> {
-                    tab.text = "홈"
-                    tab.icon = getDrawable(R.drawable.ic_home_white)
-                }
-                1 -> {
-                    tab.text = "목록"
-                    tab.icon = getDrawable(R.drawable.ic_list_white)
-                }
-                2 -> {
-                    tab.text = "알림"
-                    tab.icon = getDrawable(R.drawable.ic_notification_white)
-                }
-                3 -> {
-                    tab.text = "계정"
-                    tab.icon = getDrawable(R.drawable.ic_account_white)
-                }
-            }
+            tab.text = MainTab.all[position].text
+            tab.icon = getDrawable(MainTab.all[position].icon)
         }.attach()
 
         binding.tab.addOnTabSelectedListener(
            object: TabLayout.OnTabSelectedListener{
                override fun onTabSelected(tab: TabLayout.Tab?) {
-                   //선택된 탭은 각각의 색으로 변경
-                   val color = when(tab!!.position){
-                       0 -> {
-                           ContextCompat.getColor(applicationContext, R.color.nav_bottom_home)
-                       }
-                       1 -> {
-                           ContextCompat.getColor(applicationContext, R.color.nav_bottom_list)
-                       }
-                       2 -> {
-                           ContextCompat.getColor(applicationContext, R.color.nav_bottom_alarm)
-                       }
-                       3 -> {
-                           ContextCompat.getColor(applicationContext, R.color.nav_bottom_account)
-                       }
-                       else -> {
-                           ContextCompat.getColor(applicationContext, R.color.white)
-                       }
-                   }
-                   tab.icon?.setTint(color)
+                   if(tab == null) return
 
-                   //각각의 탭을 클릭했을 경우 타이틀 변경
-                   when(tab?.position) {
-                       0 -> binding.tvTitle.text = "KESI"
-                       1 -> binding.tvTitle.text = "목록"
-                       2 -> binding.tvTitle.text = "알림"
-                       3 -> binding.tvTitle.text = "내 계정"
-                   }
+                   tab.icon?.setTint(MainTab.all[tab.position].color)
+                   binding.tvTitle.text = MainTab.all[tab.position].title
                }
 
-               override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-               }
+               override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
                override fun onTabReselected(tab: TabLayout.Tab?) {
                     onTabSelected(tab)

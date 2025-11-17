@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var credentialManager:CredentialManager
 
     companion object {
-        private val TAG = "LoginActivity"
+        private const val TAG = "LoginActivity"
     }
 
 
